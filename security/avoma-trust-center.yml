@@ -1,0 +1,17 @@
+generated: '2026-09-27'
+method: searched
+probe: true
+source: https://trust.avoma.com/
+url: https://trust.avoma.com/
+certifications:
+- SOC 2
+- HIPAA
+- GDPR
+evidence:
+- source: https://trust.avoma.com/
+  keywords:
+  - soc 2
+  - soc2
+  - hipaa
+  - trust center
+  - gdpr

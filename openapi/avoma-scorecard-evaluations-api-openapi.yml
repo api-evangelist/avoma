@@ -1,0 +1,247 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Scorecard Evaluations API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- name: Scorecard Evaluations
+paths:
+  /v1/scorecard_evaluations/:
+    get:
+      description: Retrieve a list of scorecard evaluations for meetings.
+      operationId: scorecard_evaluations_list
+      parameters:
+      - description: Number of results to return per page.
+        in: query
+        name: page_size
+        schema:
+          default: 10
+          maximum: 100
+          type: integer
+      - description: Start date for filtering scorecard evaluations (UTC)
+        in: query
+        name: from_date
+        schema:
+          format: date-time
+          type: string
+      - description: End date for filtering scorecard evaluations (UTC)
+        in: query
+        name: to_date
+        schema:
+          format: date-time
+          type: string
+      - description: Array of scorecard template UUIDs to filter evaluations
+        in: query
+        name: scorecard_uuids
+        schema:
+          items:
+            format: uuid
+            type: string
+          type: array
+      - description: UUID of the meeting for which to fetch scorecard evaluations.
+        in: query
+        name: meeting_uuid
+        schema:
+          format: uuid
+          type: string
+      - description: Array of user emails for who the scorecard evaluations are for.
+        in: query
+        name: user_emails
+        schema:
+          items:
+            format: email
+            type: string
+          type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    count:
+                      description: Total number of records in result.
+                      minimum: 0
+                      type: integer
+                    next:
+                      description: URL to the next page if available.
+                      example: https://example.com/api/v1/meeting/?page=2
+                      type:
+                      - string
+                      - 'null'
+                    previous:
+                      description: URL to the previous page if available.
+                      example: https://example.com/api/v1/meeting/?page=1
+                      type:
+                      - string
+                      - 'null'
+                  type: object
+                - properties:
+                    results:
+                      description: Actual response.
+                      items:
+                        description: Represents a completed scorecard evaluation for a meeting
+                        properties:
+                          company_name:
+                            description: The name of the company associated with the meeting
+                            readOnly: true
+                            type:
+                            - string
+                            - 'null'
+                          created:
+                            description: The date and time when the scorecard was created
+                            format: date-time
+                            readOnly: true
+                            type: string
+                          deal_names:
+                            description: The names of all deals associated with the meeting
+                            items:
+                              type: string
+                            readOnly: true
+                            type:
+                            - array
+                            - 'null'
+                          evaluations:
+                            description: The individual question evaluations for this scorecard
+                            items:
+                              description: Represents an answer to a question in a scorecard evaluation
+                              properties:
+                                answer_text:
+                                  description: The text of the answer
+                                  readOnly: true
+                                  type: string
+                                answer_uuid:
+                                  description: The UUID of the chosen answer (maps the response of 'Get Scorecards')
+                                  format: uuid
+                                  type: string
+                                justification:
+                                  description: The justification of the answer
+                                  type: string
+                                order:
+                                  description: The order of the question within the scorecard
+                                  type: integer
+                                question_text:
+                                  description: The text of the question
+                                  readOnly: true
+                                  type: string
+                                question_uuid:
+                                  description: The UUID of the question being answered (maps the response of 'Get Scorecards')
+                                  format: uuid
+                                  type: string
+                              type: object
+                            type: array
+                          meeting:
+                            description: Information about the meeting associated with a scorecard evaluation
+                            properties:
+                              end_at:
+                                description: The end time of the meeting
+                                format: date-time
+                                readOnly: true
+                                type: string
+                              organizer_email:
+                                description: The email of the organizer of the meeting
+                                format: email
+                                readOnly: true
+                                type: string
+                              start_at:
+                                description: The start time of the meeting
+                                format: date-time
+                                readOnly: true
+                                type: string
+                              subject:
+                                description: The subject or title of the meeting
+                                readOnly: true
+                                type: string
+                              uuid:
+                                description: The unique identifier of the meeting
+                                format: uuid
+                                readOnly: true
+                                type: string
+                            type: object
+                          modified:
+                            description: The date and time when the scorecard was last modified
+                            format: date-time
+                            readOnly: true
+                            type: string
+                          overall_score:
+                            description: The overall score of the evaluation
+                            format: double
+                            type:
+                            - number
+                            - 'null'
+                          scorecard_template_name:
+                            description: The name of the scorecard template
+                            readOnly: true
+                            type: string
+                          scorecard_uuid:
+                            description: The unique identifier of the scorecard template
+                            format: uuid
+                            readOnly: true
+                            type: string
+                          scored_by:
+                            allOf:
+                            - properties:
+                                email:
+                                  format: email
+                                  readOnly: true
+                                  type: string
+                                first_name:
+                                  readOnly: true
+                                  type: string
+                                last_name:
+                                  readOnly: true
+                                  type: string
+                                uuid:
+                                  format: uuid
+                                  readOnly: true
+                                  type: string
+                              type: object
+                            description: The user who performed the evaluation
+                          scored_for:
+                            allOf:
+                            - properties:
+                                email:
+                                  format: email
+                                  readOnly: true
+                                  type: string
+                                first_name:
+                                  readOnly: true
+                                  type: string
+                                last_name:
+                                  readOnly: true
+                                  type: string
+                                uuid:
+                                  format: uuid
+                                  readOnly: true
+                                  type: string
+                              type: object
+                            description: The user who was evaluated
+                          uuid:
+                            description: The unique identifier for the scorecard evaluation
+                            format: uuid
+                            readOnly: true
+                            type: string
+                        type: object
+                      type: array
+                  type: object
+          description: Successful response containing a list of scorecard evaluations
+      summary: List Scorecard Evaluations
+      tags:
+      - Scorecard Evaluations
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http

@@ -1,0 +1,37 @@
+generated: '2026-09-27'
+method: probed
+source:
+  - https://www.avoma.com/privacy-policy
+signals:
+  data_subject_request:
+    url: https://www.avoma.com/privacy-policy
+    evidence:
+      - source: https://www.avoma.com/privacy-policy
+        http_status: 200
+        fetched: /tmp/avoma_privacy.html
+        quote: "By accessing and using this Site and availing yourself to our Services, you consent to the data practices described in this Privacy Policy and our Terms of Use."
+        note: Provides consent and acknowledges data practices, implying data subject rights.
+  subprocessors:
+    url: https://www.avoma.com/privacy-policy
+    evidence:
+      - source: https://www.avoma.com/privacy-policy
+        http_status: 200
+        fetched: /tmp/avoma_privacy.html
+        quote: "Avoma may engage Sub-Processors to Process Personal Data on behalf of the Customer. Customer hereby provides Avoma with a general authorization to engage the Sub-Processors listed at https://trust.avoma.com/subprocessors."
+        note: Lists use of sub‑processors and reference to their list.
+  incident_notification:
+    url: https://www.avoma.com/privacy-policy
+    evidence:
+      - source: https://www.avoma.com/privacy-policy
+        http_status: 200
+        fetched: /tmp/avoma_privacy.html
+        quote: "We may need to disclose personal information in response to lawful requests by public authorities, including to meet national security or law enforcement requirements."
+        note: Indicates incident/authority disclosure obligations.
+  data_retention:
+    url: https://www.avoma.com/privacy-policy
+    evidence:
+      - source: https://www.avoma.com/privacy-policy
+        http_status: 200
+        fetched: /tmp/avoma_privacy.html
+        quote: "We will notify you about material changes in the way we treat personally identifiable information by sending an email message to the email address you most recently provided us and/or by prominently posting a notice on our Site."
+        note: Describes retention and change notification practices.

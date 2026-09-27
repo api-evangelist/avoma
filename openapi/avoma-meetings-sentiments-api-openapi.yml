@@ -1,0 +1,117 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Meetings Sentiments API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- description: Avoma's meeting sentiment feature is a powerful tool designed to provide end users with a deeper understanding of the emotional tone and dynamics within their meetings. By analyzing the content of conversations, vocal nuances, and contextual cues, Avoma's AI can accurately determine the overall sentiment of the meeting, whether it's positive, negative, or neutral.
+  name: Meetings Sentiments
+paths:
+  /v1/meeting_sentiments/:
+    get:
+      description: Returns meeting sentiments.
+      parameters:
+      - description: Unique ID of the meeting for which sentiments will be fetched.
+        in: query
+        name: meeting_uuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  example:
+                    sentiment: 0
+                    sentiment_ranges:
+                    - score: 0.3118
+                      time_range:
+                      - 230.71687
+                      - 474.23322
+                    - score: 0.3816
+                      time_range:
+                      - 496.08014
+                      - 597.6144
+                    - score: -0.2702
+                      time_range:
+                      - 605.5101
+                      - 723.9923
+                  properties:
+                    sentiment:
+                      description: Overall sentiment of the meeting.
+                      type: integer
+                    sentiment_ranges:
+                      description: Sentiment over time.
+                      items:
+                        properties:
+                          score:
+                            description: sentiment score of the given time range.
+                            example: Competitor
+                            type: number
+                          time_range:
+                            description: Time range of the sentiment.
+                            items:
+                              type: number
+                            type: array
+                        required:
+                        - score
+                        - time_range
+                        type: object
+                      type: array
+                  required:
+                  - sentiment
+                  - sentiment_ranges
+                  type: object
+                type: array
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Invalid query params
+        '404':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Not Found.
+      summary: Get Meeting Sentiments
+      tags:
+      - Meetings Sentiments
+      operationId: getV1MeetingSentiments
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http

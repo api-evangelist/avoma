@@ -1,0 +1,30 @@
+generated: '2026-09-27'
+method: searched
+generator: extract-docs-artifacts.py (local)
+source: https://www.avoma.com/pricing
+sources:
+- https://www.avoma.com/pricing
+- https://help.avoma.com/avoma-pricing-recorder-seats-free-users-add-ons
+name: Avoma pricing
+audience: business-product
+pricing_basis: per-seat
+plans:
+- name: Startup
+  price_text: $19 Per "recorder" seat per month. Billed annually.
+  price: 19
+  description: Up to 25 Paid Seats, Unlimited AI Meeting Assistant and 1:1 Scheduler for small teams.
+- name: Enterprise
+  price_text: $39 Per "recorder" seat per month. Billed annually only.
+  price: 39
+  description: Minimum 10 Paid Seats, Strict compliance and advanced access controls for enterprises.
+- name: Conversation Intelligence Add‑on
+  price_text: $29 / $35 per seat
+  description: AI coaching insights, talk ratios, filler words, keyword trackers.
+- name: Revenue Intelligence Add‑on
+  price_text: $29 / $35 per seat
+  description: Deal risks, pipeline health, forecast accuracy.
+- name: Lead Router Add‑on
+  price_text: $19 / $25 per seat
+  description: Automatically routes leads based on logic rules.
+docs: https://www.avoma.com/pricing
+note: 1 extracted row(s) were dropped because their quote was not on the page.

@@ -1,0 +1,1922 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Calls API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- name: Calls
+paths:
+  /v1/calls/:
+    get:
+      description: Returns all calls from the organization. 12344
+      parameters:
+      - description: To retrieve calls started at or started after given date-time(UTC).
+        in: query
+        name: from_date
+        required: true
+        schema:
+          format: date-time
+          type: string
+      - description: To retrieve calls started at or started before given date-time(UTC).
+        in: query
+        name: to_date
+        required: true
+        schema:
+          format: date-time
+          type: string
+      - description: '- `inbound`: Get only inbound calls.
+
+          - `outbound`: Get only outbound calls.
+
+          '
+        in: query
+        name: direction
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    count:
+                      description: Total number of records in result.
+                      minimum: 0
+                      type: integer
+                    next:
+                      description: URL to the next page if available.
+                      example: https://example.com/api/v1/meeting/?page=2
+                      type:
+                      - string
+                      - 'null'
+                    previous:
+                      description: URL to the previous page if available.
+                      example: https://example.com/api/v1/meeting/?page=1
+                      type:
+                      - string
+                      - 'null'
+                  type: object
+                - properties:
+                    results:
+                      description: Actual response.
+                      items:
+                        properties:
+                          additional_details:
+                            description: Additional details of the call. This should be a JSON object.
+                            type:
+                            - string
+                            - 'null'
+                          answered:
+                            description: Whether the call was answered, e.g true, false
+                            example: 'true'
+                            type:
+                            - boolean
+                            - 'null'
+                          crm_association:
+                            description: CRM association object
+                            example:
+                            - crm_obj_id: '102721358755'
+                              crm_obj_type: contact
+                            - crm_obj_id: '30447071570'
+                              crm_obj_type: account
+                            - crm_obj_id: '34202467419'
+                              crm_obj_type: oppo
+                            properties:
+                              crm_obj_id:
+                                description: Unique identifier for the CRM object
+                                type: string
+                              crm_obj_type:
+                                description: Type of CRM object
+                                type: string
+                            type: array
+                          direction:
+                            description: Direction of the call, e.g. Inbound, Outbound
+                            example: Outbound
+                            maxLength: 255
+                            type:
+                            - string
+                            - 'null'
+                          end_at:
+                            description: End time of the call.
+                            format: date-time
+                            type:
+                            - string
+                            - 'null'
+                          external_id:
+                            description: Unique id of the call from the dialer system like hubspot, twilio, zoom, etc.
+                            maxLength: 255
+                            type: string
+                          frm:
+                            description: Phone number from which call was made.
+                            example: '+11234567890'
+                            maxLength: 255
+                            type:
+                            - string
+                            - 'null'
+                          frm_name:
+                            description: Name of the caller who made the call.
+                            maxLength: 255
+                            type:
+                            - string
+                            - 'null'
+                          is_voicemail:
+                            default: false
+                            description: Indicates if the call is a voicemail.
+                            type: boolean
+                          meeting:
+                            properties:
+                              created:
+                                format: date-time
+                                readOnly: true
+                                type: string
+                              end_at:
+                                format: date-time
+                                type:
+                                - string
+                                - 'null'
+                              external_id:
+                                maxLength: 512
+                                type: string
+                              id:
+                                readOnly: true
+                                type: integer
+                              is_call:
+                                type: boolean
+                              is_disclaimer_added:
+                                type: boolean
+                              is_dummy:
+                                type: boolean
+                              is_impromptu:
+                                type: boolean
+                              is_internal:
+                                type: boolean
+                              is_original:
+                                type: boolean
+                              is_private:
+                                type: boolean
+                              is_split_processed:
+                                type: boolean
+                              location:
+                                maxLength: 512
+                                type:
+                                - string
+                                - 'null'
+                              meeting_url:
+                                type:
+                                - string
+                                - 'null'
+                              modified:
+                                format: date-time
+                                readOnly: true
+                                type: string
+                              org_not_found:
+                                type: boolean
+                              organization:
+                                type:
+                                - integer
+                                - 'null'
+                              organizer_email:
+                                format: email
+                                maxLength: 254
+                                type: string
+                              original_meeting:
+                                type:
+                                - integer
+                                - 'null'
+                              original_model_counts:
+                                type:
+                                - object
+                                - 'null'
+                              original_org_count:
+                                maximum: 2147483647
+                                minimum: -2147483648
+                                type: integer
+                              recurring_master:
+                                type:
+                                - integer
+                                - 'null'
+                              start_at:
+                                format: date-time
+                                type:
+                                - string
+                                - 'null'
+                              state:
+                                enum:
+                                - tentative
+                                - confirmed
+                                - cancelled
+                                - inprogress
+                                - ended
+                                - error
+                                type: string
+                              subject:
+                                maxLength: 512
+                                type:
+                                - string
+                                - 'null'
+                              uuid:
+                                format: uuid
+                                readOnly: true
+                                type: string
+                            readOnly: true
+                            required:
+                            - organizer_email
+                            type: object
+                          organization:
+                            properties:
+                              created:
+                                format: date-time
+                                readOnly: true
+                                type: string
+                              domain:
+                                maxLength: 255
+                                type: string
+                              id:
+                                readOnly: true
+                                type: integer
+                              is_marked_for_deletion:
+                                type: boolean
+                              modified:
+                                format: date-time
+                                readOnly: true
+                                type: string
+                              name:
+                                maxLength: 255
+                                type: string
+                              timezone:
+                                type: string
+                              uuid:
+                                format: uuid
+                                readOnly: true
+                                type: string
+                            readOnly: true
+                            required:
+                            - name
+                            - domain
+                            type: object
+                          participants:
+                            description: List of participants in the call. First entry should be of the prospect or lead with whom the call happened. This will be used in formulating the subject of the call in Avoma.
+                            items:
+                              properties:
+                                crm_association:
+                                  description: CRM association object
+                                  example:
+                                  - crm_obj_id: '102721358755'
+                                    crm_obj_type: contact
+                                  - crm_obj_id: '30447071570'
+                                    crm_obj_type: account
+                                  - crm_obj_id: '34202467419'
+                                    crm_obj_type: oppo
+                                  properties:
+                                    crm_obj_id:
+                                      description: Unique identifier for the CRM object
+                                      type: string
+                                    crm_obj_type:
+                                      description: Type of CRM object
+                                      type: string
+                                  type: array
+                                email:
+                                  format: email
+                                  type: string
+                                name:
+                                  maxLength: 255
+                                  type: string
+                              required:
+                              - email
+                              type: object
+                            type: array
+                            writeOnly: true
+                          recording_url:
+                            description: URL of the recording of the call. This will be used to download the recording by avoma for processing, so should be a public URL.
+                            example: https://example.com/recording.mp3
+                            type:
+                            - string
+                            - 'null'
+                          source:
+                            description: Lowercase string indicating the source of the call, e.g. zoom, zoomphone, twilio, phoneburner, ringcentral, aircall, etc.
+                            example: ringcentral
+                            maxLength: 255
+                            type:
+                            - string
+                            - 'null'
+                          start_at:
+                            description: Start time of the call.
+                            format: date-time
+                            type:
+                            - string
+                            - 'null'
+                          state:
+                            enum:
+                            - created
+                            - queued
+                            - inprogress
+                            - done
+                            - error
+                            readOnly: true
+                            type: string
+                          to:
+                            description: Phone number to which call was made.
+                            example: '+12234567890'
+                            maxLength: 255
+                            type:
+                            - string
+                            - 'null'
+                          to_name:
+                            description: Name of the person to whom call was made.
+                            maxLength: 255
+                            type:
+                            - string
+                            - 'null'
+                          user_email:
+                            description: Email of the user who made or received the call. This should be an Avoma user's email. License for this user will be used to process the call.
+                            format: email
+                            maxLength: 254
+                            type: string
+                          subject:
+                            description: Subject of the meeting associated with the call.
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 512
+                            example: Sales Call with John Doe
+                          meeting_purpose_uuid:
+                            description: UUID of the meeting purpose/type associated with the call.
+                            type:
+                            - string
+                            - 'null'
+                            format: uuid
+                            example: 123e4567-e89b-12d3-a456-426614174000
+                          meeting_outcome_uuid:
+                            description: UUID of the meeting outcome associated with the call.
+                            type:
+                            - string
+                            - 'null'
+                            format: uuid
+                            example: 123e4567-e89b-12d3-a456-426614174001
+                        required:
+                        - external_id
+                        - user_email
+                        - frm
+                        - to
+                        - start_at
+                        - recording_url
+                        - direction
+                        - source
+                        - participants
+                        type: object
+                      type: array
+                  required:
+                  - results
+                  type: object
+          description: OK
+      summary: List calls
+      tags:
+      - Calls
+      operationId: getV1Calls
+      x-operation-id-source: derived
+    post:
+      description: Creates a new call
+      operationId: createExtCall
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                additional_details:
+                  description: Additional details of the call. This should be a JSON object.
+                  type:
+                  - string
+                  - 'null'
+                answered:
+                  description: Whether the call was answered, e.g true, false
+                  example: 'true'
+                  type:
+                  - boolean
+                  - 'null'
+                crm_association:
+                  description: CRM association object
+                  example:
+                  - crm_obj_id: '102721358755'
+                    crm_obj_type: contact
+                  - crm_obj_id: '30447071570'
+                    crm_obj_type: account
+                  - crm_obj_id: '34202467419'
+                    crm_obj_type: oppo
+                  properties:
+                    crm_obj_id:
+                      description: Unique identifier for the CRM object
+                      type: string
+                    crm_obj_type:
+                      description: Type of CRM object
+                      type: string
+                  type: array
+                direction:
+                  description: Direction of the call, e.g. Inbound, Outbound
+                  example: Outbound
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                end_at:
+                  description: End time of the call.
+                  format: date-time
+                  type:
+                  - string
+                  - 'null'
+                external_id:
+                  description: Unique id of the call from the dialer system like hubspot, twilio, zoom, etc.
+                  maxLength: 255
+                  type: string
+                frm:
+                  description: Phone number from which call was made.
+                  example: '+11234567890'
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                frm_name:
+                  description: Name of the caller who made the call.
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                is_voicemail:
+                  default: false
+                  description: Indicates if the call is a voicemail.
+                  type: boolean
+                meeting:
+                  properties:
+                    created:
+                      format: date-time
+                      readOnly: true
+                      type: string
+                    end_at:
+                      format: date-time
+                      type:
+                      - string
+                      - 'null'
+                    external_id:
+                      maxLength: 512
+                      type: string
+                    id:
+                      readOnly: true
+                      type: integer
+                    is_call:
+                      type: boolean
+                    is_disclaimer_added:
+                      type: boolean
+                    is_dummy:
+                      type: boolean
+                    is_impromptu:
+                      type: boolean
+                    is_internal:
+                      type: boolean
+                    is_original:
+                      type: boolean
+                    is_private:
+                      type: boolean
+                    is_split_processed:
+                      type: boolean
+                    location:
+                      maxLength: 512
+                      type:
+                      - string
+                      - 'null'
+                    meeting_url:
+                      type:
+                      - string
+                      - 'null'
+                    modified:
+                      format: date-time
+                      readOnly: true
+                      type: string
+                    org_not_found:
+                      type: boolean
+                    organization:
+                      type:
+                      - integer
+                      - 'null'
+                    organizer_email:
+                      format: email
+                      maxLength: 254
+                      type: string
+                    original_meeting:
+                      type:
+                      - integer
+                      - 'null'
+                    original_model_counts:
+                      type:
+                      - object
+                      - 'null'
+                    original_org_count:
+                      maximum: 2147483647
+                      minimum: -2147483648
+                      type: integer
+                    recurring_master:
+                      type:
+                      - integer
+                      - 'null'
+                    start_at:
+                      format: date-time
+                      type:
+                      - string
+                      - 'null'
+                    state:
+                      enum:
+                      - tentative
+                      - confirmed
+                      - cancelled
+                      - inprogress
+                      - ended
+                      - error
+                      type: string
+                    subject:
+                      maxLength: 512
+                      type:
+                      - string
+                      - 'null'
+                    uuid:
+                      format: uuid
+                      readOnly: true
+                      type: string
+                  readOnly: true
+                  required:
+                  - organizer_email
+                  type: object
+                organization:
+                  properties:
+                    created:
+                      format: date-time
+                      readOnly: true
+                      type: string
+                    domain:
+                      maxLength: 255
+                      type: string
+                    id:
+                      readOnly: true
+                      type: integer
+                    is_marked_for_deletion:
+                      type: boolean
+                    modified:
+                      format: date-time
+                      readOnly: true
+                      type: string
+                    name:
+                      maxLength: 255
+                      type: string
+                    timezone:
+                      type: string
+                    uuid:
+                      format: uuid
+                      readOnly: true
+                      type: string
+                  readOnly: true
+                  required:
+                  - name
+                  - domain
+                  type: object
+                participants:
+                  description: List of participants in the call. First entry should be of the prospect or lead with whom the call happened. This will be used in formulating the subject of the call in Avoma.
+                  items:
+                    properties:
+                      crm_association:
+                        description: CRM association object
+                        example:
+                        - crm_obj_id: '102721358755'
+                          crm_obj_type: contact
+                        - crm_obj_id: '30447071570'
+                          crm_obj_type: account
+                        - crm_obj_id: '34202467419'
+                          crm_obj_type: oppo
+                        properties:
+                          crm_obj_id:
+                            description: Unique identifier for the CRM object
+                            type: string
+                          crm_obj_type:
+                            description: Type of CRM object
+                            type: string
+                        type: array
+                      email:
+                        format: email
+                        type: string
+                      name:
+                        maxLength: 255
+                        type: string
+                    required:
+                    - email
+                    type: object
+                  type: array
+                  writeOnly: true
+                recording_url:
+                  description: URL of the recording of the call. This will be used to download the recording by avoma for processing, so should be a public URL.
+                  example: https://example.com/recording.mp3
+                  type:
+                  - string
+                  - 'null'
+                source:
+                  description: Lowercase string indicating the source of the call, e.g. zoom, zoomphone, twilio, phoneburner, ringcentral, aircall, etc.
+                  example: ringcentral
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                start_at:
+                  description: Start time of the call.
+                  format: date-time
+                  type:
+                  - string
+                  - 'null'
+                state:
+                  enum:
+                  - created
+                  - queued
+                  - inprogress
+                  - done
+                  - error
+                  readOnly: true
+                  type: string
+                to:
+                  description: Phone number to which call was made.
+                  example: '+12234567890'
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                to_name:
+                  description: Name of the person to whom call was made.
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                user_email:
+                  description: Email of the user who made or received the call. This should be an Avoma user's email. License for this user will be used to process the call.
+                  format: email
+                  maxLength: 254
+                  type: string
+              required:
+              - external_id
+              - user_email
+              - frm
+              - to
+              - start_at
+              - recording_url
+              - direction
+              - source
+              - participants
+              type: object
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                additional_details:
+                  description: Additional details of the call. This should be a JSON object.
+                  type:
+                  - string
+                  - 'null'
+                answered:
+                  description: Whether the call was answered, e.g true, false
+                  example: 'true'
+                  type:
+                  - boolean
+                  - 'null'
+                crm_association:
+                  description: CRM association object
+                  example:
+                  - crm_obj_id: '102721358755'
+                    crm_obj_type: contact
+                  - crm_obj_id: '30447071570'
+                    crm_obj_type: account
+                  - crm_obj_id: '34202467419'
+                    crm_obj_type: oppo
+                  properties:
+                    crm_obj_id:
+                      description: Unique identifier for the CRM object
+                      type: string
+                    crm_obj_type:
+                      description: Type of CRM object
+                      type: string
+                  type: array
+                  writeOnly: true
+                direction:
+                  description: Direction of the call, e.g. Inbound, Outbound
+                  example: Outbound
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                end_at:
+                  description: End time of the call.
+                  format: date-time
+                  type:
+                  - string
+                  - 'null'
+                external_id:
+                  description: Unique id of the call from the dialer system like hubspot, twilio, zoom, etc.
+                  maxLength: 255
+                  type: string
+                frm:
+                  description: Phone number from which call was made.
+                  example: '+11234567890'
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                frm_name:
+                  description: Name of the caller who made the call.
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                is_voicemail:
+                  default: false
+                  description: Indicates if the call is a voicemail.
+                  type: boolean
+                meeting:
+                  properties:
+                    created:
+                      format: date-time
+                      readOnly: true
+                      type: string
+                    end_at:
+                      format: date-time
+                      type:
+                      - string
+                      - 'null'
+                    external_id:
+                      maxLength: 512
+                      type: string
+                    id:
+                      readOnly: true
+                      type: integer
+                    is_call:
+                      type: boolean
+                    is_disclaimer_added:
+                      type: boolean
+                    is_dummy:
+                      type: boolean
+                    is_impromptu:
+                      type: boolean
+                    is_internal:
+                      type: boolean
+                    is_original:
+                      type: boolean
+                    is_private:
+                      type: boolean
+                    is_split_processed:
+                      type: boolean
+                    location:
+                      maxLength: 512
+                      type:
+                      - string
+                      - 'null'
+                    meeting_url:
+                      type:
+                      - string
+                      - 'null'
+                    modified:
+                      format: date-time
+                      readOnly: true
+                      type: string
+                    org_not_found:
+                      type: boolean
+                    organization:
+                      type:
+                      - integer
+                      - 'null'
+                    organizer_email:
+                      format: email
+                      maxLength: 254
+                      type: string
+                    original_meeting:
+                      type:
+                      - integer
+                      - 'null'
+                    original_model_counts:
+                      type:
+                      - object
+                      - 'null'
+                    original_org_count:
+                      maximum: 2147483647
+                      minimum: -2147483648
+                      type: integer
+                    recurring_master:
+                      type:
+                      - integer
+                      - 'null'
+                    start_at:
+                      format: date-time
+                      type:
+                      - string
+                      - 'null'
+                    state:
+                      enum:
+                      - tentative
+                      - confirmed
+                      - cancelled
+                      - inprogress
+                      - ended
+                      - error
+                      type: string
+                    subject:
+                      maxLength: 512
+                      type:
+                      - string
+                      - 'null'
+                    uuid:
+                      format: uuid
+                      readOnly: true
+                      type: string
+                  readOnly: true
+                  required:
+                  - organizer_email
+                  type: object
+                organization:
+                  properties:
+                    created:
+                      format: date-time
+                      readOnly: true
+                      type: string
+                    domain:
+                      maxLength: 255
+                      type: string
+                    id:
+                      readOnly: true
+                      type: integer
+                    is_marked_for_deletion:
+                      type: boolean
+                    modified:
+                      format: date-time
+                      readOnly: true
+                      type: string
+                    name:
+                      maxLength: 255
+                      type: string
+                    timezone:
+                      type: string
+                    uuid:
+                      format: uuid
+                      readOnly: true
+                      type: string
+                  readOnly: true
+                  required:
+                  - name
+                  - domain
+                  type: object
+                participants:
+                  description: List of participants in the call. First entry should be of the prospect or lead with whom the call happened. This will be used in formulating the subject of the call in Avoma.
+                  items:
+                    properties:
+                      crm_association:
+                        description: CRM association object
+                        example:
+                        - crm_obj_id: '102721358755'
+                          crm_obj_type: contact
+                        - crm_obj_id: '30447071570'
+                          crm_obj_type: account
+                        - crm_obj_id: '34202467419'
+                          crm_obj_type: oppo
+                        properties:
+                          crm_obj_id:
+                            description: Unique identifier for the CRM object
+                            type: string
+                          crm_obj_type:
+                            description: Type of CRM object
+                            type: string
+                        type: array
+                      email:
+                        format: email
+                        type: string
+                      name:
+                        maxLength: 255
+                        type: string
+                    required:
+                    - email
+                    type: object
+                  type: array
+                  writeOnly: true
+                recording_url:
+                  description: URL of the recording of the call. This will be used to download the recording by avoma for processing, so should be a public URL.
+                  example: https://example.com/recording.mp3
+                  type:
+                  - string
+                  - 'null'
+                source:
+                  description: Lowercase string indicating the source of the call, e.g. zoom, zoomphone, twilio, phoneburner, ringcentral, aircall, etc.
+                  example: ringcentral
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                start_at:
+                  description: Start time of the call.
+                  format: date-time
+                  type:
+                  - string
+                  - 'null'
+                state:
+                  enum:
+                  - created
+                  - queued
+                  - inprogress
+                  - done
+                  - error
+                  readOnly: true
+                  type: string
+                to:
+                  description: Phone number to which call was made.
+                  example: '+12234567890'
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                to_name:
+                  description: Name of the person to whom call was made.
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                user_email:
+                  description: Email of the user who made or received the call. This should be an Avoma user's email. License for this user will be used to process the call.
+                  format: email
+                  maxLength: 254
+                  type: string
+              required:
+              - external_id
+              - user_email
+              - frm
+              - to
+              - start_at
+              - recording_url
+              - direction
+              - source
+              - participants
+              type: object
+          multipart/form-data:
+            schema:
+              properties:
+                additional_details:
+                  description: Additional details of the call. This should be a JSON object.
+                  type:
+                  - string
+                  - 'null'
+                answered:
+                  description: Whether the call was answered, e.g true, false
+                  example: 'true'
+                  type:
+                  - boolean
+                  - 'null'
+                crm_association:
+                  description: CRM association object
+                  example:
+                  - crm_obj_id: '102721358755'
+                    crm_obj_type: contact
+                  - crm_obj_id: '30447071570'
+                    crm_obj_type: account
+                  - crm_obj_id: '34202467419'
+                    crm_obj_type: oppo
+                  properties:
+                    crm_obj_id:
+                      description: Unique identifier for the CRM object
+                      type: string
+                    crm_obj_type:
+                      description: Type of CRM object
+                      type: string
+                  type: array
+                  writeOnly: true
+                direction:
+                  description: Direction of the call, e.g. Inbound, Outbound
+                  example: Outbound
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                end_at:
+                  description: End time of the call.
+                  format: date-time
+                  type:
+                  - string
+                  - 'null'
+                external_id:
+                  description: Unique id of the call from the dialer system like hubspot, twilio, zoom, etc.
+                  maxLength: 255
+                  type: string
+                frm:
+                  description: Phone number from which call was made.
+                  example: '+11234567890'
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                frm_name:
+                  description: Name of the caller who made the call.
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                is_voicemail:
+                  default: false
+                  description: Indicates if the call is a voicemail.
+                  type: boolean
+                meeting:
+                  properties:
+                    created:
+                      format: date-time
+                      readOnly: true
+                      type: string
+                    end_at:
+                      format: date-time
+                      type:
+                      - string
+                      - 'null'
+                    external_id:
+                      maxLength: 512
+                      type: string
+                    id:
+                      readOnly: true
+                      type: integer
+                    is_call:
+                      type: boolean
+                    is_disclaimer_added:
+                      type: boolean
+                    is_dummy:
+                      type: boolean
+                    is_impromptu:
+                      type: boolean
+                    is_internal:
+                      type: boolean
+                    is_original:
+                      type: boolean
+                    is_private:
+                      type: boolean
+                    is_split_processed:
+                      type: boolean
+                    location:
+                      maxLength: 512
+                      type:
+                      - string
+                      - 'null'
+                    meeting_url:
+                      type:
+                      - string
+                      - 'null'
+                    modified:
+                      format: date-time
+                      readOnly: true
+                      type: string
+                    org_not_found:
+                      type: boolean
+                    organization:
+                      type:
+                      - integer
+                      - 'null'
+                    organizer_email:
+                      format: email
+                      maxLength: 254
+                      type: string
+                    original_meeting:
+                      type:
+                      - integer
+                      - 'null'
+                    original_model_counts:
+                      type:
+                      - object
+                      - 'null'
+                    original_org_count:
+                      maximum: 2147483647
+                      minimum: -2147483648
+                      type: integer
+                    recurring_master:
+                      type:
+                      - integer
+                      - 'null'
+                    start_at:
+                      format: date-time
+                      type:
+                      - string
+                      - 'null'
+                    state:
+                      enum:
+                      - tentative
+                      - confirmed
+                      - cancelled
+                      - inprogress
+                      - ended
+                      - error
+                      type: string
+                    subject:
+                      maxLength: 512
+                      type:
+                      - string
+                      - 'null'
+                    uuid:
+                      format: uuid
+                      readOnly: true
+                      type: string
+                  readOnly: true
+                  required:
+                  - organizer_email
+                  type: object
+                organization:
+                  properties:
+                    created:
+                      format: date-time
+                      readOnly: true
+                      type: string
+                    domain:
+                      maxLength: 255
+                      type: string
+                    id:
+                      readOnly: true
+                      type: integer
+                    is_marked_for_deletion:
+                      type: boolean
+                    modified:
+                      format: date-time
+                      readOnly: true
+                      type: string
+                    name:
+                      maxLength: 255
+                      type: string
+                    timezone:
+                      type: string
+                    uuid:
+                      format: uuid
+                      readOnly: true
+                      type: string
+                  readOnly: true
+                  required:
+                  - name
+                  - domain
+                  type: object
+                participants:
+                  description: List of participants in the call. First entry should be of the prospect or lead with whom the call happened. This will be used in formulating the subject of the call in Avoma.
+                  items:
+                    properties:
+                      crm_association:
+                        description: CRM association object
+                        example:
+                        - crm_obj_id: '102721358755'
+                          crm_obj_type: contact
+                        - crm_obj_id: '30447071570'
+                          crm_obj_type: account
+                        - crm_obj_id: '34202467419'
+                          crm_obj_type: oppo
+                        properties:
+                          crm_obj_id:
+                            description: Unique identifier for the CRM object
+                            type: string
+                          crm_obj_type:
+                            description: Type of CRM object
+                            type: string
+                        type: array
+                      email:
+                        format: email
+                        type: string
+                      name:
+                        maxLength: 255
+                        type: string
+                    required:
+                    - email
+                    type: object
+                  type: array
+                  writeOnly: true
+                recording_url:
+                  description: URL of the recording of the call. This will be used to download the recording by avoma for processing, so should be a public URL.
+                  example: https://example.com/recording.mp3
+                  type:
+                  - string
+                  - 'null'
+                source:
+                  description: Lowercase string indicating the source of the call, e.g. zoom, zoomphone, twilio, phoneburner, ringcentral, aircall, etc.
+                  example: ringcentral
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                start_at:
+                  description: Start time of the call.
+                  format: date-time
+                  type:
+                  - string
+                  - 'null'
+                state:
+                  enum:
+                  - created
+                  - queued
+                  - inprogress
+                  - done
+                  - error
+                  readOnly: true
+                  type: string
+                to:
+                  description: Phone number to which call was made.
+                  example: '+12234567890'
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                to_name:
+                  description: Name of the person to whom call was made.
+                  maxLength: 255
+                  type:
+                  - string
+                  - 'null'
+                user_email:
+                  description: Email of the user who made or received the call. This should be an Avoma user's email. License for this user will be used to process the call.
+                  format: email
+                  maxLength: 254
+                  type: string
+              required:
+              - external_id
+              - user_email
+              - frm
+              - to
+              - start_at
+              - recording_url
+              - direction
+              - source
+              - participants
+              type: object
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                properties:
+                  additional_details:
+                    description: Additional details of the call. This should be a JSON object.
+                    type:
+                    - string
+                    - 'null'
+                  answered:
+                    description: Whether the call was answered, e.g true, false
+                    example: 'true'
+                    type:
+                    - boolean
+                    - 'null'
+                  crm_association:
+                    description: CRM association object
+                    example:
+                    - crm_obj_id: '102721358755'
+                      crm_obj_type: contact
+                    - crm_obj_id: '30447071570'
+                      crm_obj_type: account
+                    - crm_obj_id: '34202467419'
+                      crm_obj_type: oppo
+                    properties:
+                      crm_obj_id:
+                        description: Unique identifier for the CRM object
+                        type: string
+                      crm_obj_type:
+                        description: Type of CRM object
+                        type: string
+                    type: array
+                  direction:
+                    description: Direction of the call, e.g. Inbound, Outbound
+                    example: Outbound
+                    maxLength: 255
+                    type:
+                    - string
+                    - 'null'
+                  end_at:
+                    description: End time of the call.
+                    format: date-time
+                    type:
+                    - string
+                    - 'null'
+                  external_id:
+                    description: Unique id of the call from the dialer system like hubspot, twilio, zoom, etc.
+                    maxLength: 255
+                    type: string
+                  frm:
+                    description: Phone number from which call was made.
+                    example: '+11234567890'
+                    maxLength: 255
+                    type:
+                    - string
+                    - 'null'
+                  frm_name:
+                    description: Name of the caller who made the call.
+                    maxLength: 255
+                    type:
+                    - string
+                    - 'null'
+                  is_voicemail:
+                    default: false
+                    description: Indicates if the call is a voicemail.
+                    type: boolean
+                  meeting:
+                    properties:
+                      created:
+                        format: date-time
+                        readOnly: true
+                        type: string
+                      end_at:
+                        format: date-time
+                        type:
+                        - string
+                        - 'null'
+                      external_id:
+                        maxLength: 512
+                        type: string
+                      id:
+                        readOnly: true
+                        type: integer
+                      is_call:
+                        type: boolean
+                      is_disclaimer_added:
+                        type: boolean
+                      is_dummy:
+                        type: boolean
+                      is_impromptu:
+                        type: boolean
+                      is_internal:
+                        type: boolean
+                      is_original:
+                        type: boolean
+                      is_private:
+                        type: boolean
+                      is_split_processed:
+                        type: boolean
+                      location:
+                        maxLength: 512
+                        type:
+                        - string
+                        - 'null'
+                      meeting_url:
+                        type:
+                        - string
+                        - 'null'
+                      modified:
+                        format: date-time
+                        readOnly: true
+                        type: string
+                      org_not_found:
+                        type: boolean
+                      organization:
+                        type:
+                        - integer
+                        - 'null'
+                      organizer_email:
+                        format: email
+                        maxLength: 254
+                        type: string
+                      original_meeting:
+                        type:
+                        - integer
+                        - 'null'
+                      original_model_counts:
+                        type:
+                        - object
+                        - 'null'
+                      original_org_count:
+                        maximum: 2147483647
+                        minimum: -2147483648
+                        type: integer
+                      recurring_master:
+                        type:
+                        - integer
+                        - 'null'
+                      start_at:
+                        format: date-time
+                        type:
+                        - string
+                        - 'null'
+                      state:
+                        enum:
+                        - tentative
+                        - confirmed
+                        - cancelled
+                        - inprogress
+                        - ended
+                        - error
+                        type: string
+                      subject:
+                        maxLength: 512
+                        type:
+                        - string
+                        - 'null'
+                      uuid:
+                        format: uuid
+                        readOnly: true
+                        type: string
+                    readOnly: true
+                    required:
+                    - organizer_email
+                    type: object
+                  organization:
+                    properties:
+                      created:
+                        format: date-time
+                        readOnly: true
+                        type: string
+                      domain:
+                        maxLength: 255
+                        type: string
+                      id:
+                        readOnly: true
+                        type: integer
+                      is_marked_for_deletion:
+                        type: boolean
+                      modified:
+                        format: date-time
+                        readOnly: true
+                        type: string
+                      name:
+                        maxLength: 255
+                        type: string
+                      timezone:
+                        type: string
+                      uuid:
+                        format: uuid
+                        readOnly: true
+                        type: string
+                    readOnly: true
+                    required:
+                    - name
+                    - domain
+                    type: object
+                  participants:
+                    description: List of participants in the call. First entry should be of the prospect or lead with whom the call happened. This will be used in formulating the subject of the call in Avoma.
+                    items:
+                      properties:
+                        crm_association:
+                          description: CRM association object
+                          example:
+                          - crm_obj_id: '102721358755'
+                            crm_obj_type: contact
+                          - crm_obj_id: '30447071570'
+                            crm_obj_type: account
+                          - crm_obj_id: '34202467419'
+                            crm_obj_type: oppo
+                          properties:
+                            crm_obj_id:
+                              description: Unique identifier for the CRM object
+                              type: string
+                            crm_obj_type:
+                              description: Type of CRM object
+                              type: string
+                          type: array
+                        email:
+                          format: email
+                          type: string
+                        name:
+                          maxLength: 255
+                          type: string
+                      required:
+                      - email
+                      type: object
+                    type: array
+                    writeOnly: true
+                  recording_url:
+                    description: URL of the recording of the call. This will be used to download the recording by avoma for processing, so should be a public URL.
+                    example: https://example.com/recording.mp3
+                    type:
+                    - string
+                    - 'null'
+                  source:
+                    description: Lowercase string indicating the source of the call, e.g. zoom, zoomphone, twilio, phoneburner, ringcentral, aircall, etc.
+                    example: ringcentral
+                    maxLength: 255
+                    type:
+                    - string
+                    - 'null'
+                  start_at:
+                    description: Start time of the call.
+                    format: date-time
+                    type:
+                    - string
+                    - 'null'
+                  state:
+                    enum:
+                    - created
+                    - queued
+                    - inprogress
+                    - done
+                    - error
+                    readOnly: true
+                    type: string
+                  to:
+                    description: Phone number to which call was made.
+                    example: '+12234567890'
+                    maxLength: 255
+                    type:
+                    - string
+                    - 'null'
+                  to_name:
+                    description: Name of the person to whom call was made.
+                    maxLength: 255
+                    type:
+                    - string
+                    - 'null'
+                  user_email:
+                    description: Email of the user who made or received the call. This should be an Avoma user's email. License for this user will be used to process the call.
+                    format: email
+                    maxLength: 254
+                    type: string
+                required:
+                - external_id
+                - user_email
+                - frm
+                - to
+                - start_at
+                - recording_url
+                - direction
+                - source
+                - participants
+                type: object
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                description: Object having key as field/query param name and value as list of errors.
+                example:
+                  message:
+                  - This field may not be blank.
+                type: object
+          description: 'Bad Request. Could be due to invalid input data, a duplicate call (based on external_id and source), or issues with the provided user_email (user not found, user not in the organization, user inactive, or user lacks the required dialer feature).
+
+            '
+      summary: Create Call
+      tags:
+      - Calls
+  /v1/calls/{external_id}/:
+    get:
+      description: Returns a single call for a given `external_id`.
+      parameters:
+      - in: path
+        name: external_id
+        required: true
+        schema:
+          description: ''
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  additional_details:
+                    description: Additional details of the call. This should be a JSON object.
+                    type:
+                    - string
+                    - 'null'
+                  answered:
+                    description: Whether the call was answered, e.g true, false
+                    example: 'true'
+                    type:
+                    - boolean
+                    - 'null'
+                  crm_association:
+                    description: CRM association object
+                    example:
+                    - crm_obj_id: '102721358755'
+                      crm_obj_type: contact
+                    - crm_obj_id: '30447071570'
+                      crm_obj_type: account
+                    - crm_obj_id: '34202467419'
+                      crm_obj_type: oppo
+                    properties:
+                      crm_obj_id:
+                        description: Unique identifier for the CRM object
+                        type: string
+                      crm_obj_type:
+                        description: Type of CRM object
+                        type: string
+                    type: array
+                  direction:
+                    description: Direction of the call, e.g. Inbound, Outbound
+                    example: Outbound
+                    maxLength: 255
+                    type:
+                    - string
+                    - 'null'
+                  end_at:
+                    description: End time of the call.
+                    format: date-time
+                    type:
+                    - string
+                    - 'null'
+                  external_id:
+                    description: Unique id of the call from the dialer system like hubspot, twilio, zoom, etc.
+                    maxLength: 255
+                    type: string
+                  frm:
+                    description: Phone number from which call was made.
+                    example: '+11234567890'
+                    maxLength: 255
+                    type:
+                    - string
+                    - 'null'
+                  frm_name:
+                    description: Name of the caller who made the call.
+                    maxLength: 255
+                    type:
+                    - string
+                    - 'null'
+                  is_voicemail:
+                    default: false
+                    description: Indicates if the call is a voicemail.
+                    type: boolean
+                  meeting:
+                    properties:
+                      created:
+                        format: date-time
+                        readOnly: true
+                        type: string
+                      end_at:
+                        format: date-time
+                        type:
+                        - string
+                        - 'null'
+                      external_id:
+                        maxLength: 512
+                        type: string
+                      id:
+                        readOnly: true
+                        type: integer
+                      is_call:
+                        type: boolean
+                      is_disclaimer_added:
+                        type: boolean
+                      is_dummy:
+                        type: boolean
+                      is_impromptu:
+                        type: boolean
+                      is_internal:
+                        type: boolean
+                      is_original:
+                        type: boolean
+                      is_private:
+                        type: boolean
+                      is_split_processed:
+                        type: boolean
+                      location:
+                        maxLength: 512
+                        type:
+                        - string
+                        - 'null'
+                      meeting_url:
+                        type:
+                        - string
+                        - 'null'
+                      modified:
+                        format: date-time
+                        readOnly: true
+                        type: string
+                      org_not_found:
+                        type: boolean
+                      organization:
+                        type:
+                        - integer
+                        - 'null'
+                      organizer_email:
+                        format: email
+                        maxLength: 254
+                        type: string
+                      original_meeting:
+                        type:
+                        - integer
+                        - 'null'
+                      original_model_counts:
+                        type:
+                        - object
+                        - 'null'
+                      original_org_count:
+                        maximum: 2147483647
+                        minimum: -2147483648
+                        type: integer
+                      recurring_master:
+                        type:
+                        - integer
+                        - 'null'
+                      start_at:
+                        format: date-time
+                        type:
+                        - string
+                        - 'null'
+                      state:
+                        enum:
+                        - tentative
+                        - confirmed
+                        - cancelled
+                        - inprogress
+                        - ended
+                        - error
+                        type: string
+                      subject:
+                        maxLength: 512
+                        type:
+                        - string
+                        - 'null'
+                      uuid:
+                        format: uuid
+                        readOnly: true
+                        type: string
+                    readOnly: true
+                    required:
+                    - organizer_email
+                    type: object
+                  organization:
+                    properties:
+                      created:
+                        format: date-time
+                        readOnly: true
+                        type: string
+                      domain:
+                        maxLength: 255
+                        type: string
+                      id:
+                        readOnly: true
+                        type: integer
+                      is_marked_for_deletion:
+                        type: boolean
+                      modified:
+                        format: date-time
+                        readOnly: true
+                        type: string
+                      name:
+                        maxLength: 255
+                        type: string
+                      timezone:
+                        type: string
+                      uuid:
+                        format: uuid
+                        readOnly: true
+                        type: string
+                    readOnly: true
+                    required:
+                    - name
+                    - domain
+                    type: object
+                  participants:
+                    description: List of participants in the call. First entry should be of the prospect or lead with whom the call happened. This will be used in formulating the subject of the call in Avoma.
+                    items:
+                      properties:
+                        crm_association:
+                          description: CRM association object
+                          example:
+                          - crm_obj_id: '102721358755'
+                            crm_obj_type: contact
+                          - crm_obj_id: '30447071570'
+                            crm_obj_type: account
+                          - crm_obj_id: '34202467419'
+                            crm_obj_type: oppo
+                          properties:
+                            crm_obj_id:
+                              description: Unique identifier for the CRM object
+                              type: string
+                            crm_obj_type:
+                              description: Type of CRM object
+                              type: string
+                          type: array
+                        email:
+                          format: email
+                          type: string
+                        name:
+                          maxLength: 255
+                          type: string
+                      required:
+                      - email
+                      type: object
+                    type: array
+                    writeOnly: true
+                  recording_url:
+                    description: URL of the recording of the call. This will be used to download the recording by avoma for processing, so should be a public URL.
+                    example: https://example.com/recording.mp3
+                    type:
+                    - string
+                    - 'null'
+                  source:
+                    description: Lowercase string indicating the source of the call, e.g. zoom, zoomphone, twilio, phoneburner, ringcentral, aircall, etc.
+                    example: ringcentral
+                    maxLength: 255
+                    type:
+                    - string
+                    - 'null'
+                  start_at:
+                    description: Start time of the call.
+                    format: date-time
+                    type:
+                    - string
+                    - 'null'
+                  state:
+                    enum:
+                    - created
+                    - queued
+                    - inprogress
+                    - done
+                    - error
+                    readOnly: true
+                    type: string
+                  to:
+                    description: Phone number to which call was made.
+                    example: '+12234567890'
+                    maxLength: 255
+                    type:
+                    - string
+                    - 'null'
+                  to_name:
+                    description: Name of the person to whom call was made.
+                    maxLength: 255
+                    type:
+                    - string
+                    - 'null'
+                  user_email:
+                    description: Email of the user who made or received the call. This should be an Avoma user's email. License for this user will be used to process the call.
+                    format: email
+                    maxLength: 254
+                    type: string
+                required:
+                - external_id
+                - user_email
+                - frm
+                - to
+                - start_at
+                - recording_url
+                - direction
+                - source
+                - participants
+                type: object
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Not Found.
+      summary: Get Call
+      tags:
+      - Calls
+      operationId: getV1CallsByExternalId
+      x-operation-id-source: derived
+    patch:
+      summary: Update Call
+      description: Updates call fields that are allowed after meeting processing is complete. Only allows updating call-specific metadata fields.
+      tags:
+      - Calls
+      parameters:
+      - name: external_id
+        required: true
+        in: path
+        schema:
+          type: string
+          description: External ID of the call to update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ./openapi/components/external.yml#/components/schemas/patch_call_request
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/call_response
+          description: Call updated successfully
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/bad_request_body
+        '404':
+          description: Call not found
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: patchV1CallsByExternalId
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http

@@ -1,0 +1,138 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Snippets API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- name: Snippets
+paths:
+  /v1/snippets/:
+    get:
+      summary: List Meeting Snippets
+      description: 'Returns snippets (highlights) for meetings. Snippets are AI-generated or user-created highlights from meeting recordings with timestamps, titles, and descriptions.
+
+
+        **Query Modes:**
+
+        - **Single Meeting Query**: Provide `meeting_uuid` to get all snippets for a specific meeting. Date filters are optional.
+
+        - **Organization-wide Query**: Omit `meeting_uuid` to get snippets across all meetings. Requires `from_date` and `to_date` (max 180-day range).'
+      tags:
+      - Snippets
+      parameters:
+      - name: meeting_uuid
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+        description: 'Unique ID of the meeting for which snippets will be fetched. Either `meeting_uuid` or both `from_date` and `to_date` must be provided.
+
+          '
+      - name: from_date
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: 'To retrieve snippets for meetings started at or after given date-time(UTC). **Required when `meeting_uuid` is not provided**. When querying without `meeting_uuid`, the date range cannot exceed 180 days. Must be provided together with `to_date`.
+
+          '
+      - name: to_date
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: 'To retrieve snippets for meetings started at or before given date-time(UTC). **Required when `meeting_uuid` is not provided**. When querying without `meeting_uuid`, the date range cannot exceed 180 days. Must be provided together with `from_date`.
+
+          '
+      - name: is_ai_generated
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: 'Filter snippets by source:
+
+          - `true`: Get only AI-generated snippets.
+
+          - `false`: Get only user-created snippets.
+
+          - Omit to get all snippets regardless of source.
+
+          '
+      - name: page
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+        description: Page number for pagination.
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+        description: Number of records returned per response.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: ../openapi/components/external.yml#/components/schemas/pagination_data
+                - type: object
+                  required:
+                  - results
+                  properties:
+                    results:
+                      type: array
+                      description: Actual response.
+                      items:
+                        $ref: ../openapi/components/external.yml#/components/schemas/external_snippet
+        '400':
+          description: Invalid query params
+          content:
+            application/json:
+              schema:
+                $ref: ../openapi/components/external.yml#/components/schemas/bad_request_body
+              examples:
+                missing_params:
+                  $ref: ../openapi/components/external.yml#/components/examples/snippet_missing_params
+                missing_dates:
+                  $ref: ../openapi/components/external.yml#/components/examples/snippet_missing_from_date
+                missing_to_date:
+                  $ref: ../openapi/components/external.yml#/components/examples/snippet_missing_to_date
+                invalid_date_format:
+                  $ref: ../openapi/components/external.yml#/components/examples/snippet_invalid_date_format
+                invalid_date_order:
+                  $ref: ../openapi/components/external.yml#/components/examples/snippet_invalid_date_order
+                date_range_too_large:
+                  $ref: ../openapi/components/external.yml#/components/examples/snippet_date_range_too_large
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: ../openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: getV1Snippets
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http

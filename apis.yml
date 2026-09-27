@@ -1,23 +1,354 @@
 aid: avoma
+
 name: Avoma
-description: 'Avoma is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+
+image: https://cdn.prod.website-files.com/5de236b4d41434460ade73ac/675b1cc5e923eddc26d5aa07_Og%20Image.webp
+
+description: Avoma is an AI-powered meeting assistant platform that automates note‑taking, scheduling, and coaching for sales and revenue teams.
+  It records and transcribes meetings in real time, generates structured summaries, pushes data to CRMs, and provides AI‑driven sales coaching
+  and guidance. The platform also offers lead routing, meeting reminders, and revenue intelligence tools to help organizations improve productivity
+  and close deals faster.
+
 url: https://raw.githubusercontent.com/api-evangelist/avoma/refs/heads/main/apis.yml
+
 x-type: company
+
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+
+x-tier: profiled
+x-tier-reason: enrichment pass 2026-09-27 (modular-v1; was harvest)
+
 specificationVersion: '0.20'
+
 created: '2026-09-27'
+
 modified: '2026-09-27'
+
 tags:
-- Company
-apis: []
+- AI
+- Meeting-Assistant
+- Sales-Enablement
+- Automation
+- Productivity
+
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+
 common:
+- type: AgenticAccess
+  url: agentic-access/avoma-agentic-access.yml
+- type: Plans
+  url: plans/avoma-plans-pricing.yml
+- type: Spectral
+  url: rules/avoma-rules.yml
+- type: Vocabulary
+  url: vocabulary/avoma-vocabulary.yml
+- type: Compliance
+  url: https://trust.avoma.com/
+- type: ErrorCatalog
+  url: errors/avoma-problem-types.yml
+- type: Conformance
+  url: conformance/avoma-conformance.yml
+- type: LLMsTxt
+  url: llms/avoma-llms.txt
+- type: WellKnown
+  url: well-known/avoma-well-known.yml
+- type: Hosts
+  url: hosts/avoma-hosts.yml
+- type: Vendors
+  url: vendors/avoma-vendors.yml
+- type: TermsOfService
+  url: https://www.avoma.com/terms
+- type: Support
+  url: https://help.avoma.com/
+- type: Security
+  url: https://www.avoma.com/security
+- type: PrivacyPolicy
+  url: https://www.avoma.com/privacy-policy
+- type: Leadership
+  url: https://www.avoma.com/team/albert-lai
+- type: DeveloperPortal
+  url: https://dev.avoma.com
+- type: ChangeLog
+  url: https://www.avoma.com/release-notes
+- type: Authentication
+  url: authentication/avoma-authentication.yml
+- type: TrustCenter
+  url: security/avoma-trust-center.yml
+- type: VulnerabilityDisclosure
+  url: security/avoma-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/avoma-domain-security.yml
 - type: Website
-  url: https://www.nasdaqprivatemarket.com/
+  url: https://www.avoma.com/
+- type: Documentation
+  url: https://dev.avoma.com/
+- type: APIReference
+  url: https://dev.avoma.com/
+- type: Blog
+  url: https://www.avoma.com/blog
+- type: Pricing
+  url: https://www.avoma.com/pricing
+
+apis:
+- aid: avoma:avoma-calls-api
+  name: Avoma Calls API
+  description: The Calls API from Avoma — 2 operation(s) for calls.
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Calls
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-calls-api-openapi.yml
+- aid: avoma:avoma-custom-category-api
+  name: Avoma Custom Category API
+  description: >-
+    **Deprecated**: The "Custom Category" feature is deprecated and will be removed in future versions.
+    We recommend using the "Smart Category" feature instead.
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Custom Category
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-custom-category-api-openapi.yml
+- aid: avoma:avoma-engagement-analytics-api
+  name: Avoma Engagement Analytics API
+  description: The Engagement Analytics API from Avoma — 4 operation(s) for engagement analytics.
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Engagement Analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-engagement-analytics-api-openapi.yml
+- aid: avoma:avoma-meeting-outcomes-api
+  name: Avoma Meeting Outcomes API
+  description: The Meeting Outcomes API from Avoma — 2 operation(s) for meeting outcomes.
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Meeting Outcomes
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-meeting-outcomes-api-openapi.yml
+- aid: avoma:avoma-meeting-types-api
+  name: Avoma Meeting Types API
+  description: The Meeting Types API from Avoma — 2 operation(s) for meeting types.
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Meeting Types
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-meeting-types-api-openapi.yml
+- aid: avoma:avoma-meetings-api
+  name: Avoma Meetings API
+  description: >-
+    Meetings are the foundation and starting point of the flow in Avoma.  You can fetch recordings , transcriptions
+    , ai notes , sentiments  and coaching once the meeting is recorded and finished processing.
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Meetings
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-meetings-api-openapi.yml
+- aid: avoma:avoma-meetings-sentiments-api
+  name: Avoma Meetings Sentiments API
+  description: >-
+    Avoma's meeting sentiment feature is a powerful tool designed to provide end users with a deeper understanding
+    of the emotional tone and dynamics within their meetings. By analyzing the content of conversations,
+    vocal nuances, and contextual cues, Avoma's AI can accurately determine the overall sentiment of the
+    meeting, whether it's positive, negative, or neutral.
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Meetings Sentiments
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-meetings-sentiments-api-openapi.yml
+- aid: avoma:avoma-notes-api
+  name: Avoma Notes API
+  description: >-
+    Avoma's AI takes notes so that you can focus on engaging in the conversation. These notes are intelligently
+    categorised using Avoma's Smart Categories feature, which employs natural language processing and
+    machine learning to identify and label key themes, action items, decisions, and other pertinent topics
+    discussed during the meeting.
+
+
+    AI Notes are generated and available once the meeting recording and transcription are processed. Availability
+    of ai notes can be verified using `notes_ready` parameter in get meeting response.
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Notes
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-notes-api-openapi.yml
+- aid: avoma:avoma-recording-api
+  name: Avoma Recording API
+  description: >-
+    Recordings contain Audio and Video information for a completed meeting. Once  recording  is available
+    you should be able to download the same using the pre-signed url. The url will be valid for 5 days.
+    To check whether the recordings for a particular meeting are ready , you can invoke get meeting api
+    and verify `audio_ready` and `video_ready` parameters in the response.
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Recording
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-recording-api-openapi.yml
+- aid: avoma:avoma-revenue-intelligence-beta-api
+  name: Avoma Revenue Intelligence [Beta] API
+  description: >-
+    The Revenue Intelligence [Beta] API from Avoma — 2 operation(s) for revenue intelligence [beta].
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Revenue Intelligence [Beta]
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-revenue-intelligence-beta-api-openapi.yml
+- aid: avoma:avoma-scorecard-evaluations-api
+  name: Avoma Scorecard Evaluations API
+  description: The Scorecard Evaluations API from Avoma — 1 operation(s) for scorecard evaluations.
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Scorecard Evaluations
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-scorecard-evaluations-api-openapi.yml
+- aid: avoma:avoma-scorecards-api
+  name: Avoma Scorecards API
+  description: The Scorecards API from Avoma — 2 operation(s) for scorecards.
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Scorecards
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-scorecards-api-openapi.yml
+- aid: avoma:avoma-smart-category-api
+  name: Avoma Smart Category API
+  description: >-
+    Smart Categories can help organize your meeting notes into logical groupings, making it effortless
+    to navigate and extract specific information from large volumes of conversational data.
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Smart Category
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-smart-category-api-openapi.yml
+- aid: avoma:avoma-snippets-api
+  name: Avoma Snippets API
+  description: The Snippets API from Avoma — 1 operation(s) for snippets.
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Snippets
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-snippets-api-openapi.yml
+- aid: avoma:avoma-templates-api
+  name: Avoma Templates API
+  description: >-
+    `Templates` help in extraction of AI-generated notes based on mentioned categories. A template will
+    be automatically inserted into the meeting notes page, if the `meeting type` is set and has a template
+    associated with a `meeting type`.
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Templates
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-templates-api-openapi.yml
+- aid: avoma:avoma-transcriptions-api
+  name: Avoma Transcriptions API
+  description: >-
+    Transcription is generated for meeting's recording. This is available once the meeting recording is
+    processed. Availability of transcription can be verified using `transcript_ready` parameter in get
+    meeting response.
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Transcriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-transcriptions-api-openapi.yml
+- aid: avoma:avoma-users-api
+  name: Avoma Users API
+  description: The Users API from Avoma — 2 operation(s) for users.
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-users-api-openapi.yml
+- aid: avoma:avoma-webhooks-api
+  name: Avoma Webhooks API
+  description: "**Webhooks**\n\nAvoma Webhooks notify users about the successful occurrence of events\
+    \ within the Avoma application. Instead of polling or calling APIs to detect events, Avoma sends webhook\
+    \ events as HTTP POST requests, with a JSON payload, to your specified endpoint URL.\n\n**Subscribing\
+    \ to Webhooks**\n\nTo subscribe to webhooks, please reach out to Avoma support and provide a public\
+    \ HTTPS endpoint URL. The URL must be secure (HTTPS). Your endpoint should respond with an HTTP **200**\
+    \ status code to acknowledge receipt of the webhook data. If no response or an error is returned,\
+    \ Avoma will retry the connection up to five times within 24 hours. To avoid retries and errors, always\
+    \ acknowledge the receipt of webhooks by responding with HTTP **200**.\n\nIf persistent non-success\
+    \ responses are received more than five times in the last 24 hours, Avoma will unsubscribe your webhooks.\
+    \ \n\n**Supported event types**\n\n| `event_type` | Fires when |\n|---|---|\n| `AINOTE` | AI notes\
+    \ are ready for a meeting or call. |\n| `MEETING_BOOKED_VIA_SCHEDULER` | A meeting is booked via an\
+    \ Avoma scheduling page. |\n| `MEETING_BOOKED_VIA_SCHEDULER_RESCHEDULED` | A scheduler-booked meeting\
+    \ is rescheduled. |\n| `MEETING_BOOKED_VIA_SCHEDULER_CANCELED` | A scheduler-booked meeting is canceled.\
+    \ |\n| `new_conversation` | AI notes ready (Zapier only). |\n\n**Retry policy**\n\nFailed deliveries\
+    \ (non-2xx or timeout) are retried up to 5 times with\nincreasing delays: 5 min → 30 min → 2 h → 12\
+    \ h → 24 h. After 5 consecutive\nfailures the subscription is automatically deactivated.\n\n**Signature\
+    \ verification**\n\nWhen a signing secret is configured, every delivery includes an\n`X-Avoma-Signature`\
+    \ header — an HMAC-SHA256 hex digest of the raw request\nbody.\n\nTo verify the signature:\n\n1. Retrieve\
+    \ the payload from the received webhook event.\n2. Obtain your Avoma API secret key (provided when\
+    \ you requested API/Webhooks access).\n3. Compute the HMAC using the payload and your secret key,\
+    \ using the SHA256 digest algorithm.\n4. Convert the result to a hexadecimal format.\n5. Compare the\
+    \ computed value to the value in the `X-Avoma-Signature` header. If they match, the webhook is from\
+    \ Avoma.\n\n**Sample Code for Webhook Verification**\n\n*Node.js:*\n\n```javascript\nconst crypto\
+    \ = require('crypto');\nconst message = `${JSON.stringify(request.body)}`;\nconst hashForVerify =\
+    \ crypto.createHmac('sha256', AVOMA_API_KEY).update(message).digest('hex');\nconst signature = `${hashForVerify}`;\n\
+    \nif (request.headers['x-avoma-signature'] === signature) {\n  // Webhook request came from Avoma\n\
+    } else {\n  // Webhook request did not come from Avoma\n}\n```\n\n*Python:*\n\n```python\nimport hashlib\n\
+    import hmac\nimport json\n\nrequest = \"YOUR WEBHOOK REQUEST\"\nsecret_key = \"YOUR_SECRET_KEY\"\n\
+    body_unicode = request.body.decode(\"utf-8\")\n\nh = hmac.new(secret_key.encode('utf-8'), body_unicode.encode('utf-8'),\
+    \ hashlib.sha256)\n\n# Compare the computed signature with the signature from the request\n\nlowercase_headers\
+    \ = {key.lower(): value for key, value in request.headers.items()}\n\nwebhook_signature = lowercase_headers.get('x-avoma-signature')\n\
+    \nif webhook_signature != h.hexdigest():\n    print(\"Webhook signature does not match\")\n```\n.\
+    \ Manage your signing secret via `GET/PATCH/DELETE /v1/webhooks/signing-secret/`\nor rotate it via\
+    \ `POST /v1/webhooks/signing-secret/rotate/`."
+  humanURL: https://dev.avoma.com/
+  baseURL: https://api.avoma.com
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/avoma-webhooks-api-openapi.yml
+x-coverage:
+  state: unreadable
+  reason: no-machine-readable-spec
+  method: derived
+  generated: '2026-09-27'
+  generator: derive-coverage.py (pre-flight evidence)
+  detail: the company publishes developer documentation but serves no machine-readable contract from it
+  evidence:
+  - url: https://www.nasdaqprivatemarket.com/
+    status: 200
+x-enrichment:
+  date: '2026-09-27'
+  status: enriched
+  artifacts_added: 19
+  pass: modular-v1
+  engine: identity=local,contract=local,surfaces=local,docs=local,regulatory=local

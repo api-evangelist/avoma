@@ -1,0 +1,445 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Transcriptions API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- description: Transcription is generated for meeting's recording. This is available once the meeting recording is processed. Availability of transcription can be verified using `transcript_ready` parameter in get meeting response.
+  name: Transcriptions
+paths:
+  /v1/transcriptions/:
+    get:
+      description: Returns list of transcriptions. If meeting_uuid is provided, returns transcription for that meeting directly. Otherwise returns paginated response of all transcriptions.
+      parameters:
+      - description: To retrieve transcriptions for meetings started at or started after given date-time(UTC). Not required when `meeting_uuid' is provided
+        in: query
+        name: from_date
+        required: true
+        schema:
+          format: date-time
+          type: string
+      - description: To retrieve transcriptions for meetings started at or started before given date-time(UTC). Not required when `meeting_uuid' is provided
+        in: query
+        name: to_date
+        required: true
+        schema:
+          format: date-time
+          type: string
+      - description: Unique ID of the meeting for which transcriptions will be fetched.
+        in: query
+        name: meeting_uuid
+        schema:
+          format: uuid
+          type: string
+      - description: Page number for pagination (only used when meeting_uuid is not provided)
+        in: query
+        name: page
+        schema:
+          minimum: 1
+          type: integer
+      - description: Number of items per page (max 100, only used when meeting_uuid is not provided)
+        in: query
+        name: page_size
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+      - description: Comma-separated list of attendee emails to filter meetings by. <br>Meetings with ***any*** of the attendees will be returned.
+        in: query
+        name: attendee_emails
+        schema:
+          example: john.doe@example.com,kelly@acme.com
+          type: string
+      - description: Comma-separated list of CRM account external IDs to filter by.
+        in: query
+        name: crm_account_ids
+        schema:
+          type: string
+      - description: Comma-separated list of CRM opportunity external IDs to filter by.
+        in: query
+        name: crm_opportunity_ids
+        schema:
+          type: string
+      - description: Comma-separated list of CRM contact external IDs to filter by.
+        in: query
+        name: crm_contact_ids
+        schema:
+          type: string
+      - description: Comma-separated list of CRM lead external IDs to filter by.
+        in: query
+        name: crm_lead_ids
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - description: Single transcription response when meeting_uuid is provided
+                  example:
+                  - meeting_uuid: 123e4567-e89b-12d3-a456-426614174000
+                    speakers:
+                    - email: user@example.com
+                      id: 0
+                      is_rep: true
+                      name: FirstName LastName
+                    transcript:
+                    - speaker_id: 0
+                      timestamps:
+                      - 0.77
+                      - 0.89
+                      - 1.04
+                      - 1.19
+                      transcript: Hey, how are you?
+                    transcription_vtt_url: string
+                    uuid: 095be615-a8ad-4c33-8e9c-c7612fbf6c9f
+                  items:
+                    description: Transcription object
+                    properties:
+                      meeting_uuid:
+                        description: Unique ID of the meeting that this transcription belongs to.
+                        format: uuid
+                        type: string
+                      speakers:
+                        items:
+                          properties:
+                            email:
+                              description: Email of the speaker.
+                              format: email
+                              type: string
+                            id:
+                              description: ID of the speaker.
+                              type: integer
+                            is_rep:
+                              description: '- `true`: Speaker is a representative (any speaker from the organization)
+
+                                - `false`: Speaker is a customer/prospect.
+
+                                '
+                              type: boolean
+                            name:
+                              description: Name of the speaker.
+                              example: FirstName LastName
+                              type:
+                              - string
+                              - 'null'
+                          required:
+                          - email
+                          - id
+                          - is_rep
+                          type: object
+                        type: array
+                      transcript:
+                        example:
+                        - speaker_id: 0
+                          timestamps:
+                          - 0.77
+                          - 0.89
+                          - 1.04
+                          - 1.19
+                          transcript: Hey, how are you?
+                        items:
+                          properties:
+                            speaker_id:
+                              description: 'Id of the speaker whom transcript paragraph belongs. Use Speakers Array to get more information like email/name based on the ''id'' of the speaker.
+
+                                '
+                              type: integer
+                            timestamps:
+                              description: 'List of timestamps(in seconds) for each word in the `transcript` field. These timestamps are relative to actual (not scheduled) start of the meeting.
+
+                                '
+                              example:
+                              - 0.77
+                              - 0.89
+                              - 1.04
+                              - 1.19
+                              items:
+                                format: float
+                                type: number
+                              type: array
+                            transcript:
+                              description: Actual textual transcript.
+                              example: Hey, how are you?
+                              type: string
+                          required:
+                          - transcript
+                          - timestamps
+                          - speaker_id
+                          type: object
+                        type: array
+                      transcription_vtt_url:
+                        description: Signed url of the transcription vtt file.
+                        format: url
+                        type: string
+                      uuid:
+                        description: Unique ID of the transcription.
+                        format: uuid
+                        type: string
+                    required:
+                    - uuid
+                    - transcript
+                    - speakers
+                    - transcription_vtt_url
+                    - meeting_uuid
+                    type: object
+                  title: Single Transcription
+                  type: array
+                - description: Paginated response when meeting_uuid is not provided
+                  properties:
+                    count:
+                      description: Total number of items
+                      type: integer
+                    next:
+                      description: URL for the next page of results
+                      type:
+                      - string
+                      - 'null'
+                    previous:
+                      description: URL for the previous page of results
+                      type:
+                      - string
+                      - 'null'
+                    results:
+                      description: Array of transcription objects
+                      items:
+                        description: Transcription object
+                        properties:
+                          meeting_uuid:
+                            description: Unique ID of the meeting that this transcription belongs to.
+                            format: uuid
+                            type: string
+                          speakers:
+                            items:
+                              properties:
+                                email:
+                                  description: Email of the speaker.
+                                  format: email
+                                  type: string
+                                id:
+                                  description: ID of the speaker.
+                                  type: integer
+                                is_rep:
+                                  description: '- `true`: Speaker is a representative (any speaker from the organization)
+
+                                    - `false`: Speaker is a customer/prospect.
+
+                                    '
+                                  type: boolean
+                                name:
+                                  description: Name of the speaker.
+                                  example: FirstName LastName
+                                  type:
+                                  - string
+                                  - 'null'
+                              required:
+                              - email
+                              - id
+                              - is_rep
+                              type: object
+                            type: array
+                          transcript:
+                            example:
+                            - speaker_id: 0
+                              timestamps:
+                              - 0.77
+                              - 0.89
+                              - 1.04
+                              - 1.19
+                              transcript: Hey, how are you?
+                            items:
+                              properties:
+                                speaker_id:
+                                  description: 'Id of the speaker whom transcript paragraph belongs. Use Speakers Array to get more information like email/name based on the ''id'' of the speaker.
+
+                                    '
+                                  type: integer
+                                timestamps:
+                                  description: 'List of timestamps(in seconds) for each word in the `transcript` field. These timestamps are relative to actual (not scheduled) start of the meeting.
+
+                                    '
+                                  example:
+                                  - 0.77
+                                  - 0.89
+                                  - 1.04
+                                  - 1.19
+                                  items:
+                                    format: float
+                                    type: number
+                                  type: array
+                                transcript:
+                                  description: Actual textual transcript.
+                                  example: Hey, how are you?
+                                  type: string
+                              required:
+                              - transcript
+                              - timestamps
+                              - speaker_id
+                              type: object
+                            type: array
+                          transcription_vtt_url:
+                            description: Signed url of the transcription vtt file.
+                            format: url
+                            type: string
+                          uuid:
+                            description: Unique ID of the transcription.
+                            format: uuid
+                            type: string
+                        required:
+                        - uuid
+                        - transcript
+                        - speakers
+                        - transcription_vtt_url
+                        - meeting_uuid
+                        type: object
+                      type: array
+                  title: Paginated Transcriptions
+                  type: object
+          description: OK, returns transcription object when meeting_uuid is provided, otherwise returns paginated response.
+      summary: List Transcriptions
+      tags:
+      - Transcriptions
+      operationId: getV1Transcriptions
+      x-operation-id-source: derived
+  /v1/transcriptions/{uuid}/:
+    get:
+      description: Returns a single transcription for a given `uuid`.
+      parameters:
+      - in: path
+        name: uuid
+        required: true
+        schema:
+          description: Unique ID of the transcription.
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Transcription object
+                properties:
+                  meeting_uuid:
+                    description: Unique ID of the meeting that this transcription belongs to.
+                    format: uuid
+                    type: string
+                  speakers:
+                    items:
+                      properties:
+                        email:
+                          description: Email of the speaker.
+                          format: email
+                          type: string
+                        id:
+                          description: ID of the speaker.
+                          type: integer
+                        is_rep:
+                          description: '- `true`: Speaker is a representative (any speaker from the organization)
+
+                            - `false`: Speaker is a customer/prospect.
+
+                            '
+                          type: boolean
+                        name:
+                          description: Name of the speaker.
+                          example: FirstName LastName
+                          type:
+                          - string
+                          - 'null'
+                      required:
+                      - email
+                      - id
+                      - is_rep
+                      type: object
+                    type: array
+                  transcript:
+                    example:
+                    - speaker_id: 0
+                      timestamps:
+                      - 0.77
+                      - 0.89
+                      - 1.04
+                      - 1.19
+                      transcript: Hey, how are you?
+                    items:
+                      properties:
+                        speaker_id:
+                          description: 'Id of the speaker whom transcript paragraph belongs. Use Speakers Array to get more information like email/name based on the ''id'' of the speaker.
+
+                            '
+                          type: integer
+                        timestamps:
+                          description: 'List of timestamps(in seconds) for each word in the `transcript` field. These timestamps are relative to actual (not scheduled) start of the meeting.
+
+                            '
+                          example:
+                          - 0.77
+                          - 0.89
+                          - 1.04
+                          - 1.19
+                          items:
+                            format: float
+                            type: number
+                          type: array
+                        transcript:
+                          description: Actual textual transcript.
+                          example: Hey, how are you?
+                          type: string
+                      required:
+                      - transcript
+                      - timestamps
+                      - speaker_id
+                      type: object
+                    type: array
+                  transcription_vtt_url:
+                    description: Signed url of the transcription vtt file.
+                    format: url
+                    type: string
+                  uuid:
+                    description: Unique ID of the transcription.
+                    format: uuid
+                    type: string
+                required:
+                - uuid
+                - transcript
+                - speakers
+                - transcription_vtt_url
+                - meeting_uuid
+                type: object
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Not Found
+      summary: Get Transcription
+      tags:
+      - Transcriptions
+      operationId: getV1TranscriptionsByUuid
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http

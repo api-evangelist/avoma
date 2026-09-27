@@ -1,0 +1,68 @@
+generated: '2026-09-27'
+method: derived
+generator: derive-vocabulary.py
+source: openapi/avoma-openapi.yml
+vocabulary:
+  name: Avoma Domain Vocabulary
+  description: 'Terms declared by Avoma''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-09-27'
+  terms:
+  - term: Meetings
+    definition: Meetings are the foundation and starting point of the flow in Avoma. You can fetch recordings , transcriptions , ai notes , sentiments
+      and coaching once the meeting is recorded and finished processing.
+    tags:
+    - Resource Group
+    source: openapi/avoma-openapi.yml
+  - term: Recording
+    definition: Recordings contain Audio and Video information for a completed meeting. Once recording is available you should be able to download
+      the same using the pre-signed url. The url will be valid for 5 days. To check whether the recordings for a particular meeting are ready
+      , you can invoke get meeting api and verify `audio_ready` and `video_ready` parameters in the response.
+    tags:
+    - Resource Group
+    source: openapi/avoma-openapi.yml
+  - term: Transcriptions
+    definition: Transcription is generated for meeting's recording. This is available once the meeting recording is processed. Availability of
+      transcription can be verified using `transcript_ready` parameter in get meeting response.
+    tags:
+    - Resource Group
+    source: openapi/avoma-openapi.yml
+  - term: Smart Category
+    definition: Smart Categories can help organize your meeting notes into logical groupings, making it effortless to navigate and extract specific
+      information from large volumes of conversational data.
+    tags:
+    - Resource Group
+    source: openapi/avoma-openapi.yml
+  - term: Templates
+    definition: '`Templates` help in extraction of AI-generated notes based on mentioned categories. A template will be automatically inserted
+      into the meeting notes page, if the `meeting type` is set and has a template associated with a `meeting type`.'
+    tags:
+    - Resource Group
+    source: openapi/avoma-openapi.yml
+  - term: Notes
+    definition: Avoma's AI takes notes so that you can focus on engaging in the conversation. These notes are intelligently categorised using
+      Avoma's Smart Categories feature, which employs natural language processing and machine learning to identify and label key themes, action
+      items, decisions, and other pertinent topics discussed during the meeting. AI Notes are generated and available once the meeting recordi
+    tags:
+    - Resource Group
+    source: openapi/avoma-openapi.yml
+  - term: Meetings Sentiments
+    definition: Avoma's meeting sentiment feature is a powerful tool designed to provide end users with a deeper understanding of the emotional
+      tone and dynamics within their meetings. By analyzing the content of conversations, vocal nuances, and contextual cues, Avoma's AI can accurately
+      determine the overall sentiment of the meeting, whether it's positive, negative, or neutral.
+    tags:
+    - Resource Group
+    source: openapi/avoma-openapi.yml
+  - term: Custom Category
+    definition: '**Deprecated**: The "Custom Category" feature is deprecated and will be removed in future versions. We recommend using the "Smart
+      Category" feature instead.'
+    tags:
+    - Resource Group
+    source: openapi/avoma-openapi.yml
+  - term: Webhooks
+    definition: '**Webhooks** Avoma Webhooks notify users about the successful occurrence of events within the Avoma application. Instead of polling
+      or calling APIs to detect events, Avoma sends webhook events as HTTP POST requests, with a JSON payload, to your specified endpoint URL.
+      **Subscribing to Webhooks** To subscribe to webhooks, please reach out to Avoma support and provide a public HTTPS endpoint URL. Th'
+    tags:
+    - Resource Group
+    source: openapi/avoma-openapi.yml

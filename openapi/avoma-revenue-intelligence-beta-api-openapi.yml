@@ -1,0 +1,313 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Revenue Intelligence [Beta] API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- name: Revenue Intelligence [Beta]
+paths:
+  v1/revenue_intel/timeline/:
+    get:
+      summary: Get aggregated timeline engagement metrics
+      description: 'Returns time series data showing engagement patterns over time including: - Rep meeting/call time and counts - Customer meeting/call time - Email counts (sent by reps and customers)
+
+        All data is aggregated by the specified date_interval for the specified CRM entity type.'
+      tags:
+      - Revenue Intelligence [Beta]
+      parameters:
+      - name: object_type
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - opportunity
+          - account
+          - contact
+          - lead
+        description: Type of CRM entity to query
+      - name: crm_entity_id
+        in: query
+        schema:
+          type: string
+        description: External ID of the specific CRM entity to filter by (e.g., Salesforce Opportunity ID)
+      - name: start_at
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+        description: Start date for timeline data (ISO 8601 format, e.g., 2024-01-01T00:00:00Z)
+      - name: end_at
+        in: query
+        schema:
+          type: string
+          format: date-time
+        description: End date for timeline data (defaults to current time if not provided)
+      - name: date_interval
+        in: query
+        schema:
+          type: string
+          enum:
+          - day
+          - week
+          - month
+          default: day
+        description: Time interval for data aggregation
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_rep_time_meeting:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        oneOf:
+                        - type: string
+                          format: date-time
+                        - type: number
+                    description: Time series of rep meeting time (non-calls)
+                  time_series_rep_meetings_not_recorded:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        oneOf:
+                        - type: string
+                          format: date-time
+                        - type: number
+                    description: Count of unrecorded rep meetings
+                  time_series_rep_all_meetings_count:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        oneOf:
+                        - type: string
+                          format: date-time
+                        - type: number
+                    description: Total count of rep meetings
+                  total_rep_time_call:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        oneOf:
+                        - type: string
+                          format: date-time
+                        - type: number
+                    description: Time series of rep call time
+                  time_series_rep_calls_not_recorded:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        oneOf:
+                        - type: string
+                          format: date-time
+                        - type: number
+                    description: Count of unrecorded rep calls
+                  time_series_rep_all_calls_count:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        oneOf:
+                        - type: string
+                          format: date-time
+                        - type: number
+                    description: Total count of rep calls
+                  total_customer_time_meeting:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        oneOf:
+                        - type: string
+                          format: date-time
+                        - type: number
+                    description: Time series of customer meeting time
+                  total_customer_time_call:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        oneOf:
+                        - type: string
+                          format: date-time
+                        - type: number
+                    description: Time series of customer call time
+                  total_customer_email_sent:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        oneOf:
+                        - type: string
+                          format: date-time
+                        - type: number
+                    description: Count of emails sent by customers
+                  total_rep_email_sent:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        oneOf:
+                        - type: string
+                          format: date-time
+                        - type: number
+                    description: Count of emails sent by reps
+        '400':
+          description: Bad Request - Missing or invalid parameters
+          content:
+            application/json:
+              schema: null
+              $ref: ../openapi/components/external.yml#/components/schemas/bad_request_body
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema: null
+              $ref: ../openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: getV1RevenueIntelTimeline
+      x-operation-id-source: derived
+  /v1/revenue_intel/timeline_details/:
+    get:
+      summary: Get detailed engagement records with pagination
+      description: Returns individual meeting, call, or email records based on the 'type' parameter. Supports filtering by email participant and host (rep/customer). Results are paginated.
+      tags:
+      - Revenue Intelligence [Beta]
+      parameters:
+      - name: object_type
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - opportunity
+          - account
+          - contact
+          - lead
+        description: Type of CRM entity to query
+      - name: crm_entity_id
+        in: query
+        schema:
+          type: string
+        description: External ID of the specific CRM entity to filter by
+      - name: start_at
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+        description: Start date for timeline data
+      - name: end_at
+        in: query
+        schema:
+          type: string
+          format: date-time
+        description: End date for timeline data (defaults to current time)
+      - name: type
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - meeting
+          - call
+          - email
+        description: Type of engagement to retrieve
+      - name: email
+        in: query
+        schema:
+          type: string
+          format: email
+        description: Filter by specific participant email address
+      - name: host
+        in: query
+        schema:
+          type: string
+          enum:
+          - rep
+          - customer
+        description: Filter by engagement host (rep or customer initiated)
+      - name: page
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        description: Page number for pagination
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+        description: Number of records per page
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: Total number of records
+                  next:
+                    type:
+                    - string
+                    - 'null'
+                    description: URL for next page
+                  previous:
+                    type:
+                    - string
+                    - 'null'
+                    description: URL for previous page
+                  total_duration:
+                    type: number
+                    description: Total duration of all recordings in seconds
+                  results:
+                    type: array
+                    items:
+                      type: object
+                    description: Array of engagement records (format varies by object_type)
+        '400':
+          description: Bad Request - Missing or invalid parameters
+          content:
+            application/json:
+              schema: null
+              $ref: ../openapi/components/external.yml#/components/schemas/bad_request_body
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema: null
+              $ref: ../openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: getV1RevenueIntelTimelineDetails
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http

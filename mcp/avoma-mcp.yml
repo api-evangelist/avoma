@@ -1,0 +1,214 @@
+generated: '2026-09-27'
+method: derived
+generator: derive-mcp-candidate.py
+source:
+- openapi/avoma-openapi.yml
+status: candidate
+deployment:
+  mode: none
+  auth: unknown
+  verified: probed
+note: No MCP server was found. The pre-flight posted tools/list to /mcp on dev.avoma.com, www.avoma.com, api.avoma.com, app.avoma.com; verdict
+  absent. Candidate tools below are derived from the 48 operation(s) in the provider's own OpenAPI (40 listed); they describe what a server WOULD
+  expose, not one that exists.
+tools:
+- name: get_v1_calls
+  operationId: GET /v1/calls/
+  method: GET
+  path: /v1/calls/
+  description: List calls
+- name: create_ext_call
+  operationId: createExtCall
+  method: POST
+  path: /v1/calls/
+  description: Create Call
+- name: update_v1_calls
+  operationId: PATCH /v1/calls/{external_id}/
+  method: PATCH
+  path: /v1/calls/{external_id}/
+  description: Update Call
+- name: get_v1_custom_categories
+  operationId: GET /v1/custom_categories/
+  method: GET
+  path: /v1/custom_categories/
+  description: List Custom Categories
+- name: get_v1_meeting_segments
+  operationId: GET /v1/meeting_segments/
+  method: GET
+  path: /v1/meeting_segments/
+  description: Get Meeting segments
+- name: get_v1_meeting_sentiments
+  operationId: GET /v1/meeting_sentiments/
+  method: GET
+  path: /v1/meeting_sentiments/
+  description: Get Meeting Sentiments
+- name: get_v1_meetings
+  operationId: GET /v1/meetings/
+  method: GET
+  path: /v1/meetings/
+  description: List meetings
+- name: get_meetings_insights
+  operationId: GET /v1/meetings/{meeting_uuid}/insights/
+  method: GET
+  path: /v1/meetings/{meeting_uuid}/insights/
+  description: Get Meeting Insights
+- name: create_meetings_drop
+  operationId: POST /v1/meetings/{uuid}/drop/
+  method: POST
+  path: /v1/meetings/{uuid}/drop/
+  description: Drop Meeting
+- name: get_v1_notes
+  operationId: GET /v1/notes/
+  method: GET
+  path: /v1/notes/
+  description: List Notes
+- name: get_v1_recordings
+  operationId: GET /v1/recordings/
+  method: GET
+  path: /v1/recordings/
+  description: Get Recording
+- name: scorecard_evaluations_list
+  operationId: scorecard_evaluations_list
+  method: GET
+  path: /v1/scorecard_evaluations/
+  description: List Scorecard Evaluations
+- name: scorecards_list
+  operationId: scorecards_list
+  method: GET
+  path: /v1/scorecards/
+  description: List Scorecard Templates
+- name: scorecards_retrieve
+  operationId: scorecards_retrieve
+  method: GET
+  path: /v1/scorecards/{uuid}/
+  description: Retrieve a Specific Scorecard Template
+- name: get_v1_smart_categories
+  operationId: GET /v1/smart_categories/
+  method: GET
+  path: /v1/smart_categories/
+  description: List Smart Categories
+- name: create_v1_smart_categories
+  operationId: POST /v1/smart_categories/
+  method: POST
+  path: /v1/smart_categories/
+  description: Create the smart category settings
+- name: update_v1_smart_categories
+  operationId: PATCH /v1/smart_categories/{uuid}/
+  method: PATCH
+  path: /v1/smart_categories/{uuid}/
+  description: Update the smart category settings
+- name: get_v1_template
+  operationId: GET /v1/template/
+  method: GET
+  path: /v1/template/
+  description: List Templates
+- name: create_v1_template
+  operationId: POST /v1/template/
+  method: POST
+  path: /v1/template/
+  description: Create Template
+- name: update_v1_template
+  operationId: PUT /v1/template/{uuid}/
+  method: PUT
+  path: /v1/template/{uuid}/
+  description: Update Template
+- name: get_v1_transcriptions
+  operationId: GET /v1/transcriptions/
+  method: GET
+  path: /v1/transcriptions/
+  description: List Transcriptions
+- name: get_v1_meeting_type
+  operationId: GET /v1/meeting_type/
+  method: GET
+  path: /v1/meeting_type/
+  description: List Meeting Types
+- name: create_v1_meeting_type
+  operationId: POST /v1/meeting_type/
+  method: POST
+  path: /v1/meeting_type/
+  description: Create Meeting Type
+- name: update_v1_meeting_type
+  operationId: PATCH /v1/meeting_type/{uuid}/
+  method: PATCH
+  path: /v1/meeting_type/{uuid}/
+  description: Update Meeting Type
+- name: delete_v1_meeting_type
+  operationId: DELETE /v1/meeting_type/{uuid}/
+  method: DELETE
+  path: /v1/meeting_type/{uuid}/
+  description: Delete Meeting Type
+- name: get_v1_meeting_outcome
+  operationId: GET /v1/meeting_outcome/
+  method: GET
+  path: /v1/meeting_outcome/
+  description: List Meeting Outcomes
+- name: create_v1_meeting_outcome
+  operationId: POST /v1/meeting_outcome/
+  method: POST
+  path: /v1/meeting_outcome/
+  description: Create Meeting Outcome
+- name: update_v1_meeting_outcome
+  operationId: PATCH /v1/meeting_outcome/{uuid}/
+  method: PATCH
+  path: /v1/meeting_outcome/{uuid}/
+  description: Update Meeting Outcome
+- name: delete_v1_meeting_outcome
+  operationId: DELETE /v1/meeting_outcome/{uuid}/
+  method: DELETE
+  path: /v1/meeting_outcome/{uuid}/
+  description: Delete Meeting Outcome
+- name: get_v1_users
+  operationId: GET /v1/users/
+  method: GET
+  path: /v1/users/
+  description: List users
+- name: get user
+  operationId: Get User
+  method: GET
+  path: /v1/users/{uuid}/
+  description: GET /v1/users/{uuid}/
+- name: get_v1_engagement
+  operationId: GET /v1/engagement/
+  method: GET
+  path: /v1/engagement/
+  description: List Engagement Metrics for All Users
+- name: get_engagement_summary
+  operationId: GET /v1/engagement/summary/
+  method: GET
+  path: /v1/engagement/summary/
+  description: Get Overall Engagement Summary for All Users
+- name: get_v1_snippets
+  operationId: GET /v1/snippets/
+  method: GET
+  path: /v1/snippets/
+  description: List Meeting Snippets
+- name: get_revenue_intel_timeline
+  operationId: GET v1/revenue_intel/timeline/
+  method: GET
+  path: v1/revenue_intel/timeline/
+  description: Get aggregated timeline engagement metrics
+- name: get_revenue_intel_timeline_details
+  operationId: GET /v1/revenue_intel/timeline_details/
+  method: GET
+  path: /v1/revenue_intel/timeline_details/
+  description: Get detailed engagement records with pagination
+- name: list_webhooks
+  operationId: listWebhooks
+  method: GET
+  path: /v1/webhooks/
+  description: List Webhook Subscriptions
+- name: create_webhook
+  operationId: createWebhook
+  method: POST
+  path: /v1/webhooks/
+  description: Create Webhook Subscription
+- name: webhook_event_ainote
+  operationId: webhookEventAinote
+  method: POST
+  path: /v1/webhooks/ainote/
+  description: 'Event payload: AINOTE'
+- name: webhook_event_meeting_booked_via_scheduler
+  operationId: webhookEventMeetingBookedViaScheduler
+  method: POST
+  path: /v1/webhooks/meeting_booked_via_scheduler/
+  description: 'Event payload: MEETING_BOOKED_VIA_SCHEDULER'

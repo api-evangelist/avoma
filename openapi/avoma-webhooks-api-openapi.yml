@@ -1,0 +1,1406 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Webhooks API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- description: '**Webhooks**
+
+
+    Avoma Webhooks notify users about the successful occurrence of events within the Avoma application.'
+  name: Webhooks
+paths:
+  /v1/webhooks/:
+    get:
+      description: Returns all active webhook subscriptions for the organization.
+      operationId: listWebhooks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    description: Total number of subscriptions.
+                    type: integer
+                  results:
+                    items:
+                      description: A webhook subscription registered for the organization.
+                      properties:
+                        event_type:
+                          description: The event type this subscription fires on.
+                          enum:
+                          - AINOTE
+                          - MEETING_BOOKED_VIA_SCHEDULER
+                          - MEETING_BOOKED_VIA_SCHEDULER_CANCELED
+                          - MEETING_BOOKED_VIA_SCHEDULER_RESCHEDULED
+                          - new_conversation
+                          type: string
+                        is_active:
+                          description: Whether the subscription is currently active.
+                          readOnly: true
+                          type: boolean
+                        target_type:
+                          description: 'Subscription target. `2` = Organization webhook (use this for direct API-key integrations). `1` = Zapier.
+
+                            '
+                          enum:
+                          - 1
+                          - 2
+                          type: integer
+                        target_url:
+                          description: HTTPS URL that Avoma will POST the event payload to.
+                          format: uri
+                          type: string
+                        uuid:
+                          description: Unique identifier of the subscription.
+                          format: uuid
+                          readOnly: true
+                          type: string
+                      required:
+                      - event_type
+                      - target_url
+                      - uuid
+                      - is_active
+                      type: object
+                    type: array
+                type: object
+          description: OK
+        '401':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Unauthorized
+      summary: List Webhook Subscriptions
+      tags:
+      - Webhooks
+    post:
+      description: 'Subscribe to an Avoma event. When the event fires, Avoma will POST the event payload to your `target_url` over HTTPS.
+
+
+        **Supported `event_type` values**
+
+
+        **`target_type: 2` — Organization webhooks**
+
+
+        | `event_type` | Fires when |
+
+        |---|---|
+
+        | `AINOTE` | AI notes are ready for a meeting — this is the primary event for post-meeting data (transcript, notes, action items, insights). |
+
+        | `MEETING_BOOKED_VIA_SCHEDULER` | A meeting was booked through an Avoma scheduling page. |
+
+        | `MEETING_BOOKED_VIA_SCHEDULER_CANCELED` | A scheduler-booked meeting was cancelled. |
+
+        | `MEETING_BOOKED_VIA_SCHEDULER_RESCHEDULED` | A scheduler-booked meeting was rescheduled. |
+
+
+        **`target_type: 1` — Zapier webhooks (requires Zapier integration feature)**
+
+
+        | `event_type` | Fires when |
+
+        |---|---|
+
+        | `new_conversation` | AI notes are ready for a meeting. |
+
+
+        **Signature verification**
+
+
+        When a signing secret is configured for your organization, every delivery includes an `X-Avoma-Signature` header containing an HMAC-SHA256 hex digest of the raw request body, keyed with your signing secret. Verify it to ensure the request originated from Avoma:
+
+
+        ```python
+
+        import hashlib, hmac
+
+        expected = hmac.new(signing_secret.encode(), raw_body, hashlib.sha256).hexdigest()
+
+        assert hmac.compare_digest(expected, request.headers["X-Avoma-Signature"])
+
+        ```
+
+
+        Manage your signing secret via the API (`GET/PATCH/DELETE /v1/webhooks/signing-secret/`) or generate a new random one (`POST /v1/webhooks/signing-secret/rotate/`).
+
+
+        **Retry policy**
+
+
+        Failed deliveries (non-2xx response or timeout) are retried up to **5 times** with increasing delays: 5 min → 30 min → 2 h → 12 h → 24 h. After 5 consecutive failures the subscription is automatically deactivated.
+
+
+        **Rate limits / SLAs**
+
+
+        There are no per-subscription rate limits. Webhook delivery is best-effort.
+
+
+        **Team filtering**
+
+
+        When `target_type` is `2`, you may pass a list of team UUIDs in `teams` to limit delivery to meetings whose attributed user belongs to one of those teams. Omit `teams` (or pass an empty list) to receive all meetings in the organization.'
+      operationId: createWebhook
+      requestBody:
+        content:
+          application/json:
+            examples:
+              ainote:
+                summary: Subscribe to AI Notes events (org webhook)
+                value:
+                  event_type: AINOTE
+                  target_type: 2
+                  target_url: https://example.com/webhooks/avoma
+              scheduler_booking:
+                summary: Subscribe to scheduler booking events (org webhook)
+                value:
+                  event_type: MEETING_BOOKED_VIA_SCHEDULER
+                  target_type: 2
+                  target_url: https://example.com/webhooks/avoma
+              zapier_new_conversation:
+                summary: Subscribe to new conversation events (Zapier)
+                value:
+                  event_type: new_conversation
+                  target_type: 1
+                  target_url: https://hooks.zapier.com/hooks/catch/example
+            schema:
+              description: Request body for creating a webhook subscription.
+              properties:
+                event_type:
+                  description: 'The event to subscribe to. See `POST /v1/webhooks/` for the full list and descriptions of each event type per `target_type`.
+
+                    '
+                  enum:
+                  - AINOTE
+                  - MEETING_BOOKED_VIA_SCHEDULER
+                  - MEETING_BOOKED_VIA_SCHEDULER_CANCELED
+                  - MEETING_BOOKED_VIA_SCHEDULER_RESCHEDULED
+                  - new_conversation
+                  type: string
+                target_type:
+                  default: 2
+                  description: '`2` for direct organization webhooks. `1` for Zapier-managed webhooks (requires Zapier integration feature).
+
+                    '
+                  enum:
+                  - 1
+                  - 2
+                  type: integer
+                target_url:
+                  description: 'HTTPS URL that Avoma will POST the event payload to. Must use the `https://` scheme.
+
+                    '
+                  format: uri
+                  type: string
+                teams:
+                  description: 'Optional list of team UUIDs. When provided, the webhook only fires for meetings whose attributed user belongs to one of these teams. Only applicable when `target_type` is `2`. Omit or pass an empty list to receive events for all meetings in the organization.
+
+                    '
+                  items:
+                    format: uuid
+                    type: string
+                  type: array
+              required:
+              - event_type
+              - target_url
+              type: object
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                description: A webhook subscription registered for the organization.
+                properties:
+                  event_type:
+                    description: The event type this subscription fires on.
+                    enum:
+                    - AINOTE
+                    - MEETING_BOOKED_VIA_SCHEDULER
+                    - MEETING_BOOKED_VIA_SCHEDULER_CANCELED
+                    - MEETING_BOOKED_VIA_SCHEDULER_RESCHEDULED
+                    - new_conversation
+                    type: string
+                  is_active:
+                    description: Whether the subscription is currently active.
+                    readOnly: true
+                    type: boolean
+                  target_type:
+                    description: 'Subscription target. `2` = Organization webhook (use this for direct API-key integrations). `1` = Zapier.
+
+                      '
+                    enum:
+                    - 1
+                    - 2
+                    type: integer
+                  target_url:
+                    description: HTTPS URL that Avoma will POST the event payload to.
+                    format: uri
+                    type: string
+                  uuid:
+                    description: Unique identifier of the subscription.
+                    format: uuid
+                    readOnly: true
+                    type: string
+                required:
+                - event_type
+                - target_url
+                - uuid
+                - is_active
+                type: object
+          description: Created
+        '400':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Bad Request — invalid event_type, non-HTTPS URL, or feature not enabled.
+        '401':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Unauthorized
+      summary: Create Webhook Subscription
+      tags:
+      - Webhooks
+  /v1/webhooks/ainote/:
+    post:
+      description: '**Outbound webhook payload** — Avoma POSTs this to your registered `target_url` when AI notes are ready for a meeting or call. This is the shape of the body your endpoint will receive; you do not call this path directly.'
+      operationId: webhookEventAinote
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                action_items:
+                  description: List of action items extracted from the meeting.
+                  example:
+                  - action_item: Follow up with client on project timeline
+                    company: Avoma
+                    email: john.doe@avoma.com
+                    name: John Doe
+                  - action_item: Review and provide feedback on proposal
+                    company: Client Corp
+                    email: jane.smith@client.com
+                    name: Jane Smith
+                  items:
+                    properties:
+                      action_item:
+                        description: The actual action item text.
+                        type: string
+                      company:
+                        description: Company of the person assigned the action item.
+                        type: string
+                      email:
+                        description: Email of the person assigned the action item.
+                        format: email
+                        type: string
+                      name:
+                        description: Name of the person assigned the action item.
+                        type: string
+                    required:
+                    - email
+                    - name
+                    - company
+                    - action_item
+                    type: object
+                  type: array
+                ai_notes:
+                  description: AI-generated notes for the meeting in HTML format.
+                  example: '<h2>Participants</h2><ul><li><p>Avoma: John Doe</p></li></ul>'
+                  type:
+                  - string
+                  - 'null'
+                ai_notes_txt:
+                  description: AI-generated notes for the meeting in markdown/text format.
+                  example: 'Participants: Avoma: John Doe'
+                  type:
+                  - string
+                  - 'null'
+                attendees:
+                  description: The attendees of the meeting.
+                  items:
+                    properties:
+                      email:
+                        description: The email of the attendee.
+                        format: email
+                        type: string
+                      name:
+                        description: The name of the attendee.
+                        type: string
+                      response_status:
+                        description: The response status of the attendee.
+                        type: string
+                      uuid:
+                        description: The unique identifier of the attendee.
+                        format: uuid
+                        type: string
+                    type: object
+                  type: array
+                audio_ready:
+                  description: Indicates if the audio is ready.
+                  type: boolean
+                audio_url:
+                  description: The URL of the audio.
+                  format: uri
+                  type: string
+                call_details:
+                  description: Call metadata for voice call meetings. Null for video meetings.
+                  properties:
+                    call_direction:
+                      description: Direction of the call.
+                      enum:
+                      - inbound
+                      - outbound
+                      type: string
+                    external_id:
+                      description: External ID of the call in the dialer system.
+                      type: string
+                    external_ph_no:
+                      description: Lead/prospect phone number.
+                      type:
+                      - string
+                      - 'null'
+                    frm:
+                      description: Caller phone number.
+                      type: string
+                    to:
+                      description: Callee phone number.
+                      type: string
+                  type:
+                  - object
+                  - 'null'
+                created:
+                  description: The creation date-time (UTC).
+                  format: date-time
+                  type: string
+                duration:
+                  description: The duration of the meeting.
+                  format: float
+                  type: number
+                end_at:
+                  description: The end time of the meeting.
+                  format: date-time
+                  type: string
+                event_label:
+                  description: Human-readable label for the event type.
+                  type:
+                  - string
+                  - 'null'
+                event_type:
+                  description: The event type of the meeting.
+                  enum:
+                  - AINOTE
+                  type: string
+                insights:
+                  description: The insights of the meeting.
+                  properties:
+                    filler_wpm:
+                      description: The filler words per minute in the meeting.
+                      items:
+                        properties:
+                          designation:
+                            description: The designation of the speaker.
+                            type: string
+                          filler_wpm:
+                            description: The filler words per minute of the speaker.
+                            type: number
+                          speaker_id:
+                            description: The ID of the speaker.
+                            type: string
+                        type: object
+                      type: array
+                    longest_monologue:
+                      description: The longest monologue in the meeting.
+                      properties:
+                        rep:
+                          properties:
+                            segments:
+                              description: The segments of the speaker.
+                              items:
+                                items:
+                                  type: number
+                                type: array
+                              type: array
+                            speaker_id:
+                              description: The ID of the speaker.
+                              type: string
+                          type: object
+                      type: object
+                    patience:
+                      description: The patience of the speaker.
+                      items:
+                        properties:
+                          designation:
+                            description: The designation of the speaker.
+                            type: string
+                          patience:
+                            description: The patience of the speaker.
+                            type: number
+                          speaker_id:
+                            description: The ID of the speaker.
+                            type: string
+                        type: object
+                      type: array
+                    sentiment:
+                      description: The sentiment of the meeting.
+                      properties:
+                        sentiment:
+                          description: The sentiment of the meeting.
+                          type: number
+                        sentiment_ranges:
+                          description: The sentiment ranges of the meeting.
+                          items:
+                            properties:
+                              range:
+                                description: The range of the sentiment.
+                                type: string
+                              sentiment_value:
+                                description: The sentiment value.
+                                type: number
+                            type: object
+                          type: array
+                      type: object
+                    speaker_mapping:
+                      description: The speaker mapping of the meeting.
+                      properties:
+                        email:
+                          description: The email of the speaker.
+                          format: email
+                          type: string
+                        id:
+                          description: The ID of the speaker.
+                          type: integer
+                        name:
+                          description: The name of the speaker.
+                          type: string
+                      type: object
+                    talk_stats:
+                      description: The talk stats of the meeting.
+                      properties:
+                        talk_percentage:
+                          description: The talk percentage of the speaker.
+                          format: float
+                          type: number
+                        total_talk_time:
+                          description: The total talk time of the speaker.
+                          format: float
+                          type: number
+                      type: object
+                    wpm:
+                      description: The words per minute of the meeting.
+                      items:
+                        properties:
+                          designation:
+                            description: The designation of the speaker.
+                            type: string
+                          speaker_id:
+                            description: The ID of the speaker.
+                            type: string
+                          wpm:
+                            description: The words per minute of the speaker.
+                            type: number
+                        type: object
+                      type: array
+                  type: object
+                is_call:
+                  description: Indicates if the meeting is a voice call.
+                  type: boolean
+                is_internal:
+                  description: 'Indicates if the meeting is internal. - `true`: Get meetings where no attendee is from outside the organization. - `false`: Get meetings where there are attendees from outside the organization.
+
+                    '
+                  type: boolean
+                meeting_url:
+                  description: Direct URL to the meeting in Avoma platform.
+                  example: https://app.avoma.com/meeting/aa380fc2-725d-4ef8-909c-c595c0e62bcd
+                  format: uri
+                  type:
+                  - string
+                  - 'null'
+                modified:
+                  description: Last modification date-time(UTC).
+                  format: date-time
+                  type: string
+                notes_ready:
+                  description: Indicates if the notes are ready.
+                  type: boolean
+                organizer_email:
+                  description: The email of the organizer.
+                  format: email
+                  type: string
+                organizer_name:
+                  description: The name of the organizer.
+                  type: string
+                outcome:
+                  description: The outcome of the meeting.
+                  properties:
+                    label:
+                      type: string
+                    uuid:
+                      format: uuid
+                      type: string
+                  type:
+                  - object
+                  - 'null'
+                privacy:
+                  description: The privacy of the meeting.
+                  enum:
+                  - private
+                  - organization
+                  type: string
+                processing_status:
+                  description: The processing status of the meeting.
+                  type: string
+                purpose:
+                  description: The purpose of the meeting.
+                  properties:
+                    label:
+                      type: string
+                    uuid:
+                      format: uuid
+                      type: string
+                  type:
+                  - object
+                  - 'null'
+                recording_uuid:
+                  description: The unique identifier of the recording.
+                  format: uuid
+                  type: string
+                start_at:
+                  description: The start time of the meeting.
+                  format: date-time
+                  type: string
+                state:
+                  description: The state of the meeting.
+                  type: string
+                subject:
+                  description: The subject of the meeting.
+                  type: string
+                transcript_ready:
+                  description: Indicates if the transcript is ready.
+                  type: boolean
+                transcription_uuid:
+                  description: The unique identifier of the transcription.
+                  format: uuid
+                  type: string
+                transcription_vtt_url:
+                  description: Signed url of the transcription vtt file.
+                  format: uri
+                  type: string
+                uuid:
+                  description: The unique identifier of the meeting.
+                  format: uuid
+                  type: string
+                video_ready:
+                  description: Indicates if the video is ready.
+                  type: boolean
+                video_url:
+                  description: The URL of the video.
+                  format: uri
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: 'Your endpoint should return any 2xx status to acknowledge receipt. Non-2xx responses trigger the retry policy.
+
+            '
+      summary: 'Event payload: AINOTE'
+      tags:
+      - Webhooks
+  /v1/webhooks/meeting_booked_via_scheduler/:
+    post:
+      description: '**Outbound webhook payload** — Avoma POSTs this to your registered `target_url` when a meeting is booked through one of your Avoma scheduling pages. This is the shape of the body your endpoint will receive; you do not call this path directly.'
+      operationId: webhookEventMeetingBookedViaScheduler
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                booker_email:
+                  description: The email of the booker.
+                  type:
+                  - string
+                  - 'null'
+                cancel_reason:
+                  description: The reason for the cancellation.
+                  type:
+                  - string
+                  - 'null'
+                conference_link:
+                  description: The conference link of the event.
+                  type: string
+                created:
+                  description: Timestamp when the meeting was created.
+                  format: date-time
+                  type: string
+                event_end_time:
+                  description: The end time of the event.
+                  format: date-time
+                  type: string
+                event_label:
+                  description: Human-readable label for the event type.
+                  type:
+                  - string
+                  - 'null'
+                event_start_time:
+                  description: The start time of the event.
+                  format: date-time
+                  type: string
+                event_type:
+                  description: The type of the event.
+                  enum:
+                  - MEETING_BOOKED_VIA_SCHEDULER
+                  type: string
+                invitee_details:
+                  description: The details of the invitee.
+                  properties:
+                    email:
+                      description: The email of the invitee.
+                      format: email
+                      type: string
+                    locale:
+                      description: The locale of the invitee.
+                      type: string
+                    name:
+                      description: The name of the invitee.
+                      type: string
+                    tz:
+                      description: The timezone of the invitee.
+                      type: string
+                  type: object
+                invitee_responses:
+                  description: The responses of the invitee.
+                  items:
+                    properties:
+                      question:
+                        description: The question.
+                        type: string
+                      response:
+                        description: The response.
+                        type: string
+                    type: object
+                  type: array
+                meeting_uuid:
+                  description: The unique identifier of the meeting created in Avoma.
+                  format: uuid
+                  type: string
+                modified:
+                  description: Timestamp when the event was last modified.
+                  format: date-time
+                  type: string
+                organizer_email:
+                  description: The email of the organizer.
+                  format: email
+                  type: string
+                organizer_timezone:
+                  description: The timezone of the organizer.
+                  type: string
+                purpose:
+                  description: The purpose of the meeting.
+                  type:
+                  - string
+                  - 'null'
+                scheduling_page_link:
+                  description: The scheduling page link.
+                  type: string
+                subject:
+                  description: The subject of the meeting.
+                  type: string
+                uuid:
+                  description: The unique identifier of the event.
+                  format: uuid
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: 'Your endpoint should return any 2xx status to acknowledge receipt. Non-2xx responses trigger the retry policy.
+
+            '
+      summary: 'Event payload: MEETING_BOOKED_VIA_SCHEDULER'
+      tags:
+      - Webhooks
+  /v1/webhooks/meeting_booked_via_scheduler_canceled/:
+    post:
+      description: '**Outbound webhook payload** — Avoma POSTs this to your registered `target_url` when a scheduler-booked meeting is canceled. This is the shape of the body your endpoint will receive; you do not call this path directly.'
+      operationId: webhookEventMeetingBookedViaSchedulerCanceled
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                booker_email:
+                  description: The email of the booker.
+                  type:
+                  - string
+                  - 'null'
+                cancel_reason:
+                  description: The reason for the cancellation.
+                  type:
+                  - string
+                  - 'null'
+                conference_link:
+                  description: The conference link of the event.
+                  type: string
+                created:
+                  description: Timestamp when the event was created.
+                  format: date-time
+                  type: string
+                event_end_time:
+                  description: The end time of the event.
+                  format: date-time
+                  type: string
+                event_label:
+                  description: Human-readable label for the event type.
+                  type:
+                  - string
+                  - 'null'
+                event_start_time:
+                  description: The start time of the event.
+                  format: date-time
+                  type: string
+                event_type:
+                  description: The type of the event.
+                  enum:
+                  - MEETING_BOOKED_VIA_SCHEDULER_CANCELED
+                  type: string
+                invitee_details:
+                  description: The details of the invitee.
+                  properties:
+                    email:
+                      description: The email of the invitee.
+                      format: email
+                      type: string
+                    locale:
+                      description: The locale of the invitee.
+                      type: string
+                    name:
+                      description: The name of the invitee.
+                      type: string
+                    tz:
+                      description: The timezone of the invitee.
+                      type: string
+                  type: object
+                invitee_responses:
+                  description: The responses of the invitee.
+                  items:
+                    properties:
+                      question:
+                        description: The question.
+                        type: string
+                      response:
+                        description: The response.
+                        type: string
+                    type: object
+                  type: array
+                meeting_uuid:
+                  description: The unique identifier of the meeting.
+                  format: uuid
+                  type: string
+                modified:
+                  description: Timestamp when the event was last modified.
+                  format: date-time
+                  type: string
+                organizer_email:
+                  description: The email of the organizer.
+                  format: email
+                  type: string
+                organizer_timezone:
+                  description: The timezone of the organizer.
+                  type: string
+                purpose:
+                  description: The purpose of the event.
+                  type:
+                  - string
+                  - 'null'
+                scheduling_page_link:
+                  description: The scheduling page link.
+                  type: string
+                subject:
+                  description: The subject of the event.
+                  type: string
+                uuid:
+                  description: The unique identifier of the event.
+                  format: uuid
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: 'Your endpoint should return any 2xx status to acknowledge receipt. Non-2xx responses trigger the retry policy.
+
+            '
+      summary: 'Event payload: MEETING_BOOKED_VIA_SCHEDULER_CANCELED'
+      tags:
+      - Webhooks
+  /v1/webhooks/meeting_booked_via_scheduler_rescheduled/:
+    post:
+      description: '**Outbound webhook payload** — Avoma POSTs this to your registered `target_url` when a scheduler-booked meeting is rescheduled. This is the shape of the body your endpoint will receive; you do not call this path directly.'
+      operationId: webhookEventMeetingBookedViaSchedulerRescheduled
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                booker_email:
+                  description: The email of the booker.
+                  type:
+                  - string
+                  - 'null'
+                cancel_reason:
+                  description: The reason for the cancellation.
+                  type:
+                  - string
+                  - 'null'
+                conference_link:
+                  description: The conference link of the event.
+                  type: string
+                created:
+                  description: Timestamp when the event was created.
+                  format: date-time
+                  type: string
+                event_end_time:
+                  description: The end time of the event.
+                  format: date-time
+                  type: string
+                event_label:
+                  description: Human-readable label for the event type.
+                  type:
+                  - string
+                  - 'null'
+                event_start_time:
+                  description: The start time of the event.
+                  format: date-time
+                  type: string
+                event_type:
+                  description: The type of the event.
+                  enum:
+                  - MEETING_BOOKED_VIA_SCHEDULER_RESCHEDULED
+                  type: string
+                invitee_details:
+                  description: The details of the invitee.
+                  properties:
+                    email:
+                      description: The email of the invitee.
+                      format: email
+                      type: string
+                    locale:
+                      description: The locale of the invitee.
+                      type: string
+                    name:
+                      description: The name of the invitee.
+                      type: string
+                    tz:
+                      description: The timezone of the invitee.
+                      type: string
+                  type: object
+                invitee_responses:
+                  description: The responses of the invitee.
+                  items:
+                    properties:
+                      question:
+                        description: The question.
+                        type: string
+                      response:
+                        description: The response.
+                        type: string
+                    type: object
+                  type: array
+                meeting_uuid:
+                  description: The unique identifier of the meeting.
+                  format: uuid
+                  type: string
+                modified:
+                  description: Timestamp when the event was last modified.
+                  format: date-time
+                  type: string
+                organizer_email:
+                  description: The email of the organizer.
+                  format: email
+                  type: string
+                organizer_timezone:
+                  description: The timezone of the organizer.
+                  type: string
+                purpose:
+                  description: The purpose of the event.
+                  type:
+                  - string
+                  - 'null'
+                scheduling_page_link:
+                  description: The scheduling page link.
+                  type: string
+                subject:
+                  description: The subject of the event.
+                  type: string
+                uuid:
+                  description: The unique identifier of the event.
+                  format: uuid
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: 'Your endpoint should return any 2xx status to acknowledge receipt. Non-2xx responses trigger the retry policy.
+
+            '
+      summary: 'Event payload: MEETING_BOOKED_VIA_SCHEDULER_RESCHEDULED'
+      tags:
+      - Webhooks
+  /v1/webhooks/new_conversation/:
+    post:
+      description: '**Outbound webhook payload** — Avoma POSTs this to your Zapier webhook URL when AI notes are ready for a meeting or call. This is the shape of the body your Zap trigger will receive; you do not call this path directly.'
+      operationId: webhookEventNewConversation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: 'Payload delivered by Avoma to a Zapier webhook when AI notes are ready for a meeting (event_type: new_conversation). Extends the base meeting payload with Zapier-specific call fields and a plain-text transcription.
+
+                '
+              properties:
+                action_items:
+                  description: Action items extracted from the meeting.
+                  items:
+                    properties:
+                      action_item:
+                        type: string
+                      company:
+                        type: string
+                      email:
+                        format: email
+                        type: string
+                      name:
+                        type: string
+                    type: object
+                  type: array
+                ai_notes:
+                  description: AI-generated notes in HTML format.
+                  type:
+                  - string
+                  - 'null'
+                ai_notes_txt:
+                  description: AI-generated notes in markdown/text format.
+                  type:
+                  - string
+                  - 'null'
+                attendees:
+                  description: The attendees of the meeting.
+                  items:
+                    properties:
+                      email:
+                        format: email
+                        type: string
+                      name:
+                        type: string
+                      response_status:
+                        type: string
+                      uuid:
+                        format: uuid
+                        type: string
+                    type: object
+                  type: array
+                audio_ready:
+                  description: True if audio is ready.
+                  type: boolean
+                audio_url:
+                  description: Signed URL of the meeting audio.
+                  format: uri
+                  type:
+                  - string
+                  - 'null'
+                call_direction:
+                  description: Direction of the call.
+                  enum:
+                  - inbound
+                  - outbound
+                  type:
+                  - string
+                  - 'null'
+                call_external_ph_no:
+                  description: Lead/prospect phone number (voice calls only).
+                  type:
+                  - string
+                  - 'null'
+                call_frm:
+                  description: Caller phone number (voice calls only).
+                  type:
+                  - string
+                  - 'null'
+                call_to:
+                  description: Callee phone number (voice calls only).
+                  type:
+                  - string
+                  - 'null'
+                created:
+                  description: The creation date-time (UTC).
+                  format: date-time
+                  type: string
+                duration:
+                  description: Recording duration in seconds.
+                  format: float
+                  type: number
+                end_at:
+                  description: The end time of the meeting.
+                  format: date-time
+                  type: string
+                event_label:
+                  description: Human-readable label for the event type.
+                  type:
+                  - string
+                  - 'null'
+                event_type:
+                  description: The Zapier event type.
+                  enum:
+                  - new_conversation
+                  type: string
+                is_call:
+                  description: True if the meeting is a voice call.
+                  type: boolean
+                is_internal:
+                  description: True if all attendees belong to the same organization.
+                  type: boolean
+                meeting_url:
+                  description: Direct URL to the meeting in the Avoma platform.
+                  format: uri
+                  type:
+                  - string
+                  - 'null'
+                modified:
+                  description: Last modification date-time (UTC).
+                  format: date-time
+                  type: string
+                notes_ready:
+                  description: True if AI notes are ready.
+                  type: boolean
+                organizer_email:
+                  description: The email of the meeting organizer.
+                  format: email
+                  type: string
+                organizer_name:
+                  description: The name of the meeting organizer.
+                  type: string
+                outcome:
+                  description: The outcome of the meeting.
+                  properties:
+                    label:
+                      type: string
+                    uuid:
+                      format: uuid
+                      type: string
+                  type:
+                  - object
+                  - 'null'
+                privacy:
+                  description: The privacy setting of the meeting.
+                  enum:
+                  - private
+                  - organization
+                  type: string
+                processing_status:
+                  description: The current processing status of the meeting.
+                  type: string
+                purpose:
+                  description: The purpose of the meeting.
+                  properties:
+                    label:
+                      type: string
+                    uuid:
+                      format: uuid
+                      type: string
+                  type:
+                  - object
+                  - 'null'
+                recording_uuid:
+                  description: The unique identifier of the recording.
+                  format: uuid
+                  type: string
+                start_at:
+                  description: The start time of the meeting.
+                  format: date-time
+                  type: string
+                state:
+                  description: The state of the meeting.
+                  type: string
+                subject:
+                  description: The subject of the meeting.
+                  type: string
+                transcript_ready:
+                  description: True if transcript is ready.
+                  type: boolean
+                transcription_text:
+                  description: Plain text of the meeting transcription extracted from the VTT file. Null if transcription is unavailable.
+                  type:
+                  - string
+                  - 'null'
+                transcription_uuid:
+                  description: The unique identifier of the transcription.
+                  format: uuid
+                  type: string
+                transcription_vtt_url:
+                  description: Signed URL of the transcription VTT file.
+                  format: uri
+                  type: string
+                uuid:
+                  description: The unique identifier of the meeting.
+                  format: uuid
+                  type: string
+                video_ready:
+                  description: True if video is ready.
+                  type: boolean
+                video_url:
+                  description: Signed URL of the meeting video.
+                  format: uri
+                  type:
+                  - string
+                  - 'null'
+              type: object
+      responses:
+        '200':
+          description: 'Your endpoint should return any 2xx status to acknowledge receipt. Non-2xx responses trigger the retry policy.
+
+            '
+      summary: 'Event payload: new_conversation (Zapier)'
+      tags:
+      - Webhooks
+  /v1/webhooks/signing-secret/:
+    delete:
+      description: Removes the signing secret. After this call, outbound deliveries will no longer include an `X-Avoma-Signature` header.
+      operationId: clearWebhookSigningSecret
+      responses:
+        '204':
+          description: Secret cleared.
+        '401':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Unauthorized
+      summary: Clear Webhook Signing Secret
+      tags:
+      - Webhooks
+    get:
+      description: Returns the current signing secret for your organization's webhooks. The secret is used to generate the `X-Avoma-Signature` header on outbound webhook deliveries. If no secret is configured, an empty string is returned and deliveries will not include the signature header.
+      operationId: getWebhookSigningSecret
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  signing_secret:
+                    description: 'HMAC signing secret used to sign outbound webhook payloads. An empty string means no secret is configured and deliveries will not include the `X-Avoma-Signature` header.
+
+                      '
+                    example: a3f8e1c0d2b4...
+                    type: string
+                required:
+                - signing_secret
+                type: object
+          description: OK
+        '401':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Unauthorized
+      summary: Get Webhook Signing Secret
+      tags:
+      - Webhooks
+    patch:
+      description: Set a custom signing secret for your organization's webhooks. After this call, all outbound deliveries will include an `X-Avoma-Signature` HMAC-SHA256 header computed from this secret.
+      operationId: setWebhookSigningSecret
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                signing_secret:
+                  description: 'HMAC signing secret used to sign outbound webhook payloads. An empty string means no secret is configured and deliveries will not include the `X-Avoma-Signature` header.
+
+                    '
+                  example: a3f8e1c0d2b4...
+                  type: string
+              required:
+              - signing_secret
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  signing_secret:
+                    description: 'HMAC signing secret used to sign outbound webhook payloads. An empty string means no secret is configured and deliveries will not include the `X-Avoma-Signature` header.
+
+                      '
+                    example: a3f8e1c0d2b4...
+                    type: string
+                required:
+                - signing_secret
+                type: object
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Unauthorized
+      summary: Set Webhook Signing Secret
+      tags:
+      - Webhooks
+  /v1/webhooks/signing-secret/rotate/:
+    post:
+      description: Generates a new cryptographically random 64-character hex signing secret, replacing any existing one. Use this to rotate your secret without downtime — update your receiver first, then rotate.
+      operationId: rotateWebhookSigningSecret
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  signing_secret:
+                    description: 'HMAC signing secret used to sign outbound webhook payloads. An empty string means no secret is configured and deliveries will not include the `X-Avoma-Signature` header.
+
+                      '
+                    example: a3f8e1c0d2b4...
+                    type: string
+                required:
+                - signing_secret
+                type: object
+          description: New secret generated.
+        '401':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Unauthorized
+      summary: Rotate Webhook Signing Secret
+      tags:
+      - Webhooks
+  /v1/webhooks/{uuid}/:
+    delete:
+      description: Deactivates a webhook subscription. No further events will be delivered to the associated `target_url`. The subscription is soft-deleted (`is_active` set to `false`) — it is not permanently removed.
+      operationId: deleteWebhook
+      parameters:
+      - description: UUID of the webhook subscription to deactivate.
+        in: path
+        name: uuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '204':
+          description: No Content — subscription deactivated.
+        '401':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Not Found
+      summary: Delete (Deactivate) Webhook Subscription
+      tags:
+      - Webhooks
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http

@@ -1,0 +1,173 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Notes API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- description: Avoma's AI takes notes so that you can focus on engaging in the conversation.
+  name: Notes
+paths:
+  /v1/notes/:
+    get:
+      description: Returns all notes from the organization if no params are passed. If `meeting` is passed, returns all notes for that meeting. If `custom_category` is passed, returns all notes for that custom category. If `output_format` is passed, returns all notes for that output format. Choices are `json`,`html`,`markdown` ordering can be done by `created` or `modified` by passing `o=` in params
+      parameters:
+      - description: Number of records returned per response.
+        in: query
+        name: page_size
+        schema:
+          default: 5
+          maximum: 20
+          type: integer
+      - description: To retrieve notes for meetings started at or started after given date-time(UTC).
+        in: query
+        name: from_date
+        required: true
+        schema:
+          format: date-time
+          type: string
+      - description: To retrieve notes for meetings started at or started before given date-time(UTC).
+        in: query
+        name: to_date
+        required: true
+        schema:
+          format: date-time
+          type: string
+      - in: query
+        name: o
+        schema:
+          default: -start_at
+          description: To specify the ordering of the notes list. Default is descending order.
+          enum:
+          - start_at
+          - -start_at
+          - modified
+          - -modified
+          type: string
+      - in: query
+        name: output_format
+        schema:
+          default: json
+          description: To specify format of notes. Default is json.
+          enum:
+          - json
+          - html
+          - markdown
+          type: string
+      - in: query
+        name: meeting_uuid
+        required: false
+        schema:
+          description: Unique ID of the meeting for which notes will be fetched.
+          format: uuid
+          type: string
+      - in: query
+        name: custom_category
+        required: false
+        schema:
+          description: Unique ID of the custom category. Only part of notes belonging to this custom category will be fetched.
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    count:
+                      description: Total number of records in result.
+                      minimum: 0
+                      type: integer
+                    next:
+                      description: URL to the next page if available.
+                      example: https://example.com/api/v1/meeting/?page=2
+                      type:
+                      - string
+                      - 'null'
+                    previous:
+                      description: URL to the previous page if available.
+                      example: https://example.com/api/v1/meeting/?page=1
+                      type:
+                      - string
+                      - 'null'
+                  type: object
+                - properties:
+                    results:
+                      description: Actual response.
+                      items:
+                        description: Notes Object
+                        properties:
+                          created:
+                            description: Last modification date-time(UTC).
+                            format: date-time
+                            type: string
+                          data:
+                            description: Notes data.
+                            oneOf:
+                            - type: object
+                            - type: string
+                          modified:
+                            description: Last modification date-time(UTC).
+                            format: date-time
+                            type: string
+                        type: object
+                      type: array
+                  required:
+                  - results
+                  type: object
+              examples:
+                markdown:
+                  $ref: ./openapi/components/external.yml#/components/examples/notes_markdown_example
+                json:
+                  $ref: ./openapi/components/external.yml#/components/examples/notes_json_example
+                html:
+                  $ref: ./openapi/components/external.yml#/components/examples/notes_html_example
+          description: OK
+        '204':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not valid data found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: No content data found
+        '400':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Invalid query params
+      summary: List Notes
+      tags:
+      - Notes
+      operationId: getV1Notes
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http

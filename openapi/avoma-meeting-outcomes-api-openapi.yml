@@ -1,0 +1,192 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Meeting Outcomes API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- name: Meeting Outcomes
+paths:
+  /v1/meeting_outcome/:
+    get:
+      summary: List Meeting Outcomes
+      description: Returns all meeting outcomes for the organization.
+      tags:
+      - Meeting Outcomes
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./openapi/components/external.yml#/components/schemas/meeting_outcome_response
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: getV1MeetingOutcome
+      x-operation-id-source: derived
+    post:
+      summary: Create Meeting Outcome
+      description: Creates a new meeting outcome for the organization.
+      tags:
+      - Meeting Outcomes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ./openapi/components/external.yml#/components/schemas/meeting_outcome_request
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/meeting_outcome_response
+        '400':
+          description: Bad Request - Invalid data or duplicate label
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: postV1MeetingOutcome
+      x-operation-id-source: derived
+  /v1/meeting_outcome/{uuid}/:
+    get:
+      summary: Get Meeting Outcome
+      description: Returns a specific meeting outcome by UUID.
+      tags:
+      - Meeting Outcomes
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+          description: Unique ID of the meeting outcome.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/meeting_outcome_response
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: getV1MeetingOutcomeByUuid
+      x-operation-id-source: derived
+    patch:
+      summary: Update Meeting Outcome
+      description: Updates a specific meeting outcome by UUID. You can provide either label or description (or both).
+      tags:
+      - Meeting Outcomes
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+          description: Unique ID of the meeting outcome.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ./openapi/components/external.yml#/components/schemas/meeting_outcome_update_request
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/meeting_outcome_response
+        '400':
+          description: Bad Request - Invalid data
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: patchV1MeetingOutcomeByUuid
+      x-operation-id-source: derived
+    delete:
+      summary: Delete Meeting Outcome
+      description: Deletes a specific meeting outcome by UUID.
+      tags:
+      - Meeting Outcomes
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+          description: Unique ID of the meeting outcome.
+      responses:
+        '204':
+          description: No Content - Successfully deleted
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: deleteV1MeetingOutcomeByUuid
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http

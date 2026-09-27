@@ -1,0 +1,552 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Smart Category API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- description: Smart Categories can help organize your meeting notes into logical groupings, making it effortless to navigate and extract specific information from large volumes of conversational data.
+  name: Smart Category
+paths:
+  /v1/smart_categories/:
+    get:
+      description: Returns all smart categories from the organization.
+      parameters:
+      - in: query
+        name: o
+        schema:
+          default: -start_at
+          description: To specify the ordering of the custom category list. Default is descending order.
+          enum:
+          - start_at
+          - -start_at
+          - modified
+          - -modified
+          - name
+          - -name
+          - background_color
+          - -background_color
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    count:
+                      description: Total number of records in result.
+                      minimum: 0
+                      type: integer
+                    next:
+                      description: URL to the next page if available.
+                      example: https://example.com/api/v1/meeting/?page=2
+                      type:
+                      - string
+                      - 'null'
+                    previous:
+                      description: URL to the previous page if available.
+                      example: https://example.com/api/v1/meeting/?page=1
+                      type:
+                      - string
+                      - 'null'
+                  type: object
+                - properties:
+                    results:
+                      description: Actual response.
+                      items:
+                        description: Smart Category Object
+                        properties:
+                          is_default:
+                            description: Is default custom category.
+                            type: boolean
+                          key:
+                            description: Key of the custom category.
+                            type: string
+                          keywords:
+                            description: Keywords of the custom category.
+                            items:
+                              description: Keyword object
+                              properties:
+                                created:
+                                  description: Creation date-time(UTC).
+                                  format: date-time
+                                  type: string
+                                custom_category:
+                                  description: Unique ID of the custom category.
+                                  format: uuid
+                                  type: string
+                                is_primary:
+                                  description: Is primary keyword.
+                                  type: boolean
+                                label:
+                                  description: Label of the the keyword.
+                                  example: Competitor
+                                  type: string
+                                uuid:
+                                  description: Unique ID of the keyword.
+                                  format: uuid
+                                  type: string
+                                variations:
+                                  description: Variations of the keyword.
+                                  items:
+                                    description: Variation of the keyword.
+                                    example: Competitor
+                                    type: string
+                                  type: array
+                              type: object
+                            type: array
+                          name:
+                            description: Name of the custom category.
+                            type: string
+                          prompts:
+                            description: Prompts of the custom category.
+                            items:
+                              description: Prompt object
+                              properties:
+                                created:
+                                  description: Creation date-time(UTC).
+                                  format: date-time
+                                  type: string
+                                custom_category:
+                                  description: Unique ID of the custom category.
+                                  format: uuid
+                                  type: string
+                                label:
+                                  description: Label of the the prompt.
+                                  example: How did you hear about us
+                                  type: string
+                                uuid:
+                                  description: Unique ID of the prompt.
+                                  format: uuid
+                                  type: string
+                                variations:
+                                  description: Variations of the prompt.
+                                  items:
+                                    description: Variation of the prompt.
+                                    example: How did you hear about us
+                                    type: string
+                                  type: array
+                              type: object
+                            type: array
+                          settings:
+                            description: Settings of the custom category.
+                            properties:
+                              aug_notes_enabled:
+                                description: Augmented notes enabled.
+                                type: boolean
+                              keyword_notes_enabled:
+                                description: Keyword notes enabled.
+                                type: boolean
+                              keyword_tracking_enabled:
+                                description: Keyword tracking enabled.
+                                type: boolean
+                              prompt_extract_length:
+                                description: Prompt extract length.
+                                type: string
+                              prompt_extract_strategy:
+                                description: Prompt extract strategy.
+                                type: string
+                              prompt_notes_enabled:
+                                description: Prompt notes enabled.
+                                type: boolean
+                            type: object
+                          uuid:
+                            description: UUID of the custom category.
+                            format: uuid
+                            type: string
+                        type: object
+                      type: array
+                  required:
+                  - results
+                  type: object
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Invalid query params
+      summary: List Smart Categories
+      tags:
+      - Smart Category
+      operationId: getV1SmartCategories
+      x-operation-id-source: derived
+    post:
+      description: Creates the smart category and settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                keywords:
+                  description: Keywords of the smart category
+                  items:
+                    type: string
+                  type: array
+                name:
+                  description: Name of the smart category
+                  type: string
+                prompts:
+                  description: Prompts of the smart category
+                  items:
+                    type: string
+                  type: array
+                settings:
+                  description: Settings of the smart category
+                  properties:
+                    aug_notes_enabled:
+                      description: Bookmark and transcript snippet
+                      type: boolean
+                    keyword_notes_enabled:
+                      description: Keyword notes enabled
+                      type: boolean
+                    prompt_extract_length:
+                      description: Prompt extract length
+                      enum:
+                      - short
+                      - medium
+                      - long
+                      type: string
+                    prompt_extract_strategy:
+                      description: Prompt extract strategy
+                      enum:
+                      - after
+                      - before
+                      - contains
+                      type: string
+                  type: object
+              required:
+              - name
+              - settings
+              - prompts
+              - keywords
+              type: object
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  keywords:
+                    description: Keywords of the smart category
+                    items:
+                      type: string
+                    type: array
+                  name:
+                    description: Name of the smart category
+                    type: string
+                  prompts:
+                    description: Prompts of the smart category
+                    items:
+                      type: string
+                    type: array
+                  settings:
+                    description: Settings of the smart category
+                    properties:
+                      aug_notes_enabled:
+                        description: Bookmark and transcript snippet
+                        type: boolean
+                      keyword_notes_enabled:
+                        description: Keyword notes enabled
+                        type: boolean
+                      prompt_extract_length:
+                        description: Prompt extract length
+                        enum:
+                        - short
+                        - medium
+                        - long
+                        type: string
+                      prompt_extract_strategy:
+                        description: Prompt extract strategy
+                        enum:
+                        - after
+                        - before
+                        - contains
+                        type: string
+                      uuid:
+                        description: UUID of the smart category
+                        format: uuid
+                        type: string
+                    type: object
+                required:
+                - name
+                - settings
+                - prompts
+                - keywords
+                type: object
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Invalid query params
+      summary: Create the smart category settings
+      tags:
+      - Smart Category
+      operationId: postV1SmartCategories
+      x-operation-id-source: derived
+  /v1/smart_categories/{uuid}/:
+    get:
+      description: Returns smart categories from given uuid.
+      parameters:
+      - in: path
+        name: uuid
+        required: true
+        schema:
+          description: Unique ID of the smart category.
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Smart Category Object
+                properties:
+                  is_default:
+                    description: Is default custom category.
+                    type: boolean
+                  key:
+                    description: Key of the custom category.
+                    type: string
+                  keywords:
+                    description: Keywords of the custom category.
+                    items:
+                      description: Keyword object
+                      properties:
+                        created:
+                          description: Creation date-time(UTC).
+                          format: date-time
+                          type: string
+                        custom_category:
+                          description: Unique ID of the custom category.
+                          format: uuid
+                          type: string
+                        is_primary:
+                          description: Is primary keyword.
+                          type: boolean
+                        label:
+                          description: Label of the the keyword.
+                          example: Competitor
+                          type: string
+                        uuid:
+                          description: Unique ID of the keyword.
+                          format: uuid
+                          type: string
+                        variations:
+                          description: Variations of the keyword.
+                          items:
+                            description: Variation of the keyword.
+                            example: Competitor
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  name:
+                    description: Name of the custom category.
+                    type: string
+                  prompts:
+                    description: Prompts of the custom category.
+                    items:
+                      description: Prompt object
+                      properties:
+                        created:
+                          description: Creation date-time(UTC).
+                          format: date-time
+                          type: string
+                        custom_category:
+                          description: Unique ID of the custom category.
+                          format: uuid
+                          type: string
+                        label:
+                          description: Label of the the prompt.
+                          example: How did you hear about us
+                          type: string
+                        uuid:
+                          description: Unique ID of the prompt.
+                          format: uuid
+                          type: string
+                        variations:
+                          description: Variations of the prompt.
+                          items:
+                            description: Variation of the prompt.
+                            example: How did you hear about us
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                  settings:
+                    description: Settings of the custom category.
+                    properties:
+                      aug_notes_enabled:
+                        description: Augmented notes enabled.
+                        type: boolean
+                      keyword_notes_enabled:
+                        description: Keyword notes enabled.
+                        type: boolean
+                      keyword_tracking_enabled:
+                        description: Keyword tracking enabled.
+                        type: boolean
+                      prompt_extract_length:
+                        description: Prompt extract length.
+                        type: string
+                      prompt_extract_strategy:
+                        description: Prompt extract strategy.
+                        type: string
+                      prompt_notes_enabled:
+                        description: Prompt notes enabled.
+                        type: boolean
+                    type: object
+                  uuid:
+                    description: UUID of the custom category.
+                    format: uuid
+                    type: string
+                type: object
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Invalid query params
+      summary: Get Smart Categories
+      tags:
+      - Smart Category
+      operationId: getV1SmartCategoriesByUuid
+      x-operation-id-source: derived
+    patch:
+      description: Updates the smart category and settings
+      parameters:
+      - description: Unique ID of the Smart Category
+        in: path
+        name: uuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                keywords:
+                  description: Keywords of the smart category
+                  items:
+                    type: string
+                  type: array
+                prompts:
+                  description: Prompts of the smart category
+                  items:
+                    type: string
+                  type: array
+                settings:
+                  description: Settings of the smart category
+                  properties:
+                    aug_notes_enabled:
+                      description: Bookmark and transcript snippet
+                      type: boolean
+                    keyword_notes_enabled:
+                      description: Keyword notes enabled
+                      type: boolean
+                    prompt_extract_length:
+                      description: Prompt extract length
+                      enum:
+                      - short
+                      - medium
+                      - long
+                      type: string
+                    prompt_extract_strategy:
+                      description: Prompt extract strategy
+                      enum:
+                      - after
+                      - before
+                      - contains
+                      type: string
+                  type: object
+              type: object
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  keywords:
+                    description: Keywords of the smart category
+                    items:
+                      type: string
+                    type: array
+                  prompts:
+                    description: Prompts of the smart category
+                    items:
+                      type: string
+                    type: array
+                  settings:
+                    description: Settings of the smart category
+                    properties:
+                      aug_notes_enabled:
+                        description: Bookmark and transcript snippet
+                        type: boolean
+                      keyword_notes_enabled:
+                        description: Keyword notes enabled
+                        type: boolean
+                      prompt_extract_length:
+                        description: Prompt extract length
+                        enum:
+                        - short
+                        - medium
+                        - long
+                        type: string
+                      prompt_extract_strategy:
+                        description: Prompt extract strategy
+                        enum:
+                        - after
+                        - before
+                        - contains
+                        type: string
+                    type: object
+                type: object
+          description: ''
+      summary: Update the smart category settings
+      tags:
+      - Smart Category
+      operationId: patchV1SmartCategoriesByUuid
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http

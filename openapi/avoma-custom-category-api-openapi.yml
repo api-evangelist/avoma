@@ -1,0 +1,271 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Custom Category API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- description: '**Deprecated**: The "Custom Category" feature is deprecated and will be removed in future versions. We recommend using the "Smart Category" feature instead.'
+  name: Custom Category
+paths:
+  /v1/custom_categories/:
+    get:
+      description: Returns all custom categories from the organization.
+      parameters:
+      - in: query
+        name: o
+        schema:
+          default: -start_at
+          description: To specify the ordering of the custom category list. Default is descending order.
+          enum:
+          - start_at
+          - -start_at
+          - modified
+          - -modified
+          - name
+          - -name
+          - background_color
+          - -background_color
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    count:
+                      description: Total number of records in result.
+                      minimum: 0
+                      type: integer
+                    next:
+                      description: URL to the next page if available.
+                      example: https://example.com/api/v1/meeting/?page=2
+                      type:
+                      - string
+                      - 'null'
+                    previous:
+                      description: URL to the previous page if available.
+                      example: https://example.com/api/v1/meeting/?page=1
+                      type:
+                      - string
+                      - 'null'
+                  type: object
+                - properties:
+                    results:
+                      description: Actual response.
+                      items:
+                        description: Custom Category Object
+                        properties:
+                          av_field_mapping:
+                            description: AV field mapping of the custom category.
+                            type: object
+                          background_color:
+                            description: Background color of the custom category.
+                            type: string
+                          is_default:
+                            description: Is default custom category.
+                            type: boolean
+                          key:
+                            description: Key of the custom category.
+                            type: string
+                          keywords:
+                            description: Keywords of the custom category.
+                            items:
+                              type: string
+                            type: array
+                          name:
+                            description: Name of the custom category.
+                            type: string
+                          order:
+                            description: Order of the custom category.
+                            type: integer
+                          prompts:
+                            description: Prompts of the custom category.
+                            items:
+                              type: string
+                            type: array
+                          settings:
+                            description: Settings of the custom category.
+                            properties:
+                              aug_notes_enabled:
+                                description: Augmented notes enabled.
+                                type: boolean
+                              keyword_notes_enabled:
+                                description: Keyword notes enabled.
+                                type: boolean
+                              keyword_tracking_enabled:
+                                description: Keyword tracking enabled.
+                                type: boolean
+                              meeting_type_rule:
+                                description: Meeting type rule.
+                                type: integer
+                              meeting_types_blacklisted:
+                                description: Meeting types blacklisted.
+                                items:
+                                  type: string
+                                type: array
+                              meeting_types_whitelisted:
+                                description: Meeting types whitelisted.
+                                items:
+                                  type: string
+                                type: array
+                              prompt_extract_length:
+                                description: Prompt extract length.
+                                type: string
+                              prompt_extract_strategy:
+                                description: Prompt extract strategy.
+                                type: string
+                              prompt_notes_enabled:
+                                description: Prompt notes enabled.
+                                type: boolean
+                            type: object
+                          uuid:
+                            description: UUID of the custom category.
+                            format: uuid
+                            type: string
+                        type: object
+                      type: array
+                  required:
+                  - results
+                  type: object
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Invalid query params
+      summary: List Custom Categories
+      tags:
+      - Custom Category
+      operationId: getV1CustomCategories
+      x-operation-id-source: derived
+  /v1/custom_categories/{uuid}/:
+    get:
+      description: Returns a single custom category for a given `uuid`.
+      parameters:
+      - in: path
+        name: uuid
+        required: true
+        schema:
+          description: Unique ID of the custom category.
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Custom Category Object
+                properties:
+                  av_field_mapping:
+                    description: AV field mapping of the custom category.
+                    type: object
+                  background_color:
+                    description: Background color of the custom category.
+                    type: string
+                  is_default:
+                    description: Is default custom category.
+                    type: boolean
+                  key:
+                    description: Key of the custom category.
+                    type: string
+                  keywords:
+                    description: Keywords of the custom category.
+                    items:
+                      type: string
+                    type: array
+                  name:
+                    description: Name of the custom category.
+                    type: string
+                  order:
+                    description: Order of the custom category.
+                    type: integer
+                  prompts:
+                    description: Prompts of the custom category.
+                    items:
+                      type: string
+                    type: array
+                  settings:
+                    description: Settings of the custom category.
+                    properties:
+                      aug_notes_enabled:
+                        description: Augmented notes enabled.
+                        type: boolean
+                      keyword_notes_enabled:
+                        description: Keyword notes enabled.
+                        type: boolean
+                      keyword_tracking_enabled:
+                        description: Keyword tracking enabled.
+                        type: boolean
+                      meeting_type_rule:
+                        description: Meeting type rule.
+                        type: integer
+                      meeting_types_blacklisted:
+                        description: Meeting types blacklisted.
+                        items:
+                          type: string
+                        type: array
+                      meeting_types_whitelisted:
+                        description: Meeting types whitelisted.
+                        items:
+                          type: string
+                        type: array
+                      prompt_extract_length:
+                        description: Prompt extract length.
+                        type: string
+                      prompt_extract_strategy:
+                        description: Prompt extract strategy.
+                        type: string
+                      prompt_notes_enabled:
+                        description: Prompt notes enabled.
+                        type: boolean
+                    type: object
+                  uuid:
+                    description: UUID of the custom category.
+                    format: uuid
+                    type: string
+                type: object
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Not Found.
+      summary: Get Custom Category
+      tags:
+      - Custom Category
+      operationId: getV1CustomCategoriesByUuid
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http

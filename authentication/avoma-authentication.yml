@@ -1,0 +1,14 @@
+generated: '2026-09-27'
+method: derived
+source: openapi/avoma-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: Avoma uses bearer token for authentication of the client. For now, you will have
+    to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+  sources:
+  - openapi/avoma-openapi.yml

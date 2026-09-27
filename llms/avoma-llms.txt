@@ -1,0 +1,181 @@
+﻿This is the [sitemap](https://www.avoma.com/sitemap.xml) of this website.
+
+
+# Avoma
+
+
+Avoma is an all-in-one AI Meeting Assistant and Conversation & Revenue Intelligence platform that automates meeting note-taking, scheduling, coaching, forecasting, and CRM updates to boost productivity for sales, customer success, and revenue teams. It helps modern B2B organizations streamline meetings, gain insights from conversations, and drive revenue growth through AI-powered tools. Founded in 2017, Avoma serves over 1,000 global companies with secure, compliant solutions focused on efficiency and collaboration.
+
+
+**Industry:** SaaS, Sales Enablement, Revenue Operations  
+**Founded:** 2017  
+**Email:** help@avoma.com
+
+
+**Headquarters:** Avoma, Inc., 48942 Nampeyo St, Fremont, CA 94539, United States
+**Certifications:** SOC 2 Type II, GDPR, HIPAA, EU-US DPF
+**Last Updated:** August 2025
+
+
+## Company Overview
+
+
+**Avoma is an AI-powered platform that helps sales and customer success teams work smarter at every stage of the customer journey.**
+
+
+It takes care of repetitive tasks while giving you the insights you need to close more deals and deliver better customer experiences.
+
+
+Here’s how Avoma helps:
+
+
+* **AI Meeting Assistant** – Get real-time transcription, instant meeting notes, and searchable recordings.  
+* **Scheduler** – Automate lead routing and simplify calendar scheduling.  
+* **Conversation Intelligence** – Track talk-time, topics, and call quality with AI-driven scoring and insights.  
+* **Revenue Intelligence** – Stay on top of deal health with pipeline alerts, risk flags, and accurate forecasting.
+
+
+Avoma integrates with your CRM, calendar, and collaboration tools so your team spends less time on manual work and more time driving revenue and customer value.
+
+
+
+
+**Key Differentiators:**
+- AI automation for meetings in 75+ languages with live transcription, instant meeting notes, and smart chapters
+- Real-time coaching insights, call scoring, objection handling, and conversation intelligence
+- Automatic capture of meeting notes, tasks, and CRM updates to ensure CRM hygiene
+- AI-driven pipeline health scoring, forecasting, deal risk alerts, and revenue intelligence
+- Smart scheduling, lead qualification, lead routing, and round-robin distribution
+- 30+ native integrations with CRM, meeting apps, and productivity apps (e.g., Salesforce, HubSpot, Zoom, Slack, Google Workspace)
+- Compliance-focused security with SOC 2 Type II, GDPR, HIPAA, EU–US DPF, plus encryption at rest and in transit for enterprise-grade security
+
+
+
+
+## Pages
+- [AI Meeting Assistant App](https://www.avoma.com/ai-meeting-assistant): Avoma’s AI Meeting Assistant automates note-taking, follow-up emails, and CRM updates so customer-facing teams can save 4+ hours a week. It records and transcribes meetings in 60+ languages, generates human-like notes, creates smart topic chapters, drafts accurate follow-up emails, and updates CRM fields automatically. With real-time transcription, an AI Copilot for instant answers, and deep integrations with calendars, conferencing tools, dialers, and CRMs, Avoma covers the entire meeting lifecycle — from preparation to action — in one platform.
+- [Scheduler and Lead Router](https://www.avoma.com/scheduler-lead-router): Avoma’s Scheduler and Lead Router automates meeting booking, lead qualification, and routing to help teams double their pipeline without doubling costs. It offers unlimited 1:1, group, and round-robin scheduling links, personalized no-show reminders, and fair meeting distribution. Web form integrations with HubSpot and Marketo instantly qualify prospects, while inbound, outbound, and CRM-based routing ensure every lead reaches the right rep fast. Advanced reporting provides visibility into meeting volume, lead quality, and rep performance — all with deep integrations across calendars, conferencing tools, dialers, and CRMs.
+- [Conversation Intelligence Software](https://www.avoma.com/conversation-intelligence): Avoma’s Conversation Intelligence helps sales and customer-facing teams shorten ramp time, boost win rates, and scale coaching with AI-driven insights. It provides a Live Answer Assistant for real-time objection handling, automated call scoring with customizable AI scorecards, and talk-pattern analytics to replicate top performers. Smart Trackers detect deal risks, churn signals, and product feedback, while usage and engagement insights measure adoption, ROI, and productivity gains. With deep integrations into conferencing, dialers, and CRMs, Avoma delivers end-to-end conversation analysis to improve every deal outcome.
+- [Revenue Intelligence Platform](https://www.avoma.com/revenue-intelligence): Avoma’s Revenue Intelligence empowers sales leaders to improve forecasts, reduce risk, and optimize deal execution with AI-driven insights. It offers real-time pipeline inspection with automatic CRM updates, deal and churn risk alerts, and AI tracking of sales methodologies like MEDDIC, SPICED, and Sandler. The AI Deal Copilot answers deal-specific questions instantly, while AI-assisted forecasting and win-loss analysis provide objective, data-backed visibility into revenue performance. Comprehensive pipeline reports highlight risk, growth trends, and movement across stages, helping teams boost quota attainment and predictability.
+- [Avoma pricing](https://www.avoma.com/pricing): Avoma’s pricing overview, detailing plans, add-ons, free trial options, and FAQs to help teams choose the right AI Meeting Assistant and revenue intelligence features.
+- [Gong Alternative — Avoma for Next-Gen Revenue Intelligence](https://www.avoma.com/gong-alternative): Upgrade to next-gen Revenue Intelligence and pay less. Get automated CRM notes, AI coaching, and more done with Avoma – a smarter and more affordable Gong alternative.
+- [Avoma vs Fireflies: Why more people choose Avoma](https://www.avoma.com/fireflies-alternative): Discover Avoma vs Fireflies. Leverage AI for deeper insights, automated notes, & actionable takeaways. Enhance collaboration, drive results, & empower teams.
+- [Avoma vs Chorus: Why more people choose Avoma](https://www.avoma.com/chorus-alternative): Chorus vs Avoma: Supercharge meetings, not just sales. AI insights, seamless collaboration, data-driven decisions. Choose efficiency & results.
+- [Otter Alternative — Avoma for AI Notes and CRM Automation](https://www.avoma.com/otter-alternative): Try Avoma as your Otter alternative. Automate AI notes, follow-ups, and CRM updates while maintaining personalization and privacy in your meetings.
+- [Software Comparisons | Avoma](https://www.avoma.com/compare): Are you evaluating software for your techstack? Great! Here are some done-for-you software evaluations across categories that might save you the hassle of doing it from scratch.
+
+
+
+
+## Customer Stories
+- [Directus saves 20 hours weekly, boosts AE capacity by 15 discovery calls per week, and cuts follow-up time by 89% with Avoma](https://www.avoma.com/case-studies/directus)
+
+
+## Use Cases
+- [Sales Forecast Accuracy](https://www.avoma.com/sales-forecast-accuracy): Avoma uses AI-driven conversation intelligence to improve sales forecast accuracy, detect deal risks, and provide real-time pipeline insights.
+- [Sales Strategy](https://www.avoma.com/sales-strategy): Refine your sales strategy with AI-driven conversation intelligence. Coach reps, analyze deals, and close more with Avoma’s actionable insights.
+- [Sales Training](https://www.avoma.com/sales-training): Revolutionize sales training with AI insights. Accelerate onboarding, ensure consistency, and boost team performance. Try Avoma’s sales training platform free.
+- [Sales Onboarding](https://www.avoma.com/sales-onboarding): Boost sales onboarding speed with Avoma's conversation intelligence. Automate training, track progress, and deliver personalized coaching.
+- [Pipeline Management](https://www.avoma.com/pipeline-management): Accelerate pipeline management with AI. Predict risks, prioritize deals, and close faster using real-time conversation intelligence.
+- [Sales Efficiency](https://www.avoma.com/sales-efficiency): Automate scheduling, note-taking, CRM updates, and handoffs. Improve sales efficiency across your entire process and close deals faster.
+- [Sales Coaching](https://www.avoma.com/sales-coaching): Boost sales coaching with AI-driven conversation intelligence. Get insights, automate feedback, and improve rep performance. Try Avoma today!
+- [CRM Automation](https://www.avoma.com/crm-automation): Automate your CRM with Avoma's Conversation Intelligence. Capture insights, streamline workflows, and boost sales team efficiency.
+- [Sales Velocity](https://www.avoma.com/sales-velocity): Boost sales velocity with AI-powered conversation intelligence. Close deals faster with automated insights, coaching, and CRM sync.
+- [Objection Handling](https://www.avoma.com/objection-handling): Improve objection handling with Avoma's conversation intelligence. Analyze sales calls, coach reps, and close more deals. Try Avoma free today!
+- [Sales Effectiveness](https://www.avoma.com/sales-effectiveness): Improve your sales effectiveness with conversation intelligence from Avoma. Automate insights, coaching, and follow-ups to close more deals.
+- [Sales Rep Productivity](https://www.avoma.com/sales-rep-productivity): Improve sales rep productivity with conversation intelligence. Automate tasks, capture insights, and enhance coaching with Avoma.
+- [Improving Customer Experience](https://www.avoma.com/improving-customer-experience): Boost rep performance, coaching consistency, and buyer engagement with conversation intelligence. See how enablement teams improve customer experience using AI-powered call insights.
+- [Reducing Customer Churn](https://www.avoma.com/reducing-customer-churn): Discover proven ways to reduce customer churn using conversation intelligence. Learn how RevOps and sales teams can spot churn risks early and retain more customers.
+- [CRM Data Enrichment](https://www.avoma.com/crm-data-enrichment): Boost sales productivity with CRM data enrichment powered by conversation intelligence. Auto-sync notes, next steps, and activity to your CRM, no rep input needed.
+
+
+## Solutions
+- [AI Meeting Assistant for Sales Reps](https://www.avoma.com/account-executives): Avoma is the most advanced AI Meeting Assistant for Sales reps. It records, transcribes, and analyzes all sales conversations at scale, automates note-taking and CRM data entry, and provides actionable insights to close more deals, faster.
+- [Conversation Intelligence for Agencies](https://www.avoma.com/agencies): Avoma is a leading Conversation Intelligence software for agencies. It records, transcribes, and analyzes all sales calls at scale and provides actionable insights to close more deals, faster.
+- [Conversation Intelligence for Customer Success Leaders](https://www.avoma.com/customer-success-leaders): Avoma is a leading Conversation Intelligence software for Customer Success teams. It records, transcribes, and analyzes all customer calls at scale and provides actionable insights to delight your customers and grow lifetime value (LTV) of customers.
+- [AI Meeting Assistant for Customer Success Managers](https://www.avoma.com/customer-success-managers): Avoma is the most advanced AI Meeting Assistant for Sales reps. It records, transcribes, and analyzes all customer conversations at scale, automates note-taking and CRM data entry, and provides actionable insights to delight customers and increase LTV.
+- [AI Meeting Assistant for Engineering Managers](https://www.avoma.com/engineering-managers): Avoma automatically records, transcribes, and summarizes your Daily Standups, Sprint Planning, and other Project meetings - so you don’t have to worry about missing any details and can catch up on important updates in less time.
+- [AI Meeting Assistant for Customer Success Managers](https://www.avoma.com/marketing-managers): Avoma is the most advanced AI Meeting Assistant for Sales reps. It records, transcribes, and analyzes all customer conversations at scale, automates note-taking and CRM data entry, and provides actionable insights to delight customers and increase LTV.
+- [Conversation intelligence for SaaS sales](https://www.avoma.com/saas-sales): Avoma is a leading Conversation Intelligence software for saas sales teams. It records, transcribes, and analyzes all sales meetings and calls at scale and provides actionable insights to help you close more deals, faster.
+- [Conversation Intelligence for SDR Leaders](https://www.avoma.com/sales-development-leaders): Avoma is a leading Conversation Intelligence software for SDR teams. It records, transcribes, and analyzes all sales calls at scale and provides actionable insights to book more meetings, faster.
+- [Conversation Intelligence For Sales Enablement](https://www.avoma.com/sales-enablement-leaders): Avoma is a leading Conversation Intelligence software for Sales enablement. It records, transcribes, and analyzes all sales calls at scale and provides actionable insights to close more deals, faster.
+- [Revenue Intelligence for Sales Leaders](https://www.avoma.com/sales-leaders): Get visibility into rep conversations and pipeline, surface deal risks, and coach faster to close more revenue.
+- [Conversation Intelligence for Sales Managers](https://www.avoma.com/sales-managers): Avoma is a leading Conversation Intelligence platform for Sales Managers. It records, transcribes, and analyzes all sales meetings and calls at scale. Ramp up your team and coach your team on the gaps, to close more deals, faster.
+
+
+## Integrations
+- [AI Meeting Assistant & Conversation Intelligence for HubSpot CRM](https://www.avoma.com/integrations/hubspot): Integrate Avoma with HubSpot CRM for automated notes, transcripts, coaching insights, and sales intelligence.
+- [AI Meeting Assistant for Zoom Video Conferencing](https://www.avoma.com/integrations/zoom): Avoma integrates with Zoom to provide AI-powered meeting notes, transcripts, trends, and coaching insights.
+- [Conversation Intelligence for Zoom Phone](https://www.avoma.com/integrations/zoomphone): Avoma conversation intelligence for Zoom Phone offers transcripts, summaries, keyword tracking, and coaching insights.
+- [AI Meeting Assistant and Conversation Intelligence for Salesforce CRM](https://www.avoma.com/integrations/salesforce): Enhance Salesforce CRM with Avoma’s AI assistant—automated transcripts, summaries, and conversation coaching insights.
+- [AI Meeting Assistant for Google Meet Video Conferencing](https://www.avoma.com/integrations/google-meet): Avoma integrates with Google Meet to provide AI-powered meeting notes, transcripts, trends, and coaching insights.
+
+
+## Help Center
+- [Getting Started with Avoma](https://help.avoma.com/getting-started): Quick setup guide to install the recorder, connect calendars, and start capturing meetings.
+- [Avoma Pricing Explained](https://help.avoma.com/avoma-pricing-recorder-seats-free-users-add-ons): Breakdown of recorder seats, free users, add-ons, and subscription management.
+- [CRM Integrations](https://help.avoma.com/connecting-to-your-crm): Learn how to connect Avoma with Salesforce, HubSpot, and other CRMs.
+- [Preparing for a Meeting using Avoma](https://help.avoma.com/preparing-for-a-meeting): Learn about the Avoma features that help you automate your pre-meeting workflow.
+- [Using Avoma During a Meeting](https://help.avoma.com/using-avoma-during-a-meeting): Learn how to use Avoma to collaborate and take manual notes during a meeting.
+- [After meeting workflows using Avoma](https://help.avoma.com/after-meeting-workflows): Learn about the key features of Avoma for your post-meeting workflow.
+- [Conversation Intelligence](https://help.avoma.com/conversation-insights): Learn how to extract, analyze and monitor all valuable insights happening in your meetings using Avoma.
+- [Revenue Intelligence](https://help.avoma.com/revenue-intelligence): Learn how to get an instant overview of the health of your sales pipeline in Avoma.
+- [Avoma best practices](https://help.avoma.com/best-practices): Learn about the different best practices that will help you be more effective and efficient with Avoma.
+
+
+## Posts
+- [Conversation intelligence](        
+https://www.avoma.com/blog/conversation-intelligence-software/): Explains how conversational intelligence software boosts B2B sales and customer success, when to buy, and how different teams can benefit from it.
+- [Sales methodology guide](https://www.avoma.com/blog/sales-methodology): Covers what is a sales methodology. Explains key strategies, the best fit for your team, and how AI is transforming sales for better results.
+- [Sales coaching guide](https://www.avoma.com/blog/sales-coaching): A complete guide to AI sales coaching. Explains how to boost sales rep skills, close more deals, and drive predictable revenue with our expert guide. Plus a bonus AI coaching tool!
+- [Objection handling guide](https://www.avoma.com/blog/objection-handling): Explains how to handle customer objections with 8 proven techniques you can use right away on your next sales call.
+- [Sales forecasting tools](https://www.avoma.com/blog/sales-forecasting-tools): Lists top 9 AI-powered sales forecasting tools
+
+
+
+
+## Podcasts
+- [Ep. 12: How to run pipeline reviews effectively](https://www.avoma.com/podcast/pipeline-review): Sometimes as sales leaders, we’re all moving so quickly that we just want to grab those metrics because they’re part of the reporting process on a weekly or monthly basis. But there’s more to pipeline reviews — there’s a story behind those metrics, a set of things we can learn by running these pipeline reviews.
+- [Ep 18: How to win competitive deals](https://www.avoma.com/podcast/competitive-deals): In this episode, Nathan Hymas (VP Sales, Avoma) and Yaag discuss how to win competitive deals by truly understanding the rules of the game. Nate shares some brilliant perspectives on how the discovery works differently in a competitive deal, the evaluation process and roles, success metrics and a lot more.
+- [Ep. 14: Solving for the customer with an all-in-one approach](https://www.avoma.com/podcast/solving-for-the-customer): In this episode, Aditya and Yaag discuss how despite the plethora of SaaS tools available today, customers still end up having broken experiences. They discuss what it means to really solve for the customer, with an all-in-one approach.
+- [Ep. 1: Best-of-breed vs. All-in-One Platforms](https://www.avoma.com/podcast/best-of-breed-vs-all-in-one-platforms-whats-a-better-choice): The Modern SaaS Podcast (Episode 1) Best-of-breed vs. All-in-One Platforms - what's a better choice
+- [Ep. 11: How to improve the sales discovery and demo experience](https://www.avoma.com/podcast/how-to-improve-the-sales-discovery-and-demo-experience): In this episode, Aditya and Yaag discuss how to improve the sales discovery and demo experience for your prospects by truly understanding their buyer journey and pain points. Aditya throws light into 4 key aspects of a sales discovery and demo conversation including: small talk, questions to ask during discovery, how to personalize and make the demo valuable to the prospect, agreeing upon the next steps, and a lot more.
+- [Ep. 8: Collaborative Selling](https://www.avoma.com/podcast/collaborative-selling): In this episode of The Modern SaaS Podcast, Aditya and Yaag discuss Collaborative Selling -- how to win with a system of collaboration. They discuss how the old world view of collaborative selling focused only on collaboration with prospects and how 'team selling' focused only on the collaboration amongst internal teams.
+- [Ep. 5: What to do when a big account churns?](https://www.avoma.com/podcast/what-to-do-when-a-big-account-churns): In this episode of The Modern SaaS Podcast, Aditya and Yaag discuss the thoughtful meeting scheduling habits modern SaaS companies can build to improve the buyer experience. They discuss the balance between optimizing for efficiency and customer experience. Some of the key points discussed in the episode include
+- [Ep. 29: How to win in a competitive market](https://www.avoma.com/podcast/ep-29-how-to-win-in-a-competitive-market): Unveiling Success Strategies and Tips to Stand Out from Competition with Sujan Patel, CEO of Mailshake: How to Win in a Competitive Market - A Must-Listen Podcast for SaaS Leaders and Ambitious Entrepreneurs!
+- [Ep. 30: How simple changes to coaching can elevate performance](https://www.avoma.com/podcast/ep-30-how-simple-changes-to-coaching-can-elevate-performance): Get invaluable insights into why coaching should be a top priority for leaders across various teams, not just in sales but also in customer success, marketing, and beyond. Explore practical ways to implement effective coaching practices. From setting up regular, proactive coaching sessions to utilizing AI for personalized feedback, we talk about actionable steps leaders can take to elevate team performance. Learn how to hire a high performing sales team.
+
+
+- [Avoma Books](https://www.avoma.com/books): We put together a list of the books we published on Sales, Customer Success, Remote Work, Meetings, and more to help you become better at what you do.
+
+
+## Leadership Team
+- [Devendra Laulkar - Founder & CTO](https://www.avoma.com/team/devendra-laulkar): Devendra Laulkar - Founder & CTO
+- [Erin Hartje - Director of Demand Marketing](https://www.avoma.com/team/erin-hartje): Erin Hartje - Director of Demand Marketing
+- [Albert Lai - Founder & AI Head](https://www.avoma.com/team/albert-lai): Albert Lai - Founder & AI Head
+- [Mahesh Gawali - VP of Engineering](https://www.avoma.com/team/mahesh-gawali): Mahesh Gawali - VP of Engineering
+- [Aditya Kothadiya - Founder & CEO](https://www.avoma.com/team/aditya-kothadiya): Aditya Kothadiya - Founder & CEO
+- [David Williams - VP of Sales](https://www.avoma.com/team/david-williams): David Williams - VP of Sales
+- [Jayraj Berde - Director of Revenue Operations](https://www.avoma.com/team/jayraj-berde): Jayraj Berde - Director of Revenue Operations
+
+
+
+
+## webinars
+- [Webinars on sales coaching, importance of note-taking during meetings, how to amplify the customer's voice](https://www.avoma.com/webinars)
+
+
+## Glossary
+- [Avoma’s Conversation Intelligence Glossary](https://www.avoma.com/glossary): Avoma’s Conversation Intelligence Glossary, a resource that defines key AI, sales, and meeting-related terms to help professionals understand and communicate effectively in the conversation intelligence space.
+
+
+## Trust & Security Center
+
+
+- [Trust & Security Overview](https://trust.avoma.com/): Comprehensive overview of Avoma’s security practices, compliance certifications, and enterprise-grade privacy protections.
+- [Compliance](https://trust.avoma.com/compliance): The compliance frameworks that Avoma follows which showcases Avoma’s adherence to industry-standard security guidelines and practices, including SOC 2 Type II, GDPR, HIPAA, EU-US DPF.
+- [Security policies and documents](https://trust.avoma.com/resources): Important security policies and documents that are a part of Avoma’s compliance program.
+- [Subprocessors](https://trust.avoma.com/subprocessors): The subprocessors that Avoma uses to process data in its infrastructure and business operations. 
+- [Security & compliance FAQs](https://trust.avoma.com/faq): Frequently asked questions about Avoma’s security posture.
+- [Terms of Use](https://www.avoma.com/terms): Avoma’s legal terms, acceptable use, and commitments to customers.
+- [Privacy policy](https://www.avoma.com/privacy-policy): Avoma’s Privacy Policy outlines what personal data is collected, how it’s used, shared, and protected, and the rights users have over their information.

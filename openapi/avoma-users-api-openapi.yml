@@ -1,0 +1,225 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Users API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- name: Users
+paths:
+  /v1/users/:
+    get:
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  properties:
+                    active:
+                      readOnly: true
+                      type: string
+                    is_admin:
+                      deprecated: true
+                      type: boolean
+                    position:
+                      readOnly: true
+                      type: string
+                    role:
+                      properties:
+                        description:
+                          maxLength: 140
+                          type:
+                          - string
+                          - 'null'
+                        display_name:
+                          maxLength: 50
+                          type: string
+                        name:
+                          enum:
+                          - admin
+                          - manager
+                          - member
+                          - guest
+                          readOnly: true
+                          type: string
+                        role_type:
+                          enum:
+                          - sys
+                          - usr
+                          type: string
+                        uuid:
+                          format: uuid
+                          readOnly: true
+                          type: string
+                      required:
+                      - display_name
+                      type: object
+                    status:
+                      readOnly: true
+                      type: string
+                    teams:
+                      readOnly: true
+                      type: string
+                    user:
+                      properties:
+                        email:
+                          format: email
+                          readOnly: true
+                          type: string
+                        first_name:
+                          type: string
+                        is_active:
+                          description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+                          type: boolean
+                        job_function:
+                          readOnly: true
+                          type: string
+                        last_name:
+                          type: string
+                        position:
+                          readOnly: true
+                          type: string
+                        profile_pic:
+                          readOnly: true
+                          type: string
+                      required:
+                      - first_name
+                      - last_name
+                      type: object
+                    uuid:
+                      format: uuid
+                      readOnly: true
+                      type: string
+                  required:
+                  - user
+                  - role
+                  type: object
+                type: array
+          description: ''
+      summary: List users
+      tags:
+      - Users
+      operationId: getV1Users
+      x-operation-id-source: derived
+  /v1/users/{uuid}/:
+    get:
+      description: ''
+      operationId: GetUser
+      parameters:
+      - description: ''
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  active:
+                    readOnly: true
+                    type: string
+                  is_admin:
+                    deprecated: true
+                    type: boolean
+                  position:
+                    readOnly: true
+                    type: string
+                  role:
+                    properties:
+                      description:
+                        maxLength: 140
+                        type:
+                        - string
+                        - 'null'
+                      display_name:
+                        maxLength: 50
+                        type: string
+                      name:
+                        enum:
+                        - admin
+                        - manager
+                        - member
+                        - guest
+                        readOnly: true
+                        type: string
+                      role_type:
+                        enum:
+                        - sys
+                        - usr
+                        type: string
+                      uuid:
+                        format: uuid
+                        readOnly: true
+                        type: string
+                    required:
+                    - display_name
+                    type: object
+                  status:
+                    readOnly: true
+                    type: string
+                  teams:
+                    readOnly: true
+                    type: string
+                  user:
+                    properties:
+                      email:
+                        format: email
+                        readOnly: true
+                        type: string
+                      first_name:
+                        type: string
+                      is_active:
+                        description: Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+                        type: boolean
+                      job_function:
+                        readOnly: true
+                        type: string
+                      last_name:
+                        type: string
+                      position:
+                        readOnly: true
+                        type: string
+                      profile_pic:
+                        readOnly: true
+                        type: string
+                    required:
+                    - first_name
+                    - last_name
+                    type: object
+                  uuid:
+                    format: uuid
+                    readOnly: true
+                    type: string
+                required:
+                - user
+                - role
+                type: object
+          description: ''
+      tags:
+      - Users
+      summary: Get user
+      x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: Get User
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http

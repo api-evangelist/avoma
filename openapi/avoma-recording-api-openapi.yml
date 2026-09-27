@@ -1,0 +1,235 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Recording API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- description: Recordings contain Audio and Video information for a completed meeting. Once recording is available you should be able to download the same using the pre-signed url. The url will be valid for 5 days. To check whether the recordings for a particular meeting are ready , you can invoke get meeting api and verify `audio_ready` and `video_ready` parameters in the response.
+  name: Recording
+paths:
+  /v1/recordings/:
+    get:
+      description: Returns a Video and Audio recording for a given meeting `uuid`.
+      parameters:
+      - in: query
+        name: meeting_uuid
+        required: true
+        schema:
+          description: Unique ID of the meeting.
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: This api returns a video and audio recording download url.
+                properties:
+                  audio_url:
+                    description: Signed url of audio recording file.
+                    format: url
+                    type: string
+                  meeting_uuid:
+                    description: Unique ID of the meeting.
+                    format: uuid
+                    type: string
+                  uuid:
+                    description: Unique ID of the recording.
+                    format: uuid
+                    type: string
+                  valid_till:
+                    description: expiry date of the video and audio recording download url
+                    format: date-time
+                    type: string
+                  video_url:
+                    description: Signed url of video recording file.
+                    format: url
+                    type: string
+                required:
+                - uuid
+                - meeting_uuid
+                type: object
+          description: OK
+        '202':
+          content:
+            application/json:
+              schema:
+                properties:
+                  meeting_uuid:
+                    description: Unique ID of the meeting.
+                    format: uuid
+                    type: string
+                  message:
+                    description: Response message
+                    type: string
+                  uuid:
+                    description: Unique ID of the recording.
+                    format: uuid
+                    type: string
+                required:
+                - uuid
+                - meeting_uuid
+                type: object
+          description: OK
+        '403':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Permission Denied.
+        '404':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Not Found
+        '429':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Too many requests
+      summary: Get Recording
+      tags:
+      - Recording
+      operationId: getV1Recordings
+      x-operation-id-source: derived
+  /v1/recordings/{uuid}/:
+    get:
+      description: Returns a Video and Audio recording for a given recording `uuid`.
+      parameters:
+      - in: path
+        name: uuid
+        required: true
+        schema:
+          description: Unique ID of the recording.
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: This api returns a video and audio recording download url. In specific instances where the video content is undergoing processing and is not yet prepared for immediate access, the API response will be configured to issue a status code of 202. Once the video is fully processed and ready, you'll receive an email containing the download link. This link will allow you to easily access and download the video content and this like will be valid till the time returned in valid_till field.
+                properties:
+                  audio_url:
+                    description: Signed url of audio recording file.
+                    format: url
+                    type: string
+                  meeting_uuid:
+                    description: Unique ID of the meeting.
+                    format: meeting_uuid
+                    type: string
+                  message:
+                    description: Response message
+                    type: string
+                  valid_till:
+                    description: expiry date of the video and audio recording download url
+                    format: date-time
+                    type: string
+                  video_url:
+                    description: Signed url of video recording file.
+                    format: url
+                    type: string
+                required:
+                - meeting_uuid
+                type: object
+          description: OK
+        '202':
+          content:
+            application/json:
+              schema:
+                description: This api returns a video and audio recording download url. In specific instances where the video content is undergoing processing and is not yet prepared for immediate access, the API response will be configured to issue a status code of 202. Once the video is fully processed and ready, you'll receive an email containing the download link. This link will allow you to easily access and download the video content and this like will be valid till the time returned in valid_till field.
+                properties:
+                  audio_url:
+                    description: Signed url of audio recording file.
+                    format: url
+                    type: string
+                  meeting_uuid:
+                    description: Unique ID of the meeting.
+                    format: meeting_uuid
+                    type: string
+                  message:
+                    description: Response message
+                    type: string
+                  valid_till:
+                    description: expiry date of the video and audio recording download url
+                    format: date-time
+                    type: string
+                  video_url:
+                    description: Signed url of video recording file.
+                    format: url
+                    type: string
+                required:
+                - meeting_uuid
+                type: object
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Not Found
+        '429':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Too many requests
+      summary: Get Recording using recording uuid
+      tags:
+      - Recording
+      operationId: getV1RecordingsByUuid
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http

@@ -1,0 +1,1112 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Meetings API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- description: Meetings are the foundation and starting point of the flow in Avoma. You can fetch recordings , transcriptions , ai notes , sentiments and coaching once the meeting is recorded and finished processing.
+  name: Meetings
+paths:
+  /v1/meeting_segments/:
+    get:
+      description: Returns segments of the meeting for a given `uuid`.
+      parameters:
+      - in: query
+        name: uuid
+        required: true
+        schema:
+          description: Unique ID of the meeting.
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Data captured in Segment service for analytics.
+                example:
+                  demo:
+                  - - 1275.9276
+                    - 1383.3668
+                  intro:
+                  - - 158.78497
+                    - 207.5937
+                  next_steps:
+                  - - 1383.3768
+                    - 1437.3767
+                  pricing:
+                  - - 222.02473
+                    - 258.75413000000003
+                properties:
+                  agenda:
+                    items:
+                      items:
+                        type: number
+                      type: array
+                    type: array
+                  demo:
+                    items:
+                      items:
+                        type: number
+                      type: array
+                    type: array
+                  intro:
+                    items:
+                      items:
+                        type: number
+                      type: array
+                    type: array
+                  meeting:
+                    items:
+                      items:
+                        type: number
+                      type: array
+                    type: array
+                  next_steps:
+                    items:
+                      items:
+                        type: number
+                      type: array
+                    type: array
+                  objection:
+                    items:
+                      items:
+                        type: number
+                      type: array
+                    type: array
+                  overview:
+                    items:
+                      items:
+                        type: number
+                      type: array
+                    type: array
+                  pain_point:
+                    items:
+                      items:
+                        type: number
+                      type: array
+                    type: array
+                  pricing:
+                    items:
+                      items:
+                        type: number
+                      type: array
+                    type: array
+                type: object
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Not Found.
+      summary: Get Meeting segments
+      tags:
+      - Meetings
+      operationId: getV1MeetingSegments
+      x-operation-id-source: derived
+  /v1/meetings/:
+    get:
+      description: Returns all meetings from the organization with paginated response. If none of the query parameters are provided, it gives response for all meetings from the organization in descending order of `start_at`.
+      parameters:
+      - description: Number of records returned per response.
+        in: query
+        name: page_size
+        schema:
+          default: 10
+          maximum: 100
+          type: integer
+      - description: 'To retrieve meetings with recording duration(in seconds) greater than or equal to given value. Sending this filter will by default exclude meetings without recordings.
+
+          '
+        in: query
+        name: recording_duration__gte
+        schema:
+          minimum: 0
+          type: number
+      - description: To retrieve meetings started at or started after given date-time(UTC).
+        in: query
+        name: from_date
+        required: true
+        schema:
+          format: date-time
+          type: string
+      - description: To retrieve meetings started at or started before given date-time(UTC).
+        in: query
+        name: to_date
+        required: true
+        schema:
+          format: date-time
+          type: string
+      - description: '- `true`: Get only voice call meetings.
+
+          - `false`: Get only video call meetings.
+
+          '
+        in: query
+        name: is_call
+        schema:
+          type: boolean
+      - description: '- `true`: Get meetings where no attendee is from outside the organization.
+
+          - `false`: Get meetings where there are attendees from outside the organization.
+
+          '
+        in: query
+        name: is_internal
+        schema:
+          type: boolean
+      - description: Comma-separated list of attendee emails to filter meetings by. <br>Meetings with ***any*** of the attendees will be returned.
+        in: query
+        name: attendee_emails
+        schema:
+          example: john.doe@example.com,kelly@acme.com
+          type: string
+      - description: Comma-separated list of CRM account external IDs to filter by.
+        in: query
+        name: crm_account_ids
+        schema:
+          type: string
+      - description: Comma-separated list of CRM opportunity external IDs to filter by.
+        in: query
+        name: crm_opportunity_ids
+        schema:
+          type: string
+      - description: Comma-separated list of CRM contact external IDs to filter by.
+        in: query
+        name: crm_contact_ids
+        schema:
+          type: string
+      - description: Comma-separated list of CRM lead external IDs to filter by.
+        in: query
+        name: crm_lead_ids
+        schema:
+          type: string
+      - description: Whether to include CRM associations in the response.
+        in: query
+        name: include_crm_associations
+        schema:
+          default: false
+          type: boolean
+      - in: query
+        name: o
+        schema:
+          default: -start_at
+          description: To specify the ordering of the meetings list. Default is descending order. Ordering by modified is deprecated
+          enum:
+          - start_at
+          - -start_at
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    count:
+                      description: Total number of records in result.
+                      minimum: 0
+                      type: integer
+                    next:
+                      description: URL to the next page if available.
+                      example: https://example.com/api/v1/meeting/?page=2
+                      type:
+                      - string
+                      - 'null'
+                    previous:
+                      description: URL to the previous page if available.
+                      example: https://example.com/api/v1/meeting/?page=1
+                      type:
+                      - string
+                      - 'null'
+                  type: object
+                - properties:
+                    results:
+                      description: Actual response.
+                      items:
+                        description: Meeting Object
+                        properties:
+                          attendees:
+                            items:
+                              description: Attendee Object
+                              properties:
+                                email:
+                                  description: Email of the meeting attendee.
+                                  format: email
+                                  type: string
+                                name:
+                                  description: Full name of the attendee.
+                                  example: FirstName LastName
+                                  type:
+                                  - string
+                                  - 'null'
+                                response_status:
+                                  description: Response received from the attendee for a meeting.
+                                  enum:
+                                  - needsaction
+                                  - accepted
+                                  - declined
+                                  - tentativelyaccepted
+                                  type: string
+                                uuid:
+                                  description: Unique ID of the meeting attendee.
+                                  format: uuid
+                                  type: string
+                              required:
+                              - email
+                              - uuid
+                              - response_status
+                              type: object
+                            type: array
+                          audio_ready:
+                            description: Indicates if the audio is ready.
+                            type: boolean
+                          call_details:
+                            description: Details of call linked with the meeting.
+                            properties:
+                              external_id:
+                                description: Unique ID from the dialer integration.
+                                type: string
+                              frm:
+                                description: Phone number from which call was made.
+                                type: string
+                              to:
+                                description: Phone number to which call was made.
+                                type: string
+                            required:
+                            - external_id
+                            - frm
+                            - to
+                            type:
+                            - object
+                            - 'null'
+                          created:
+                            description: Creation date-time(UTC).
+                            format: date-time
+                            type: string
+                          crm_associations:
+                            description: CRM association objects
+                            example:
+                            - crm_obj_id: '102721358755'
+                              crm_obj_type: contact
+                            - crm_obj_id: '30447071570'
+                              crm_obj_type: account
+                            - crm_obj_id: '34202467419'
+                              crm_obj_type: oppo
+                            items:
+                              properties:
+                                crm_obj_id:
+                                  description: Unique identifier for the CRM object
+                                  type: string
+                                crm_obj_type:
+                                  description: Type of CRM object
+                                  type: string
+                              required:
+                              - crm_obj_id
+                              - crm_obj_type
+                              type: object
+                            type: array
+                          duration:
+                            description: 'Actual meeting duration in Seconds. **Note**: This may not match with scheduled `start_at` to `end_at` window, because actual meeting may start/end sooner/later of the scheduled time.
+
+                              '
+                            example: 4309.1
+                            type:
+                            - number
+                            - 'null'
+                          end_at:
+                            description: Scheduled end date-time(UTC) of the meeting.
+                            format: date-time
+                            type: string
+                          is_call:
+                            description: Whether meeting is a voice call.
+                            type: boolean
+                          is_internal:
+                            description: '- `true`: Meeting does not have any attendee from outside organization.
+
+                              - `false`: Meeting has attendees from outside organization.
+
+                              '
+                            type: boolean
+                          is_private:
+                            description: '- `true`: Meeting visible to only attendees.
+
+                              - `false`: Meeting visible to whole organization.
+
+                              '
+                            type: boolean
+                          modified:
+                            description: Last modification date-time(UTC).
+                            format: date-time
+                            type: string
+                          notes_ready:
+                            description: Indicates if the AI notes are ready.
+                            type: boolean
+                          organizer_email:
+                            description: 'Email of the meeting organizer. There will always be a entry for organizer in the `attendees` field.
+
+                              '
+                            format: email
+                            type: string
+                          outcome:
+                            description: Outcome of the meeting assigned by user.
+                            properties:
+                              label:
+                                description: Label of the the meeting attribute.
+                                example: Closed
+                                type: string
+                              uuid:
+                                description: Unique ID of the meeting attribute.
+                                format: uuid
+                                type: string
+                            required:
+                            - label
+                            - uuid
+                            type:
+                            - object
+                            - 'null'
+                          processing_status:
+                            description: Indicates the processing status of the meeting.
+                            enum:
+                            - processing
+                            - silent_recording
+                            - recording_error
+                            - transcription_available
+                            - notes_available
+                            - invalid_video
+                            - download_failed
+                            - bot_denied_entry
+                            - bot_invalid_rec_details
+                            - not_started
+                            - no_transcript
+                            - null
+                            example: transcription_available
+                            type:
+                            - string
+                            - 'null'
+                          purpose:
+                            description: Purpose/type of the meeting assigned by system (based on meeting subject) or user.
+                            properties:
+                              label:
+                                description: Label of the the meeting attribute.
+                                example: Demo
+                                type: string
+                              uuid:
+                                description: Unique ID of the meeting attribute.
+                                format: uuid
+                                type: string
+                            required:
+                            - label
+                            - uuid
+                            type:
+                            - object
+                            - 'null'
+                          recording_uuid:
+                            description: Unique ID of the Recording.
+                            format: uuid
+                            type:
+                            - string
+                            - 'null'
+                          recording_state:
+                            type:
+                            - string
+                            - 'null'
+                            enum:
+                            - enabled
+                            - disabled
+                            description: 'Recording state of the meeting:
+
+                              - `enabled`: Recording is enabled for the meeting.
+
+                              - `disabled`: Recording is disabled for the meeting.
+
+                              - `null`: No recording state information available.
+
+                              '
+                          disable_reason:
+                            $ref: ../openapi/components/external.yml#/components/schemas/disable_reason
+                          disabled_reason_detail:
+                            $ref: ../openapi/components/external.yml#/components/schemas/disabled_reason_detail
+                          start_at:
+                            description: Scheduled start date-time(UTC) of the meeting.
+                            format: date-time
+                            type: string
+                          state:
+                            description: 'State of the meeting:
+
+                              - `scheduled`: Meeting is scheduled.
+
+                              - `in_progress`: Meeting is happening or recording is getting processed.
+
+                              - `completed`: Meeting is recorded in Avoma and transcription is available.
+
+                              - `not_recorded`: Meeting was not recorded due to disablement or recording issues.
+
+                              - ''cancelled'': Meeting is cancelled or deleted from Calendar.
+
+                              '
+                            enum:
+                            - scheduled
+                            - in_progress
+                            - completed
+                            - not_recorded
+                            - cancelled
+                            type: string
+                          subject:
+                            description: Subject of the Meeting.
+                            example: Daily Syncup
+                            type: string
+                          transcript_ready:
+                            description: Indicates if transcription of the meeting is ready.
+                            type: boolean
+                          transcription_uuid:
+                            description: 'Transcription UUID of the meeting. It will be available once `state` of the meeting is `completed`.
+
+                              '
+                            format: uuid
+                            type:
+                            - string
+                            - 'null'
+                          type:
+                            description: Purpose/type of the meeting assigned by system (based on meeting subject) or user.
+                            properties:
+                              label:
+                                description: Label of the the meeting attribute.
+                                example: Demo
+                                type: string
+                              uuid:
+                                description: Unique ID of the meeting attribute.
+                                format: uuid
+                                type: string
+                            required:
+                            - label
+                            - uuid
+                            type:
+                            - object
+                            - 'null'
+                          url:
+                            description: ' URL of the meeting room. ex: 1. Google meet: https://meet.google.com/abc-def 2. Zoom: https://avoma.zoom.us/j/123456?pwd=abcdefg, 3. MSTeam: https://teams.live.com/meet/123456 '
+                            example: https://meet.google.com/abc-def
+                            format: url
+                            type: string
+                          uuid:
+                            description: Unique ID of the Meeting.
+                            format: uuid
+                            type: string
+                          video_ready:
+                            description: Indicates if the video is ready.
+                            type: boolean
+                        required:
+                        - uuid
+                        - subject
+                        - created
+                        - modified
+                        - is_private
+                        - is_internal
+                        - organizer_email
+                        - state
+                        type: object
+                      type: array
+                  required:
+                  - results
+                  type: object
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                description: Object having key as field/query param name and value as list of errors.
+                example:
+                  message:
+                  - This field may not be blank.
+                type: object
+          description: Invalid query params
+      summary: List meetings
+      tags:
+      - Meetings
+      operationId: getV1Meetings
+      x-operation-id-source: derived
+  /v1/meetings/{meeting_uuid}/insights/:
+    get:
+      description: Returns a insights for a meeting with given `meeting_uuid`. `state` of the meeting must be `completed` in order to get insights.
+      parameters:
+      - description: Unique ID of the meeting
+        in: path
+        name: meeting_uuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  ai_notes:
+                    items:
+                      properties:
+                        end:
+                          description: End time (in seconds) of the note with respect to start of the recording.
+                          format: float
+                          type: number
+                        note_type:
+                          description: Type of the note.
+                          type: string
+                        speaker_id:
+                          description: ID of the speaker for whom note has been extracted.
+                          type: integer
+                        start:
+                          description: Start time (in seconds) of the note with respect to start of the recording.
+                          format: float
+                          type: number
+                        text:
+                          description: Actual note's text.
+                          type: string
+                        uuid:
+                          description: Unique ID of the note.
+                          format: uuid
+                          type: string
+                      required:
+                      - note_type
+                      - uuid
+                      - start
+                      - end
+                      - text
+                      - speaker_id
+                      type: object
+                    type: array
+                  keywords:
+                    properties:
+                      occurrences:
+                        items:
+                          properties:
+                            category:
+                              description: 'Name of the custom category for which keywords are tracked. Custom Categories for the organization can be managed at https://app.avoma.com/settings/custom_categories by user with admin role.
+
+                                '
+                              example: Filler Words
+                              type: string
+                            count:
+                              description: Total count of the keyword occurrences.
+                              type: integer
+                            is_rep:
+                              description: '- `true`: Speaker is a representative (any speaker from the organization).
+
+                                - `false`: Speaker is a customer/prospect.
+
+                                '
+                              type: boolean
+                            keywords:
+                              description: Distribution for each keyword under the category.
+                              items:
+                                properties:
+                                  count:
+                                    description: Number of occurrences.
+                                    type: integer
+                                  word:
+                                    description: Word for which occurrunces are tracked for.
+                                    example: Competitor
+                                    type: string
+                                type: object
+                              type: array
+                            speaker_id:
+                              description: ID of the speaker whom keywords are tracked for.
+                              type:
+                              - integer
+                              - 'null'
+                          required:
+                          - category
+                          - is_rep
+                          - count
+                          type: object
+                        type: array
+                      popular:
+                        items:
+                          properties:
+                            count:
+                              description: Number of occurrences.
+                              type: integer
+                            score:
+                              description: Score of the popularity.
+                              type: number
+                            word:
+                              description: Word for which popularity is tracked.
+                              example: Competitor
+                              type: string
+                          required:
+                          - word
+                          - score
+                          - count
+                          type: object
+                        type: array
+                    type: object
+                  speakers:
+                    items:
+                      properties:
+                        email:
+                          description: Email of the speaker.
+                          format: email
+                          type: string
+                        id:
+                          description: ID of the speaker.
+                          type: integer
+                        is_rep:
+                          description: '- `true`: Speaker is a representative (any speaker from the organization)
+
+                            - `false`: Speaker is a customer/prospect.
+
+                            '
+                          type: boolean
+                        name:
+                          description: Name of the speaker.
+                          example: FirstName LastName
+                          type:
+                          - string
+                          - 'null'
+                      required:
+                      - email
+                      - id
+                      - is_rep
+                      type: object
+                    type: array
+                required:
+                - ai_notes
+                - keywords
+                type: object
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Not Found
+      summary: Get Meeting Insights
+      tags:
+      - Meetings
+      operationId: getV1MeetingsByMeetingUuidInsights
+      x-operation-id-source: derived
+  /v1/meetings/{uuid}/:
+    get:
+      description: Returns a single meeting for a given `uuid`.
+      parameters:
+      - in: path
+        name: uuid
+        required: true
+        schema:
+          description: Unique ID of the meeting.
+          format: uuid
+          type: string
+      - description: Whether to include CRM associations in the response.
+        in: query
+        name: include_crm_associations
+        schema:
+          default: false
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Meeting Object
+                properties:
+                  attendees:
+                    items:
+                      description: Attendee Object
+                      properties:
+                        email:
+                          description: Email of the meeting attendee.
+                          format: email
+                          type: string
+                        name:
+                          description: Full name of the attendee.
+                          example: FirstName LastName
+                          type:
+                          - string
+                          - 'null'
+                        response_status:
+                          description: Response received from the attendee for a meeting.
+                          enum:
+                          - needsaction
+                          - accepted
+                          - declined
+                          - tentativelyaccepted
+                          type: string
+                        uuid:
+                          description: Unique ID of the meeting attendee.
+                          format: uuid
+                          type: string
+                      required:
+                      - email
+                      - uuid
+                      - response_status
+                      type: object
+                    type: array
+                  audio_ready:
+                    description: Indicates if the audio is ready.
+                    type: boolean
+                  call_details:
+                    description: Details of call linked with the meeting.
+                    properties:
+                      external_id:
+                        description: Unique ID from the dialer integration.
+                        type: string
+                      frm:
+                        description: Phone number from which call was made.
+                        type: string
+                      to:
+                        description: Phone number to which call was made.
+                        type: string
+                    required:
+                    - external_id
+                    - frm
+                    - to
+                    type:
+                    - object
+                    - 'null'
+                  created:
+                    description: Creation date-time(UTC).
+                    format: date-time
+                    type: string
+                  crm_associations:
+                    description: CRM association objects
+                    example:
+                    - crm_obj_id: '102721358755'
+                      crm_obj_type: contact
+                    - crm_obj_id: '30447071570'
+                      crm_obj_type: account
+                    - crm_obj_id: '34202467419'
+                      crm_obj_type: oppo
+                    items:
+                      properties:
+                        crm_obj_id:
+                          description: Unique identifier for the CRM object
+                          type: string
+                        crm_obj_type:
+                          description: Type of CRM object
+                          type: string
+                      required:
+                      - crm_obj_id
+                      - crm_obj_type
+                      type: object
+                    type: array
+                  duration:
+                    description: 'Actual meeting duration in Seconds. **Note**: This may not match with scheduled `start_at` to `end_at` window, because actual meeting may start/end sooner/later of the scheduled time.
+
+                      '
+                    example: 4309.1
+                    type:
+                    - number
+                    - 'null'
+                  end_at:
+                    description: Scheduled end date-time(UTC) of the meeting.
+                    format: date-time
+                    type: string
+                  is_call:
+                    description: Whether meeting is a voice call.
+                    type: boolean
+                  is_internal:
+                    description: '- `true`: Meeting does not have any attendee from outside organization.
+
+                      - `false`: Meeting has attendees from outside organization.
+
+                      '
+                    type: boolean
+                  is_private:
+                    description: '- `true`: Meeting visible to only attendees.
+
+                      - `false`: Meeting visible to whole organization.
+
+                      '
+                    type: boolean
+                  modified:
+                    description: Last modification date-time(UTC).
+                    format: date-time
+                    type: string
+                  notes_ready:
+                    description: Indicates if the AI notes are ready.
+                    type: boolean
+                  organizer_email:
+                    description: 'Email of the meeting organizer. There will always be a entry for organizer in the `attendees` field.
+
+                      '
+                    format: email
+                    type: string
+                  outcome:
+                    description: Outcome of the meeting assigned by user.
+                    properties:
+                      label:
+                        description: Label of the the meeting attribute.
+                        example: Closed
+                        type: string
+                      uuid:
+                        description: Unique ID of the meeting attribute.
+                        format: uuid
+                        type: string
+                    required:
+                    - label
+                    - uuid
+                    type:
+                    - object
+                    - 'null'
+                  processing_status:
+                    description: Indicates the processing status of the meeting.
+                    enum:
+                    - processing
+                    - silent_recording
+                    - recording_error
+                    - transcription_available
+                    - notes_available
+                    - invalid_video
+                    - download_failed
+                    - bot_denied_entry
+                    - bot_invalid_rec_details
+                    - not_started
+                    - no_transcript
+                    - null
+                    example: transcription_available
+                    type:
+                    - string
+                    - 'null'
+                  purpose:
+                    description: Purpose/type of the meeting assigned by system (based on meeting subject) or user.
+                    properties:
+                      label:
+                        description: Label of the the meeting attribute.
+                        example: Demo
+                        type: string
+                      uuid:
+                        description: Unique ID of the meeting attribute.
+                        format: uuid
+                        type: string
+                    required:
+                    - label
+                    - uuid
+                    type:
+                    - object
+                    - 'null'
+                  recording_uuid:
+                    description: Unique ID of the Recording.
+                    format: uuid
+                    type:
+                    - string
+                    - 'null'
+                  recording_state:
+                    type:
+                    - string
+                    - 'null'
+                    enum:
+                    - enabled
+                    - disabled
+                    description: 'Recording state of the meeting:
+
+                      - `enabled`: Recording is enabled for the meeting.
+
+                      - `disabled`: Recording is disabled for the meeting.
+
+                      - `null`: No recording state information available.
+
+                      '
+                  disable_reason:
+                    $ref: ../openapi/components/external.yml#/components/schemas/disable_reason
+                  disabled_reason_detail:
+                    $ref: ../openapi/components/external.yml#/components/schemas/disabled_reason_detail
+                  start_at:
+                    description: Scheduled start date-time(UTC) of the meeting.
+                    format: date-time
+                    type: string
+                  state:
+                    description: 'State of the meeting:
+
+                      - `scheduled`: Meeting is scheduled.
+
+                      - `in_progress`: Meeting is happening or recording is getting processed.
+
+                      - `completed`: Meeting is recorded in Avoma and transcription is available.
+
+                      - `not_recorded`: Meeting was not recorded due to disablement or recording issues.
+
+                      - ''cancelled'': Meeting is cancelled or deleted from Calendar.
+
+                      '
+                    enum:
+                    - scheduled
+                    - in_progress
+                    - completed
+                    - not_recorded
+                    - cancelled
+                    type: string
+                  subject:
+                    description: Subject of the Meeting.
+                    example: Daily Syncup
+                    type: string
+                  transcript_ready:
+                    description: Indicates if transcription of the meeting is ready.
+                    type: boolean
+                  transcription_uuid:
+                    description: 'Transcription UUID of the meeting. It will be available once `state` of the meeting is `completed`.
+
+                      '
+                    format: uuid
+                    type:
+                    - string
+                    - 'null'
+                  type:
+                    description: Purpose/type of the meeting assigned by system (based on meeting subject) or user.
+                    properties:
+                      label:
+                        description: Label of the the meeting attribute.
+                        example: Demo
+                        type: string
+                      uuid:
+                        description: Unique ID of the meeting attribute.
+                        format: uuid
+                        type: string
+                    required:
+                    - label
+                    - uuid
+                    type:
+                    - object
+                    - 'null'
+                  url:
+                    description: ' URL of the meeting room. ex: 1. Google meet: https://meet.google.com/abc-def 2. Zoom: https://avoma.zoom.us/j/123456?pwd=abcdefg, 3. MSTeam: https://teams.live.com/meet/123456 '
+                    example: https://meet.google.com/abc-def
+                    format: url
+                    type: string
+                  uuid:
+                    description: Unique ID of the Meeting.
+                    format: uuid
+                    type: string
+                  video_ready:
+                    description: Indicates if the video is ready.
+                    type: boolean
+                required:
+                - uuid
+                - subject
+                - created
+                - modified
+                - is_private
+                - is_internal
+                - organizer_email
+                - state
+                type: object
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Not Found.
+      summary: Get Meeting
+      tags:
+      - Meetings
+      operationId: getV1MeetingsByUuid
+      x-operation-id-source: derived
+  /v1/meetings/{uuid}/drop/:
+    post:
+      description: Drop a meeting with given `uuid`. Bot must be in the meeting in order to drop meeting.
+      parameters:
+      - description: Unique ID of the meeting
+        in: path
+        name: uuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    description: Message for the user.
+                    example: Dropping meeting.
+                    type: string
+                required:
+                - message
+                type: object
+          description: Accepted
+        '400':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Invalid query params
+        '403':
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    description: Message for the user.
+                    example: Access Denied
+                    type: string
+                required:
+                - message
+                type: object
+          description: Permission Denied.
+        '406':
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    description: Message for the user.
+                    example: Bot is not in the meeting.
+                    type: string
+                required:
+                - message
+                type: object
+          description: Not Acceptable
+      summary: Drop Meeting
+      tags:
+      - Meetings
+      operationId: postV1MeetingsByUuidDrop
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http

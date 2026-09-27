@@ -1,0 +1,41 @@
+{
+  "provider": "avoma",
+  "sources": [
+    "avoma-openapi.yml"
+  ],
+  "outputs": [
+    "avoma-calls-api-openapi.yml",
+    "avoma-custom-category-api-openapi.yml",
+    "avoma-engagement-analytics-api-openapi.yml",
+    "avoma-meeting-outcomes-api-openapi.yml",
+    "avoma-meeting-types-api-openapi.yml",
+    "avoma-meetings-api-openapi.yml",
+    "avoma-meetings-sentiments-api-openapi.yml",
+    "avoma-notes-api-openapi.yml",
+    "avoma-recording-api-openapi.yml",
+    "avoma-revenue-intelligence-beta-api-openapi.yml",
+    "avoma-scorecard-evaluations-api-openapi.yml",
+    "avoma-scorecards-api-openapi.yml",
+    "avoma-smart-category-api-openapi.yml",
+    "avoma-snippets-api-openapi.yml",
+    "avoma-templates-api-openapi.yml",
+    "avoma-transcriptions-api-openapi.yml",
+    "avoma-users-api-openapi.yml",
+    "avoma-webhooks-api-openapi.yml"
+  ],
+  "archived": [
+    "archived openapi/avoma-openapi.yml"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "avoma-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "avoma-openapi.yml: declared missing tag: Engagement Analytics",
+    "avoma-openapi.yml: declared missing tag: Meeting Outcomes",
+    "avoma-openapi.yml: declared missing tag: Meeting Types",
+    "avoma-openapi.yml: declared missing tag: Revenue Intelligence [Beta]",
+    "avoma-openapi.yml: declared missing tag: Snippets",
+    "apis.yml register: written (+18 apis, 18 total)"
+  ],
+  "skipped": []
+}

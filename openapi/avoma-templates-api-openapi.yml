@@ -1,0 +1,453 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Templates API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- description: '`Templates` help in extraction of AI-generated notes based on mentioned categories. A template will be automatically inserted into the meeting notes page, if the `meeting type` is set and has a template associated with a `meeting type`.'
+  name: Templates
+paths:
+  /v1/template/:
+    get:
+      description: Returns all templates from the organization.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  properties:
+                    email:
+                      description: Email of the user.
+                      format: email
+                      type: string
+                    is_default:
+                      description: Is default template.
+                      type: boolean
+                    meeting_types:
+                      description: List of meeting type uuids and label.
+                      example:
+                      - label: Stand Up
+                        uuid: 9d9fb43b-5aa1-49dd-a29d-2adf4497bfb7
+                      - label: Check-in
+                        uuid: b321142f-8084-4c69-a04f-0049f36cad9d
+                      - label: Negotiation
+                        uuid: dd24f4ab-0424-44b9-a5f8-0cd69942d988
+                      items:
+                        properties:
+                          label:
+                            description: Label of the meeting type.
+                            example: Demo
+                            type: string
+                          uuid:
+                            description: Unique ID of the meeting type.
+                            format: uuid
+                            type: string
+                        required:
+                        - uuid
+                        - label
+                        type: object
+                      type: array
+                    name:
+                      description: Name of the template.
+                      type: string
+                    privacy:
+                      description: Privacy of the template.
+                      enum:
+                      - private
+                      - organization
+                      type: string
+                    text_slate:
+                      description: Text slate of the template.
+                      example: '[{"type": "header-2", "children": [{"text": "Referral Source"}], "data": {"block_created": "2023-11-28 07:58:47.642791", "snippet_notes_title": true, "block_key": "snippet_category_referral_source"}}, {"type": "header-2", "children": [{"text": "Action Items"}], "data": {"block_created": "2023-11-28 07:58:47.643488", "snippet_notes_title": true, "block_key": "snippet_category_action_item"}}, {"type": "header-2", "children": [{"text": "Background"}], "data": {"block_created": "2023-11-28 07:58:47.644071", "snippet_notes_title": true, "block_key": "snippet_category_background"}}, {"type": "header-2", "children": [{"text": "Pain Point"}], "data": {"block_created": "2023-11-28 07:58:47.644757", "snippet_notes_title": true, "block_key": "snippet_category_pain_point"}}]'
+                      type: string
+                    uuid:
+                      description: UUID of the template.
+                      format: uuid
+                      type: string
+                  required:
+                  - uuid
+                  - name
+                  - meeting_types
+                  - is_default
+                  - privacy
+                  - text_slate
+                  type: object
+                type: array
+          description: OK
+      summary: List Templates
+      tags:
+      - Templates
+      operationId: getV1Template
+      x-operation-id-source: derived
+    post:
+      description: Create a new template
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                categories:
+                  description: List of custom category uuids.
+                  example:
+                  - edf84cad-6301-475b-9dfb-14d1d7302778
+                  - 92bdf3d1-34dc-4aa2-aa90-737ef3ff4bca
+                  - 6cb8cd55-7044-4443-aa02-bc37168caf24
+                  items:
+                    format: uuid
+                    type: string
+                  type: array
+                email:
+                  description: Email of the user. If email user is part of organization, template will be associated with the user or it will be associated with the oldest admin user.
+                  format: email
+                  type: string
+                is_default:
+                  description: Is default template.
+                  type: boolean
+                meeting_type_uuids:
+                  description: List of meeting type uuids.
+                  example:
+                  - 9d9fb43b-5aa1-49dd-a29d-2adf4497bfb7
+                  - b321142f-8084-4c69-a04f-0049f36cad9d
+                  - dd24f4ab-0424-44b9-a5f8-0cd69942d988
+                  items:
+                    format: uuid
+                    type: string
+                  type: array
+                name:
+                  description: Name of the template.
+                  type: string
+                privacy:
+                  description: Privacy of the template.
+                  enum:
+                  - private
+                  - organization
+                  type: string
+              required:
+              - name
+              - categories
+              - meeting_type_uuids
+              type: object
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  email:
+                    description: Email of the user.
+                    format: email
+                    type: string
+                  is_default:
+                    description: Is default template.
+                    type: boolean
+                  meeting_types:
+                    description: List of meeting type uuids and label.
+                    example:
+                    - label: Stand Up
+                      uuid: 9d9fb43b-5aa1-49dd-a29d-2adf4497bfb7
+                    - label: Check-in
+                      uuid: b321142f-8084-4c69-a04f-0049f36cad9d
+                    - label: Negotiation
+                      uuid: dd24f4ab-0424-44b9-a5f8-0cd69942d988
+                    items:
+                      properties:
+                        label:
+                          description: Label of the meeting type.
+                          example: Demo
+                          type: string
+                        uuid:
+                          description: Unique ID of the meeting type.
+                          format: uuid
+                          type: string
+                      required:
+                      - uuid
+                      - label
+                      type: object
+                    type: array
+                  name:
+                    description: Name of the template.
+                    type: string
+                  privacy:
+                    description: Privacy of the template.
+                    enum:
+                    - private
+                    - organization
+                    type: string
+                  text_slate:
+                    description: Text slate of the template.
+                    example: '[{"type": "header-2", "children": [{"text": "Referral Source"}], "data": {"block_created": "2023-11-28 07:58:47.642791", "snippet_notes_title": true, "block_key": "snippet_category_referral_source"}}, {"type": "header-2", "children": [{"text": "Action Items"}], "data": {"block_created": "2023-11-28 07:58:47.643488", "snippet_notes_title": true, "block_key": "snippet_category_action_item"}}, {"type": "header-2", "children": [{"text": "Background"}], "data": {"block_created": "2023-11-28 07:58:47.644071", "snippet_notes_title": true, "block_key": "snippet_category_background"}}, {"type": "header-2", "children": [{"text": "Pain Point"}], "data": {"block_created": "2023-11-28 07:58:47.644757", "snippet_notes_title": true, "block_key": "snippet_category_pain_point"}}]'
+                    type: string
+                  uuid:
+                    description: UUID of the template.
+                    format: uuid
+                    type: string
+                required:
+                - uuid
+                - name
+                - meeting_types
+                - is_default
+                - privacy
+                - text_slate
+                type: object
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                description: Object having key as field/query param name and value as list of errors.
+                example:
+                  message:
+                  - This field may not be blank.
+                type: object
+          description: Bad Request. Could be due to invalid input data or a duplicate template (based on external_id).
+      summary: Create Template
+      tags:
+      - Templates
+      operationId: postV1Template
+      x-operation-id-source: derived
+  /v1/template/{uuid}/:
+    get:
+      description: Returns templates from given uuid.
+      parameters:
+      - in: path
+        name: uuid
+        required: true
+        schema:
+          description: Unique ID of the template.
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  email:
+                    description: Email of the user.
+                    format: email
+                    type: string
+                  is_default:
+                    description: Is default template.
+                    type: boolean
+                  meeting_types:
+                    description: List of meeting type uuids and label.
+                    example:
+                    - label: Stand Up
+                      uuid: 9d9fb43b-5aa1-49dd-a29d-2adf4497bfb7
+                    - label: Check-in
+                      uuid: b321142f-8084-4c69-a04f-0049f36cad9d
+                    - label: Negotiation
+                      uuid: dd24f4ab-0424-44b9-a5f8-0cd69942d988
+                    items:
+                      properties:
+                        label:
+                          description: Label of the meeting type.
+                          example: Demo
+                          type: string
+                        uuid:
+                          description: Unique ID of the meeting type.
+                          format: uuid
+                          type: string
+                      required:
+                      - uuid
+                      - label
+                      type: object
+                    type: array
+                  name:
+                    description: Name of the template.
+                    type: string
+                  privacy:
+                    description: Privacy of the template.
+                    enum:
+                    - private
+                    - organization
+                    type: string
+                  text_slate:
+                    description: Text slate of the template.
+                    example: '[{"type": "header-2", "children": [{"text": "Referral Source"}], "data": {"block_created": "2023-11-28 07:58:47.642791", "snippet_notes_title": true, "block_key": "snippet_category_referral_source"}}, {"type": "header-2", "children": [{"text": "Action Items"}], "data": {"block_created": "2023-11-28 07:58:47.643488", "snippet_notes_title": true, "block_key": "snippet_category_action_item"}}, {"type": "header-2", "children": [{"text": "Background"}], "data": {"block_created": "2023-11-28 07:58:47.644071", "snippet_notes_title": true, "block_key": "snippet_category_background"}}, {"type": "header-2", "children": [{"text": "Pain Point"}], "data": {"block_created": "2023-11-28 07:58:47.644757", "snippet_notes_title": true, "block_key": "snippet_category_pain_point"}}]'
+                    type: string
+                  uuid:
+                    description: UUID of the template.
+                    format: uuid
+                    type: string
+                required:
+                - uuid
+                - name
+                - meeting_types
+                - is_default
+                - privacy
+                - text_slate
+                type: object
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                properties:
+                  detail:
+                    description: Error details
+                    example: Not Found
+                    type: string
+                required:
+                - detail
+                type: object
+          description: Not Found.
+      summary: Get Templates
+      tags:
+      - Templates
+      operationId: getV1TemplateByUuid
+      x-operation-id-source: derived
+    put:
+      description: Update a template, the update will replace the existing template.
+      parameters:
+      - description: Unique ID of the Template
+        in: path
+        name: uuid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                categories:
+                  description: List of custom category uuids.
+                  example:
+                  - edf84cad-6301-475b-9dfb-14d1d7302778
+                  - 92bdf3d1-34dc-4aa2-aa90-737ef3ff4bca
+                  - 6cb8cd55-7044-4443-aa02-bc37168caf24
+                  items:
+                    format: uuid
+                    type: string
+                  type: array
+                email:
+                  description: Email of the user. If email user is part of organization, template will be associated with the user or it will be associated with the oldest admin user.
+                  format: email
+                  type: string
+                is_default:
+                  description: Is default template.
+                  type: boolean
+                meeting_type_uuids:
+                  description: List of meeting type uuids.
+                  example:
+                  - 9d9fb43b-5aa1-49dd-a29d-2adf4497bfb7
+                  - b321142f-8084-4c69-a04f-0049f36cad9d
+                  - dd24f4ab-0424-44b9-a5f8-0cd69942d988
+                  items:
+                    format: uuid
+                    type: string
+                  type: array
+                name:
+                  description: Name of the template.
+                  type: string
+                privacy:
+                  description: Privacy of the template.
+                  enum:
+                  - private
+                  - organization
+                  type: string
+              required:
+              - name
+              - categories
+              - meeting_type_uuids
+              type: object
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  email:
+                    description: Email of the user.
+                    format: email
+                    type: string
+                  is_default:
+                    description: Is default template.
+                    type: boolean
+                  meeting_types:
+                    description: List of meeting type uuids and label.
+                    example:
+                    - label: Stand Up
+                      uuid: 9d9fb43b-5aa1-49dd-a29d-2adf4497bfb7
+                    - label: Check-in
+                      uuid: b321142f-8084-4c69-a04f-0049f36cad9d
+                    - label: Negotiation
+                      uuid: dd24f4ab-0424-44b9-a5f8-0cd69942d988
+                    items:
+                      properties:
+                        label:
+                          description: Label of the meeting type.
+                          example: Demo
+                          type: string
+                        uuid:
+                          description: Unique ID of the meeting type.
+                          format: uuid
+                          type: string
+                      required:
+                      - uuid
+                      - label
+                      type: object
+                    type: array
+                  name:
+                    description: Name of the template.
+                    type: string
+                  privacy:
+                    description: Privacy of the template.
+                    enum:
+                    - private
+                    - organization
+                    type: string
+                  text_slate:
+                    description: Text slate of the template.
+                    example: '[{"type": "header-2", "children": [{"text": "Referral Source"}], "data": {"block_created": "2023-11-28 07:58:47.642791", "snippet_notes_title": true, "block_key": "snippet_category_referral_source"}}, {"type": "header-2", "children": [{"text": "Action Items"}], "data": {"block_created": "2023-11-28 07:58:47.643488", "snippet_notes_title": true, "block_key": "snippet_category_action_item"}}, {"type": "header-2", "children": [{"text": "Background"}], "data": {"block_created": "2023-11-28 07:58:47.644071", "snippet_notes_title": true, "block_key": "snippet_category_background"}}, {"type": "header-2", "children": [{"text": "Pain Point"}], "data": {"block_created": "2023-11-28 07:58:47.644757", "snippet_notes_title": true, "block_key": "snippet_category_pain_point"}}]'
+                    type: string
+                  uuid:
+                    description: UUID of the template.
+                    format: uuid
+                    type: string
+                required:
+                - uuid
+                - name
+                - meeting_types
+                - is_default
+                - privacy
+                - text_slate
+                type: object
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                description: Object having key as field/query param name and value as list of errors.
+                example:
+                  message:
+                  - This field may not be blank.
+                type: object
+          description: Bad Request. Could be due to invalid input data or a duplicate template (based on external_id).
+      summary: Update Template
+      tags:
+      - Templates
+      operationId: putV1TemplateByUuid
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http

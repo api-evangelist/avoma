@@ -1,0 +1,366 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Scorecards API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- name: Scorecards
+paths:
+  /v1/scorecards/:
+    get:
+      description: Retrieve a list of available scorecard templates.
+      operationId: scorecards_list
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  description: Represents a scorecard template
+                  properties:
+                    created:
+                      description: The date and time when the template was created
+                      format: date-time
+                      readOnly: true
+                      type: string
+                    created_by:
+                      allOf:
+                      - properties:
+                          email:
+                            format: email
+                            readOnly: true
+                            type: string
+                          first_name:
+                            readOnly: true
+                            type: string
+                          last_name:
+                            readOnly: true
+                            type: string
+                          uuid:
+                            format: uuid
+                            readOnly: true
+                            type: string
+                        type: object
+                      description: The user who created the scorecard template
+                      readOnly: true
+                    description:
+                      description: A description of the scorecard template
+                      readOnly: true
+                      type: string
+                    is_ai:
+                      description: Indicates if this is an AI scorecard template
+                      readOnly: true
+                      type: boolean
+                    modified:
+                      description: The date and time when the template was last modified
+                      format: date-time
+                      readOnly: true
+                      type: string
+                    modified_by:
+                      allOf:
+                      - properties:
+                          email:
+                            format: email
+                            readOnly: true
+                            type: string
+                          first_name:
+                            readOnly: true
+                            type: string
+                          last_name:
+                            readOnly: true
+                            type: string
+                          uuid:
+                            format: uuid
+                            readOnly: true
+                            type: string
+                        type: object
+                      description: The user who last modified the scorecard template
+                      readOnly: true
+                    name:
+                      description: The name of the scorecard template
+                      readOnly: true
+                      type: string
+                    questions:
+                      description: The list of questions in this scorecard template
+                      items:
+                        description: Represents a question in a scorecard template
+                        properties:
+                          created:
+                            description: The date and time when the question was created
+                            format: date-time
+                            readOnly: true
+                            type: string
+                          modified:
+                            description: The date and time when the question was last modified
+                            format: date-time
+                            readOnly: true
+                            type: string
+                          order:
+                            description: The order of the question within the scorecard
+                            readOnly: true
+                            type: integer
+                          question:
+                            description: The text of the question
+                            readOnly: true
+                            type: string
+                          question_choices:
+                            description: The available choices for the question
+                            items:
+                              description: Represents a choice for a question in a scorecard
+                              properties:
+                                choice_text:
+                                  description: The text of the choice
+                                  readOnly: true
+                                  type: string
+                                order:
+                                  description: The order of the choice within the question
+                                  readOnly: true
+                                  type: integer
+                                uuid:
+                                  format: uuid
+                                  readOnly: true
+                                  type: string
+                              type: object
+                            type: array
+                          question_type:
+                            description: 'The type of question in a scorecard:
+
+                              * `bool` - Boolean (Yes/No)
+
+                              * `int` - Interval (1-5 Rating Scale)'
+                            enum:
+                            - bool
+                            - int
+                            type: string
+                          tags:
+                            description: Tags associated with the question
+                            items:
+                              description: A tag associated with a scorecard question
+                              properties:
+                                tag:
+                                  description: The text of the tag
+                                  maxLength: 30
+                                  type: string
+                              type: object
+                            type: array
+                          uuid:
+                            description: The unique identifier of the question
+                            format: uuid
+                            readOnly: true
+                            type: string
+                        type: object
+                      type: array
+                    state:
+                      description: 'The state of a scorecard template:
+
+                        * `draft` - Draft (not yet finalized)
+
+                        * `live` - Live (available for use)
+
+                        * `inactive` - Inactive (disable for auto-scoring)'
+                      enum:
+                      - draft
+                      - live
+                      - inactive
+                      type: string
+                    uuid:
+                      description: The unique identifier of the scorecard template
+                      format: uuid
+                      readOnly: true
+                      type: string
+                  type: object
+                type: array
+          description: Successful response containing a list of scorecard templates
+      summary: List Scorecard Templates
+      tags:
+      - Scorecards
+  /v1/scorecards/{uuid}/:
+    get:
+      description: Get details of a specific scorecard template by its UUID.
+      operationId: scorecards_retrieve
+      parameters:
+      - description: UUID of the scorecard template
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Represents a scorecard template
+                properties:
+                  created:
+                    description: The date and time when the template was created
+                    format: date-time
+                    readOnly: true
+                    type: string
+                  created_by:
+                    allOf:
+                    - properties:
+                        email:
+                          format: email
+                          readOnly: true
+                          type: string
+                        first_name:
+                          readOnly: true
+                          type: string
+                        last_name:
+                          readOnly: true
+                          type: string
+                        uuid:
+                          format: uuid
+                          readOnly: true
+                          type: string
+                      type: object
+                    description: The user who created the scorecard template
+                    readOnly: true
+                  description:
+                    description: A description of the scorecard template
+                    readOnly: true
+                    type: string
+                  is_ai:
+                    description: Indicates if this is an AI scorecard template
+                    readOnly: true
+                    type: boolean
+                  modified:
+                    description: The date and time when the template was last modified
+                    format: date-time
+                    readOnly: true
+                    type: string
+                  modified_by:
+                    allOf:
+                    - properties:
+                        email:
+                          format: email
+                          readOnly: true
+                          type: string
+                        first_name:
+                          readOnly: true
+                          type: string
+                        last_name:
+                          readOnly: true
+                          type: string
+                        uuid:
+                          format: uuid
+                          readOnly: true
+                          type: string
+                      type: object
+                    description: The user who last modified the scorecard template
+                    readOnly: true
+                  name:
+                    description: The name of the scorecard template
+                    readOnly: true
+                    type: string
+                  questions:
+                    description: The list of questions in this scorecard template
+                    items:
+                      description: Represents a question in a scorecard template
+                      properties:
+                        created:
+                          description: The date and time when the question was created
+                          format: date-time
+                          readOnly: true
+                          type: string
+                        modified:
+                          description: The date and time when the question was last modified
+                          format: date-time
+                          readOnly: true
+                          type: string
+                        order:
+                          description: The order of the question within the scorecard
+                          readOnly: true
+                          type: integer
+                        question:
+                          description: The text of the question
+                          readOnly: true
+                          type: string
+                        question_choices:
+                          description: The available choices for the question
+                          items:
+                            description: Represents a choice for a question in a scorecard
+                            properties:
+                              choice_text:
+                                description: The text of the choice
+                                readOnly: true
+                                type: string
+                              order:
+                                description: The order of the choice within the question
+                                readOnly: true
+                                type: integer
+                              uuid:
+                                format: uuid
+                                readOnly: true
+                                type: string
+                            type: object
+                          type: array
+                        question_type:
+                          description: 'The type of question in a scorecard:
+
+                            * `bool` - Boolean (Yes/No)
+
+                            * `int` - Interval (1-5 Rating Scale)'
+                          enum:
+                          - bool
+                          - int
+                          type: string
+                        tags:
+                          description: Tags associated with the question
+                          items:
+                            description: A tag associated with a scorecard question
+                            properties:
+                              tag:
+                                description: The text of the tag
+                                maxLength: 30
+                                type: string
+                            type: object
+                          type: array
+                        uuid:
+                          description: The unique identifier of the question
+                          format: uuid
+                          readOnly: true
+                          type: string
+                      type: object
+                    type: array
+                  state:
+                    description: 'The state of a scorecard template:
+
+                      * `draft` - Draft (not yet finalized)
+
+                      * `live` - Live (available for use)
+
+                      * `inactive` - Inactive (disable for auto-scoring)'
+                    enum:
+                    - draft
+                    - live
+                    - inactive
+                    type: string
+                  uuid:
+                    description: The unique identifier of the scorecard template
+                    format: uuid
+                    readOnly: true
+                    type: string
+                type: object
+          description: Successful response containing details of the requested scorecard template
+      summary: Retrieve a Specific Scorecard Template
+      tags:
+      - Scorecards
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http

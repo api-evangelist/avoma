@@ -1,0 +1,192 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Meeting Types API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- name: Meeting Types
+paths:
+  /v1/meeting_type/:
+    get:
+      summary: List Meeting Types
+      description: Returns all meeting types for the organization.
+      tags:
+      - Meeting Types
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./openapi/components/external.yml#/components/schemas/meeting_type_response
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: getV1MeetingType
+      x-operation-id-source: derived
+    post:
+      summary: Create Meeting Type
+      description: Creates a new meeting type for the organization.
+      tags:
+      - Meeting Types
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ./openapi/components/external.yml#/components/schemas/meeting_type_request
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/meeting_type_response
+        '400':
+          description: Bad Request - Invalid data or duplicate label
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: postV1MeetingType
+      x-operation-id-source: derived
+  /v1/meeting_type/{uuid}/:
+    get:
+      summary: Get Meeting Type
+      description: Returns a specific meeting type by UUID.
+      tags:
+      - Meeting Types
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+          description: Unique ID of the meeting type.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/meeting_type_response
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: getV1MeetingTypeByUuid
+      x-operation-id-source: derived
+    patch:
+      summary: Update Meeting Type
+      description: Updates a specific meeting type by UUID. You can provide either label or description (or both).
+      tags:
+      - Meeting Types
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+          description: Unique ID of the meeting type.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ./openapi/components/external.yml#/components/schemas/meeting_type_update_request
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/meeting_type_response
+        '400':
+          description: Bad Request - Invalid data
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: patchV1MeetingTypeByUuid
+      x-operation-id-source: derived
+    delete:
+      summary: Delete Meeting Type
+      description: Deletes a specific meeting type by UUID.
+      tags:
+      - Meeting Types
+      parameters:
+      - name: uuid
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+          description: Unique ID of the meeting type.
+      responses:
+        '204':
+          description: No Content - Successfully deleted
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: deleteV1MeetingTypeByUuid
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http

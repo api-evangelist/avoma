@@ -1,0 +1,543 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: help@avoma.com
+    name: Avoma Help Center
+  description: '# Introduction
+
+
+    Welcome to Avoma''s developer hub.'
+  title: Avoma Engagement Analytics API
+  version: 1.0.0
+servers:
+- description: Avoma APIs
+  url: https://api.avoma.com
+security:
+- bearerAuth: []
+tags:
+- name: Engagement Analytics
+paths:
+  /v1/engagement/:
+    get:
+      summary: List Engagement Metrics for All Users
+      description: Returns engagement analytics data for all users in the organization, showing metrics like conversations listened, snippets, shares, comments, etc. for each user.
+      tags:
+      - Engagement Analytics
+      parameters:
+      - name: from_date
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+        description: 'To retrieve engagement data for meetings started at or started after given date-time(UTC). Format: ISO 8601 datetime string e.g. "2024-01-01T00:00:00Z".'
+      - name: to_date
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+        description: 'To retrieve engagement data for meetings started at or started before given date-time(UTC). Format: ISO 8601 datetime string e.g. "2024-01-31T23:59:59Z".'
+      - name: page
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        description: Page number for pagination
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+        description: Number of items per page (max 100)
+      - name: o
+        in: query
+        schema:
+          type: string
+          enum:
+          - user_email
+          - -user_email
+          - conversations_listened
+          - -conversations_listened
+          - snippets_listened
+          - -snippets_listened
+          - conversations_shared
+          - -conversations_shared
+          - conversations_commented
+          - -conversations_commented
+          - total_comments
+          - -total_comments
+          - conversations_listened_duration
+          - -conversations_listened_duration
+          - conversations_listened_percent
+          - -conversations_listened_percent
+        description: 'Field to order results by. Prefix with `-` for descending order. Example: `o=-conversations_listened` for descending order by conversations listened.
+
+          '
+      - name: user_email
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            format: email
+        description: Filter by specific user email(s). Can be passed multiple times.
+      - name: is_call
+        in: query
+        schema:
+          type: boolean
+        description: 'Filter by call type:
+
+          - `true`: Only voice calls
+
+          - `false`: Only video meetings
+
+          '
+      - name: is_internal
+        in: query
+        schema:
+          type: boolean
+        description: 'Filter by meeting type:
+
+          - `true`: Only internal meetings (no external attendees)
+
+          - `false`: Only external meetings (has external attendees)
+
+          '
+      - name: meeting_outcome_uuid
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Filter by meeting outcome UUID(s). Can be passed multiple times.
+      - name: meeting_type_uuid
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Filter by meeting type UUID(s). Can be passed multiple times.
+      - name: recording_duration__gte
+        in: query
+        schema:
+          type: number
+          minimum: 0
+        description: Filter meetings with recording duration greater than or equal to specified seconds
+      - name: recording_duration__lte
+        in: query
+        schema:
+          type: number
+          minimum: 0
+        description: Filter meetings with recording duration less than or equal to specified seconds
+      - name: shared_meetings_only
+        in: query
+        schema:
+          type: boolean
+        description: If true, only include shared meetings
+      - name: is_impromptu
+        in: query
+        schema:
+          type: boolean
+        description: Filter by impromptu meetings (unscheduled/ad-hoc)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/engagement_list_response
+              example:
+                $ref: ./openapi/components/external.yml#/components/examples/engagement_list_example
+        '400':
+          description: Invalid query params or email not found in organization
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/bad_request_body
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: getV1Engagement
+      x-operation-id-source: derived
+  /v1/engagement/{user_uuid}/:
+    get:
+      summary: Get Engagement Metrics for Specific User
+      description: Returns participant-level engagement metrics for a specific user, showing detailed interaction data with each participant (conversations listened, playback speed, etc.).
+      tags:
+      - Engagement Analytics
+      parameters:
+      - name: user_uuid
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: UUID of the user to get engagement metrics for
+      - name: from_date
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+        description: 'To retrieve engagement data for meetings started at or started after given date-time(UTC). Format: ISO 8601 datetime string e.g. "2024-01-01T00:00:00Z".'
+      - name: to_date
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+        description: 'To retrieve engagement data for meetings started at or started before given date-time(UTC). Format: ISO 8601 datetime string e.g. "2024-01-31T23:59:59Z".'
+      - name: page
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        description: Page number for pagination
+      - name: page_size
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+        description: Number of items per page (max 100)
+      - name: o
+        in: query
+        schema:
+          type: string
+          enum:
+          - participant_email
+          - -participant_email
+          - conversations_listened
+          - -conversations_listened
+          - snippets_listened
+          - -snippets_listened
+          - conversations_shared
+          - -conversations_shared
+          - conversations_commented
+          - -conversations_commented
+          - total_comments
+          - -total_comments
+          - avg_playback_speed
+          - -avg_playback_speed
+          - conversations_listened_duration
+          - -conversations_listened_duration
+          - conversations_listened_percent
+          - -conversations_listened_percent
+        description: 'Field to order results by. Prefix with `-` for descending order. Example: `o=-conversations_listened` for descending order by conversations listened.
+
+          '
+      - name: participant_email
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            format: email
+        description: Filter by participant email(s). Can be passed multiple times.
+      - name: is_call
+        in: query
+        schema:
+          type: boolean
+        description: 'Filter by call type:
+
+          - `true`: Only voice calls
+
+          - `false`: Only video meetings
+
+          '
+      - name: is_internal
+        in: query
+        schema:
+          type: boolean
+        description: 'Filter by meeting type:
+
+          - `true`: Only internal meetings (no external attendees)
+
+          - `false`: Only external meetings (has external attendees)
+
+          '
+      - name: meeting_outcome_uuid
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Filter by meeting outcome UUID(s). Can be passed multiple times.
+      - name: meeting_type_uuid
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Filter by meeting type UUID(s). Can be passed multiple times.
+      - name: recording_duration__gte
+        in: query
+        schema:
+          type: number
+          minimum: 0
+        description: Filter meetings with recording duration greater than or equal to specified seconds
+      - name: recording_duration__lte
+        in: query
+        schema:
+          type: number
+          minimum: 0
+        description: Filter meetings with recording duration less than or equal to specified seconds
+      - name: shared_meetings_only
+        in: query
+        schema:
+          type: boolean
+        description: If true, only include shared meetings
+      - name: is_impromptu
+        in: query
+        schema:
+          type: boolean
+        description: Filter by impromptu meetings (unscheduled/ad-hoc)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/engagement_list_response
+              example:
+                $ref: ./openapi/components/external.yml#/components/examples/engagement_list_example
+        '400':
+          description: Invalid query params or email not found in organization
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/bad_request_body
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: getV1EngagementByUserUuid
+      x-operation-id-source: derived
+  /v1/engagement/summary/:
+    get:
+      summary: Get Overall Engagement Summary for All Users
+      description: Returns aggregated summary statistics for engagement metrics across all users in the organization. Provides overall engagement overview including total conversations, shares, comments, etc.
+      tags:
+      - Engagement Analytics
+      parameters:
+      - name: from_date
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+        description: 'To retrieve engagement summary for meetings started at or started after given date-time(UTC). Format: ISO 8601 datetime string e.g. "2024-01-01T00:00:00Z".'
+      - name: to_date
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+        description: 'To retrieve engagement summary for meetings started at or started before given date-time(UTC). Format: ISO 8601 datetime string e.g. "2024-01-31T23:59:59Z".'
+      - name: user_email
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            format: email
+        description: Filter by specific user email(s). Can be passed multiple times.
+      - name: is_call
+        in: query
+        schema:
+          type: boolean
+        description: Filter by call type (true=voice calls, false=video meetings)
+      - name: is_internal
+        in: query
+        schema:
+          type: boolean
+        description: Filter by meeting type (true=internal only, false=external only)
+      - name: meeting_outcome_uuid
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Filter by meeting outcome UUID(s)
+      - name: meeting_type_uuid
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Filter by meeting type UUID(s)
+      - name: recording_duration__gte
+        in: query
+        schema:
+          type: number
+          minimum: 0
+        description: Filter meetings with recording duration >= specified seconds
+      - name: recording_duration__lte
+        in: query
+        schema:
+          type: number
+          minimum: 0
+        description: Filter meetings with recording duration <= specified seconds
+      - name: shared_meetings_only
+        in: query
+        schema:
+          type: boolean
+        description: If true, only include shared meetings
+      - name: is_impromptu
+        in: query
+        schema:
+          type: boolean
+        description: Filter by impromptu meetings (unscheduled/ad-hoc)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/engagement_summary_response
+              example:
+                $ref: ./openapi/components/external.yml#/components/examples/engagement_summary_example
+        '400':
+          description: Invalid query params or email not found in organization
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/bad_request_body
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: getV1EngagementSummary
+      x-operation-id-source: derived
+  /v1/engagement/{user_uuid}/summary/:
+    get:
+      summary: Get Engagement Summary for Specific User's Participants
+      description: Returns aggregated summary statistics for a specific user's engagement activity across all their participants. Shows how the user engaged with different participants.
+      tags:
+      - Engagement Analytics
+      parameters:
+      - name: user_uuid
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: UUID of the user to get participant summary for
+      - name: from_date
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+        description: 'To retrieve engagement summary for meetings started at or started after given date-time(UTC). Format: ISO 8601 datetime string e.g. "2024-01-01T00:00:00Z".'
+      - name: to_date
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+        description: 'To retrieve engagement summary for meetings started at or started before given date-time(UTC). Format: ISO 8601 datetime string e.g. "2024-01-31T23:59:59Z".'
+      - name: participant_email
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            format: email
+        description: Filter by participant email(s). Can be passed multiple times.
+      - name: is_call
+        in: query
+        schema:
+          type: boolean
+        description: Filter by call type (true=voice calls, false=video meetings)
+      - name: is_internal
+        in: query
+        schema:
+          type: boolean
+        description: Filter by meeting type (true=internal only, false=external only)
+      - name: meeting_outcome_uuid
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Filter by meeting outcome UUID(s)
+      - name: meeting_type_uuid
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Filter by meeting type UUID(s)
+      - name: recording_duration__gte
+        in: query
+        schema:
+          type: number
+          minimum: 0
+        description: Filter meetings with recording duration >= specified seconds
+      - name: recording_duration__lte
+        in: query
+        schema:
+          type: number
+          minimum: 0
+        description: Filter meetings with recording duration <= specified seconds
+      - name: shared_meetings_only
+        in: query
+        schema:
+          type: boolean
+        description: If true, only include shared meetings
+      - name: is_impromptu
+        in: query
+        schema:
+          type: boolean
+        description: Filter by impromptu meetings (unscheduled/ad-hoc)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/engagement_summary_response
+              example:
+                $ref: ./openapi/components/external.yml#/components/examples/engagement_summary_example
+        '400':
+          description: Invalid query params or email not found in organization
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/bad_request_body
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: ./openapi/components/external.yml#/components/schemas/http_error_response
+      operationId: getV1EngagementByUserUuidSummary
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearerAuth:
+      description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
+      scheme: bearer
+      type: http
