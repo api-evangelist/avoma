@@ -1,7 +1,7 @@
 {
   "provider": "avoma",
   "sources": [
-    "avoma-openapi.yml"
+    "_original/avoma-openapi.yml"
   ],
   "outputs": [
     "avoma-calls-api-openapi.yml",
@@ -23,19 +23,37 @@
     "avoma-users-api-openapi.yml",
     "avoma-webhooks-api-openapi.yml"
   ],
-  "archived": [
-    "archived openapi/avoma-openapi.yml"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "avoma-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "avoma-openapi.yml: declared missing tag: Engagement Analytics",
     "avoma-openapi.yml: declared missing tag: Meeting Outcomes",
     "avoma-openapi.yml: declared missing tag: Meeting Types",
     "avoma-openapi.yml: declared missing tag: Revenue Intelligence [Beta]",
     "avoma-openapi.yml: declared missing tag: Snippets",
-    "apis.yml register: written (+18 apis, 18 total)"
+    "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "avoma-calls-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "avoma-custom-category-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "avoma-engagement-analytics-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "avoma-meeting-outcomes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "avoma-meeting-types-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "avoma-meetings-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "avoma-meetings-sentiments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "avoma-notes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "avoma-recording-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "avoma-revenue-intelligence-beta-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "avoma-scorecard-evaluations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "avoma-scorecards-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "avoma-smart-category-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "avoma-snippets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "avoma-templates-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "avoma-transcriptions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "avoma-users-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "avoma-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
