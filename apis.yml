@@ -24,7 +24,17 @@ created: '2026-09-27'
 
 modified: '2026-09-27'
 
+x-docs-platform: redocly
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-10-03
+x-docs-hosting: github-pages
 tags:
+- Artificial Intelligence
+- Meeting Assistant
+- Sales Enablement
+- Automation
+- Productivity
+tags_raw:
 - AI
 - Meeting-Assistant
 - Sales-Enablement
@@ -38,6 +48,9 @@ maintainers:
   email: info@apis.io
 
 common:
+- type: CapabilityMap
+  url: capabilities/avoma-capability-edges.yml
+  name: Avoma Business Capability Map
 - type: AgenticAccess
   url: agentic-access/avoma-agentic-access.yml
 - type: Plans
@@ -289,6 +302,8 @@ apis:
   humanURL: https://dev.avoma.com/
   baseURL: https://api.avoma.com
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
@@ -332,6 +347,8 @@ apis:
   humanURL: https://dev.avoma.com/
   baseURL: https://api.avoma.com
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
