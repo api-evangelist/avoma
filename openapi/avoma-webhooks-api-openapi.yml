@@ -1404,3 +1404,9 @@ components:
       description: Avoma uses bearer token for authentication of the client. For now, you will have to contact [Avoma Support](mailto:help@avoma.com) to get one issued for you.
       scheme: bearer
       type: http
+x-provenance:
+  method: harvested
+  publisher: Avoma
+  source: https://dev.avoma.com/openapi.yml
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
