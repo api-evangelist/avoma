@@ -64,5 +64,139 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Avoma is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://www.nasdaqprivatemarket.com/
+Avoma is an AI-powered meeting assistant platform that automates note‑taking, scheduling, and coaching for sales and revenue teams. It records and transcribes meetings in real time, generates structured summaries, pushes data to CRMs, and provides AI‑driven sales coaching and guidance. The platform also offers lead routing, meeting reminders, and revenue intelligence tools to help organizations improve productivity and close deals faster.
+
+**Areas:** Artificial Intelligence · Meeting Assistant · Sales Enablement · Automation · Productivity
+
+## Avoma on APIs.io
+
+Everything profiled for Avoma is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/avoma/](https://apis.io/providers/avoma/)** — or go straight to one of the APIs or properties below.
+
+### APIs (18)
+
+- [Avoma Calls API](https://apis.io/apis/avoma/avoma-calls-api/) — The Calls API from Avoma — 2 operation(s) for calls.
+- [Avoma Custom Category API](https://apis.io/apis/avoma/avoma-custom-category-api/) — **Deprecated**: The "Custom Category" feature is deprecated and will be removed in future versions. We recommend using the "Smart Category" feature instead.
+- [Avoma Engagement Analytics API](https://apis.io/apis/avoma/avoma-engagement-analytics-api/) — The Engagement Analytics API from Avoma — 4 operation(s) for engagement analytics.
+- [Avoma Meeting Outcomes API](https://apis.io/apis/avoma/avoma-meeting-outcomes-api/) — The Meeting Outcomes API from Avoma — 2 operation(s) for meeting outcomes.
+- [Avoma Meeting Types API](https://apis.io/apis/avoma/avoma-meeting-types-api/) — The Meeting Types API from Avoma — 2 operation(s) for meeting types.
+- [Avoma Meetings API](https://apis.io/apis/avoma/avoma-meetings-api/) — Meetings are the foundation and starting point of the flow in Avoma. You can fetch recordings , transcriptions , ai notes , sentiments and coaching once the…
+- [Avoma Meetings Sentiments API](https://apis.io/apis/avoma/avoma-meetings-sentiments-api/) — Avoma's meeting sentiment feature is a powerful tool designed to provide end users with a deeper understanding of the emotional tone and dynamics within…
+- [Avoma Notes API](https://apis.io/apis/avoma/avoma-notes-api/) — Avoma's AI takes notes so that you can focus on engaging in the conversation. These notes are intelligently categorised using Avoma's Smart Categories…
+- [Avoma Recording API](https://apis.io/apis/avoma/avoma-recording-api/) — Recordings contain Audio and Video information for a completed meeting. Once recording is available you should be able to download the same using the…
+- [Avoma Revenue Intelligence [Beta] API](https://apis.io/apis/avoma/avoma-revenue-intelligence-beta-api/) — The Revenue Intelligence [Beta] API from Avoma — 2 operation(s) for revenue intelligence [beta].
+- [Avoma Scorecard Evaluations API](https://apis.io/apis/avoma/avoma-scorecard-evaluations-api/) — The Scorecard Evaluations API from Avoma — 1 operation(s) for scorecard evaluations.
+- [Avoma Scorecards API](https://apis.io/apis/avoma/avoma-scorecards-api/) — The Scorecards API from Avoma — 2 operation(s) for scorecards.
+- [Avoma Smart Category API](https://apis.io/apis/avoma/avoma-smart-category-api/) — Smart Categories can help organize your meeting notes into logical groupings, making it effortless to navigate and extract specific information from large…
+- [Avoma Snippets API](https://apis.io/apis/avoma/avoma-snippets-api/) — The Snippets API from Avoma — 1 operation(s) for snippets.
+- [Avoma Templates API](https://apis.io/apis/avoma/avoma-templates-api/) — `Templates` help in extraction of AI-generated notes based on mentioned categories. A template will be automatically inserted into the meeting notes page,…
+- [Avoma Transcriptions API](https://apis.io/apis/avoma/avoma-transcriptions-api/) — Transcription is generated for meeting's recording. This is available once the meeting recording is processed. Availability of transcription can be verified…
+- [Avoma Users API](https://apis.io/apis/avoma/avoma-users-api/) — The Users API from Avoma — 2 operation(s) for users.
+- [Avoma Webhooks API](https://apis.io/apis/avoma/avoma-webhooks-api/) — **Webhooks** Avoma Webhooks notify users about the successful occurrence of events within the Avoma application. Instead of polling or calling APIs to…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [avoma-mcp.yml](https://apis.io/servers/avoma/avoma-mcp-yml/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Avoma Agentic Access](https://apis.io/agentic-access/avoma/avoma-agentic-access/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [Avoma API Rules](https://apis.io/rules/avoma/avoma-rules/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Avoma Authentication](https://apis.io/security/avoma/avoma-authentication/)
+- [Avoma Domain Security](https://apis.io/security/avoma/avoma-domain-security/)
+- [Avoma Trust Center](https://apis.io/security/avoma/avoma-trust-center/)
+- [Avoma Vulnerability Disclosure](https://apis.io/security/avoma/avoma-vulnerability-disclosure/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Avoma Plans Pricing](https://apis.io/plans/avoma/avoma-plans-pricing/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.avoma.com/)
+- [Documentation](https://dev.avoma.com/)
+- [API reference](https://dev.avoma.com/)
+- [Pricing](https://www.avoma.com/pricing)
+- [Support](https://help.avoma.com/)
+- [Changelog](https://www.avoma.com/release-notes)
+- [Blog](https://www.avoma.com/blog)
+- [Security](https://www.avoma.com/security)
+- [Compliance](https://trust.avoma.com/)
+- [Terms of service](https://www.avoma.com/terms)
+- [Privacy policy](https://www.avoma.com/privacy-policy)
+
+## API Evangelist rating
+
+**Kin Score 56.0** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 51.7 |
+| Contract governance | 22.0 |
+| Operational transparency | 26.3 |
+| Developer ergonomics | 45.2 |
+| Access clarity | 78.9 |
+
+**Agent readiness 42.1** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 32.7** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/avoma/](https://apis.io/providers/avoma/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Avoma: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/avoma/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
